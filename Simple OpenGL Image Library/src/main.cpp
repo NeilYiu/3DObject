@@ -6,6 +6,8 @@
 #include <vector>
 using namespace std;
 
+bool shouldDisplayManualTexturedOctahedron = false;
+bool shouldDisplayImportedTexturedOctahedron = false;
 GLdouble endPoint1[3] = { 398.974 ,-117.217 ,153.073 };
 GLdouble endPoint2[3] = { -198.974 ,317.217 ,-153.073 };
 GLdouble initialPosition[3] = { 137.187,409.385,-99.6725 };
@@ -19,9 +21,14 @@ GLdouble width = 50;
 GLdouble height = 100;
 GLdouble octahedronVertex[6][3] = { { width,0,-width },{ -width,0,-width },{ -width,0,width },{ width,0,width },{ 0,height,0 },{ 0,-height,0 } };
 GLint faceIndex[8][3] = { { 3,0,4 },{ 0,1,4 },{ 1,2,4 },{ 3,2,4 },{ 3,0,5 },{ 0,1,5 },{ 1,2,5 },{ 3,2,5 } };
-GLdouble xStep = 1, yStep = 1, zStep = 1;
+GLdouble xStep = 2;
 GLdouble tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
-GLdouble txStep = 5, tyStep = 5, tzStep = 5;
+
+double stepPortion = 0.007;
+GLdouble translationXStep = rotationAxis[0] * stepPortion;
+GLdouble translationYStep = rotationAxis[1] * stepPortion;
+GLdouble translationZStep = rotationAxis[2] * stepPortion;
+
 GLdouble xAngle = 0, yAngle = 0, zAngle = 0;
 GLdouble xmin1 = -800, xmax1 = 800, ymin1 = -800, ymax1 = 800, zmin1 = -800, zmax1 = 800, znear1 = -800, zfar1 = 800;
 GLdouble finalTranslation[3];
@@ -40,26 +47,98 @@ void makeImage(void)
 	{
 		for (j = border; j< imageWidth - border; j++)
 		{
-			texArray1[i][j][0] = (GLubyte)0;
+			texArray1[i][j][0] = (GLubyte)255;
 			texArray1[i][j][1] = (GLubyte)0;
 			texArray1[i][j][2] = (GLubyte)0;
 			texArray1[i][j][3] = (GLubyte)255;
 			if (i == 0 || i == imageHeight / 2 || i == imageHeight - 1)
 			{
-				texArray1[i][j][0] = (GLubyte)255;
-				texArray1[i][j][1] = (GLubyte)255;
+				texArray1[i][j][0] = (GLubyte)0;
+				texArray1[i][j][1] = (GLubyte)0;
 				texArray1[i][j][2] = (GLubyte)255;
 				texArray1[i][j][3] = (GLubyte)255;
 			}
 			if (j == 0)
 			{
-				texArray1[i][j][0] = (GLubyte)255;
-				texArray1[i][j][1] = (GLubyte)255;
+				texArray1[i][j][0] = (GLubyte)0;
+				texArray1[i][j][1] = (GLubyte)0;
 				texArray1[i][j][2] = (GLubyte)255;
 				texArray1[i][j][3] = (GLubyte)255;
 			}
 		}
 	}
+}
+
+void drawManualTextureObject()
+{
+	glEnable(GL_TEXTURE_2D);
+
+	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA,
+		GL_UNSIGNED_BYTE, texArray1);
+
+	for (GLint i = 0; i < 8; i++)
+	{
+		glBegin(GL_TRIANGLES);
+		for (GLint j = 0; j < 3; j++)
+		{
+			if (j == 0)
+			{
+				glTexCoord2d(0.0, 0.0);
+				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+			}
+			if (j == 1)
+			{
+				glTexCoord2d(0.0, 1.0);
+				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+			}
+			if (j == 2)
+			{
+				glTexCoord2d(1.0, 1.0);
+				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+			}
+		}
+		glEnd();
+	}
+
+	glDisable(GL_TEXTURE_2D);
+	glFlush();
+}
+void drawImportedTextureObject()
+{
+	for (GLint i = 0; i < 8; i++)
+	{
+		glBegin(GL_TRIANGLES);
+		for (GLint j = 0; j < 3; j++)
+		{
+			if (j == 0)
+			{
+				glTexCoord2d(0.0, 0.0);
+				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+			}
+			if (j == 1)
+			{
+				glTexCoord2d(0.0, 1.0);
+				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+			}
+			if (j == 2)
+			{
+				glTexCoord2d(1.0, 1.0);
+				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+			}
+		}
+		glEnd();
+	}
+	glFlush();
 }
 
 void loadCustomTexture(char fileName[])
@@ -197,7 +276,8 @@ void setMaterialProperty()
 
 void displayFunction()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
 	drawAxis(xmin1, xmax1, ymin1, ymax1, zfar1);
 	glLineWidth(5);
 	glBegin(GL_LINES);
@@ -237,7 +317,24 @@ void displayFunction()
 		glTranslated(initialPosition[0], initialPosition[1], initialPosition[2]);
 	}
 
-	displayOctahedron();
+	if (shouldDisplayManualTexturedOctahedron)
+	{
+		drawManualTextureObject();
+	}
+	else if(shouldDisplayImportedTexturedOctahedron)
+	{
+		loadCustomTexture("MCR.png");
+		glEnable(GL_TEXTURE_2D);
+
+		drawImportedTextureObject();
+
+		glDisable(GL_TEXTURE_2D);
+	}
+	else
+	{
+		displayOctahedron();
+	}
+
 	//glDisable(GL_LIGHT1);
 	//glDisable(GL_LIGHT2);
 
@@ -365,10 +462,10 @@ void idle()
 	}
 	else if (option == 2)
 	{
-		scaleFactor += 0.05;
-		tx += rotationAxis[0] * 0.025;
-		ty += rotationAxis[1] * 0.025;
-		tz += rotationAxis[2] * 0.025;
+		scaleFactor += 0.01;
+		tx += translationXStep;
+		ty += translationYStep;
+		tz += translationZStep;
 
 		if (abs(tx) > abs(endPoint1[0]) && abs(ty) > abs(endPoint1[1]) && abs(tz) > abs(endPoint1[2]))
 		{
@@ -419,16 +516,17 @@ void textureOptions(GLint drawOptions)
 	GLenum mode = GL_LINE;
 	switch (drawOptions) {
 	case 1:
-		mode = GL_POINT;
-		glPolygonMode(GL_FRONT_AND_BACK, mode);
+		shouldDisplayImportedTexturedOctahedron = false;
+		shouldDisplayManualTexturedOctahedron = false;
 		break;
 	case 2:
-		mode = GL_LINE;
-		glPolygonMode(GL_FRONT_AND_BACK, mode);
+		shouldDisplayImportedTexturedOctahedron = false;
+		shouldDisplayManualTexturedOctahedron = true;
 		break;
 	case 3:
-		mode = GL_FILL;
-		glPolygonMode(GL_FRONT_AND_BACK, mode);
+		shouldDisplayImportedTexturedOctahedron = true;
+		shouldDisplayManualTexturedOctahedron = false;
+		break;
 	}
 	glutPostRedisplay();
 }
@@ -443,21 +541,25 @@ int main(int argc, char** argv)
 	glutInitWindowSize(1000, 1000);
 
 	windowID = glutCreateWindow("Part 2 - 3D Object");
-
+	makeImage();
 	init();
 	CalculateFinalTranslationVector();
 	GLint displayModeMenu;
 	displayModeMenu = glutCreateMenu(drawOptions);
-	GLint textureModeMenu;
-	textureModeMenu = glutCreateMenu(drawOptions);
-
 	glutAddMenuEntry("Verteces", 1);
 	glutAddMenuEntry("Edges", 2);
 	glutAddMenuEntry("Everything", 3);
+	GLint textureModeMenu;
+	textureModeMenu = glutCreateMenu(textureOptions);
+	glutAddMenuEntry("No Texture", 1);
+	glutAddMenuEntry("Manual Texture", 2);
+	glutAddMenuEntry("Imported Texture", 3);
+
 	glutCreateMenu(animationSelection);
 	glutAddMenuEntry("Rotate", 1);
 	glutAddMenuEntry("Translation", 2);
 	glutAddSubMenu("Box Style", displayModeMenu);
+	glutAddSubMenu("Texture Style", textureModeMenu);
 	glutAddMenuEntry("Exit", 7);
 	glutAttachMenu(GLUT_LEFT_BUTTON);
 
