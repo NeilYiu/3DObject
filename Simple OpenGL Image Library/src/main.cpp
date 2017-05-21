@@ -6,8 +6,12 @@
 #include <vector>
 using namespace std;
 
-bool shouldDisplayManualTexturedOctahedron = false;
-bool shouldDisplayImportedTexturedOctahedron = false;
+bool shouldDisplayTexture1Octahedron = false;
+bool shouldDisplayTexture2Octahedron = false;
+bool shouldDisplayTexture3Octahedron = false;
+
+GLfloat pointSize = 10;
+
 GLdouble endPoint1[3] = { 398.974 ,-117.217 ,153.073 };
 GLdouble endPoint2[3] = { -198.974 ,317.217 ,-153.073 };
 GLdouble initialPosition[3] = { 137.187,409.385,-99.6725 };
@@ -21,7 +25,7 @@ GLdouble width = 50;
 GLdouble height = 100;
 GLdouble octahedronVertex[6][3] = { { width,0,-width },{ -width,0,-width },{ -width,0,width },{ width,0,width },{ 0,height,0 },{ 0,-height,0 } };
 GLint faceIndex[8][3] = { { 3,0,4 },{ 0,1,4 },{ 1,2,4 },{ 3,2,4 },{ 3,0,5 },{ 0,1,5 },{ 1,2,5 },{ 3,2,5 } };
-GLdouble xStep = 2;
+GLdouble rotationStep = 2;
 GLdouble tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
 
 double stepPortion = 0.007;
@@ -29,7 +33,7 @@ GLdouble translationXStep = rotationAxis[0] * stepPortion;
 GLdouble translationYStep = rotationAxis[1] * stepPortion;
 GLdouble translationZStep = rotationAxis[2] * stepPortion;
 
-GLdouble xAngle = 0, yAngle = 0, zAngle = 0;
+GLdouble rotationAngle = 0;
 GLdouble xmin1 = -800, xmax1 = 800, ymin1 = -800, ymax1 = 800, zmin1 = -800, zmax1 = 800, znear1 = -800, zfar1 = 800;
 GLdouble finalTranslation[3];
 GLdouble scaleFactor = 1.0;
@@ -69,7 +73,7 @@ void makeImage(void)
 	}
 }
 
-void drawManualTextureObject()
+void drawTexture1Octahedron()
 {
 	glEnable(GL_TEXTURE_2D);
 
@@ -113,8 +117,21 @@ void drawManualTextureObject()
 	glDisable(GL_TEXTURE_2D);
 	glFlush();
 }
-void drawImportedTextureObject()
+void loadCustomTexture(char fileName[])
 {
+	textureID = SOIL_load_OGL_texture
+	(
+		fileName,
+		SOIL_LOAD_AUTO,
+		textureID,
+		//SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_DDS_LOAD_DIRECT
+		//SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB //SOIL_FLAG_TEXTURE_RECTANGLE  
+	);
+}
+void drawTexturedOctahedron()
+{
+	glEnable(GL_TEXTURE_2D);
 	for (GLint i = 0; i < 8; i++)
 	{
 		glBegin(GL_TRIANGLES);
@@ -139,21 +156,18 @@ void drawImportedTextureObject()
 		glEnd();
 	}
 	glFlush();
+	glDisable(GL_TEXTURE_2D);
 }
-
-void loadCustomTexture(char fileName[])
+void drawTexture2Octahedron()
 {
-	textureID = SOIL_load_OGL_texture
-	(
-		fileName,
-		SOIL_LOAD_AUTO,
-		textureID,
-		//SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_DDS_LOAD_DIRECT
-		//SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB //SOIL_FLAG_TEXTURE_RECTANGLE  
-	);
+	loadCustomTexture("MCR.png");
+	drawTexturedOctahedron();
 }
-
+void drawTexture3Octahedron()
+{
+	loadCustomTexture("Lifeline.png");
+	drawTexturedOctahedron();
+}
 void TriangleFace(GLint face[3]) // arguments are indices of four vertices of a TriangleFace
 {
 	glBegin(GL_TRIANGLES);
@@ -161,7 +175,6 @@ void TriangleFace(GLint face[3]) // arguments are indices of four vertices of a 
 	{
 		glVertex3dv(octahedronVertex[face[i]]);
 	}
-
 	glEnd();
 }
 
@@ -230,13 +243,14 @@ void setSpotLightProperty()
 	glLightfv(GL_LIGHT1, GL_POSITION, spotLight_position);
 	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, dirVector);
 	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 30.0);
-	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 1.0);
+	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 1.0);
+
 	glColor3f(1.0, 1.0, 1.0);
-	glPointSize(10.0);
+	//glPointSize(10.0);
 	glBegin(GL_POINTS);
 	glVertex3f(spotLight_position[0], spotLight_position[1], spotLight_position[2]);
 	glEnd();
-	glPointSize(1.0);
+	//glPointSize(1.0);
 	glFlush();
 }
 
@@ -250,13 +264,16 @@ void setPointLightProperty()
 	glLightfv(GL_LIGHT2, GL_AMBIENT, pointLight_ambient);
 	glLightfv(GL_LIGHT2, GL_DIFFUSE, pointLight_diffuse);
 	glLightfv(GL_LIGHT2, GL_SPECULAR, pointLight_specular);
-	glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0);	glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.0001);	glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.00001);
+	glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0);
+	glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.0001);
+	glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.00001);
+
 	glColor3f(1.0, 1.0, 1.0);
-	glPointSize(10.0);
+	//glPointSize(10.0);
 	glBegin(GL_POINTS);
 	glVertex3f(pointLight_position[0], pointLight_position[1], pointLight_position[2]);
 	glEnd();
-	glPointSize(1.0);
+	//glPointSize(1.0);
 	glFlush();
 }
 
@@ -278,6 +295,7 @@ void displayFunction()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_COLOR_MATERIAL);
 	drawAxis(xmin1, xmax1, ymin1, ymax1, zfar1);
 	glLineWidth(5);
 	glBegin(GL_LINES);
@@ -293,7 +311,7 @@ void displayFunction()
 	glEnable(GL_COLOR_MATERIAL);*/
 	glEnable(GL_LIGHT1);
 	glEnable(GL_LIGHT2);
-
+	glPointSize(pointSize);
 	setMaterialProperty();
 	setSpotLightProperty();
 	setPointLightProperty();
@@ -302,7 +320,7 @@ void displayFunction()
 	if (option == 1)
 	{
 		glTranslated(finalTranslation[0], finalTranslation[1], finalTranslation[2]);
-		glRotated(xAngle, rotationAxis[0], rotationAxis[1], rotationAxis[2]);
+		glRotated(rotationAngle, rotationAxis[0], rotationAxis[1], rotationAxis[2]);
 	}
 	if (option == 2)
 	{
@@ -317,18 +335,17 @@ void displayFunction()
 		glTranslated(initialPosition[0], initialPosition[1], initialPosition[2]);
 	}
 
-	if (shouldDisplayManualTexturedOctahedron)
+	if (shouldDisplayTexture1Octahedron)
 	{
-		drawManualTextureObject();
+		drawTexture1Octahedron();
 	}
-	else if(shouldDisplayImportedTexturedOctahedron)
+	else if(shouldDisplayTexture2Octahedron)
 	{
-		loadCustomTexture("MCR.png");
-		glEnable(GL_TEXTURE_2D);
-
-		drawImportedTextureObject();
-
-		glDisable(GL_TEXTURE_2D);
+		drawTexture2Octahedron();
+	}
+	else if(shouldDisplayTexture3Octahedron)
+	{
+		drawTexture3Octahedron();
 	}
 	else
 	{
@@ -344,6 +361,7 @@ void displayFunction()
 
 	glFlush();
 }
+
 void keyboard(unsigned char key, int x, int y) // for the first display window
 {
 	GLdouble angleStep = 3;
@@ -366,59 +384,65 @@ void keyboard(unsigned char key, int x, int y) // for the first display window
 	case 'Z':
 		glRotatef(angleStep, 0.0, 0.0, 1.0);
 		break;
-	case 'l': glEnable(GL_LIGHTING);
+	case 's':
+	case 'S': 
+		glEnable(GL_LIGHTING);
 		break;
-	case 'n': glDisable(GL_LIGHTING); break;
-	case 'f': glEnable(GL_COLOR_MATERIAL); break;
-	case 'c': glDisable(GL_COLOR_MATERIAL); break;
-	case 'A':
+	case 'U':
+	case 'u':
+		rotationStep += 1;
+	case 'd':
+	case 'D':
+		rotationStep -= 1;
+	case 'F':
+	case 'f': glDisable(GL_LIGHTING); 
+		break;
+	/*case 'f': glEnable(GL_COLOR_MATERIAL); break;
+	case 'c': glDisable(GL_COLOR_MATERIAL); break;*/
+	case 'B':
 		spotLight_position[0] -= 10;
 		glutPostRedisplay();
 		break;
-	case 'D':
+	case 'M':
 		spotLight_position[0] += 10;
 		break;
-	case 'W':
+	case 'H':
 		spotLight_position[1] += 10;
 		break;
-	case 'S':
+	case 'N':
 		spotLight_position[1] -= 10;
 		break;
-	case 'Q':
+	case 'G':
 		spotLight_position[2] -= 10;
 		break;
-	case 'E':
+	case 'J':
 		spotLight_position[2] += 10;
 		break;
-	case 'a':
+	case 'b':
 		pointLight_position[0] -= 10;
 		break;
-	case 'd':
+	case 'm':
 		pointLight_position[0] += 10;
 		break;
-	case 'w':
+	case 'h':
 		pointLight_position[1] += 10;
 		break;
-	case 's':
+	case 'n':
 		pointLight_position[1] -= 10;
 		break;
-	case 'q':
+	case 'g':
 		pointLight_position[2] -= 10;
 		break;
-	case 'e':
+	case 'j':
 		pointLight_position[2] += 10;
 		break;
-		/*case 'i':
-		case 'I':
-		init();
-		glutPostRedisplay();
-		break;*/
 	case 27:
 		exit(0);
 	default: break;
 	}
 	glutPostRedisplay();
 }
+
 void reshapeFcn(GLint newWidth, GLint newHeight)
 {
 	glViewport(0, 0, newWidth, newHeight);
@@ -441,7 +465,6 @@ void animationSelection(GLint animationOption)
 	case 2:
 		option = 2;
 		break;
-
 	case 7:
 		exit(0);
 	default:
@@ -454,10 +477,14 @@ void idle()
 {
 	if (option == 1)
 	{
-		xAngle += xStep;
-		if (xAngle > 360)
+		rotationAngle += rotationStep;
+		if (rotationStep >= 10)
 		{
-			xAngle = 0.0;
+			rotationStep = 2;
+		}
+		if (rotationAngle > 360)
+		{
+			rotationAngle = 0.0;
 		}
 	}
 	else if (option == 2)
@@ -475,7 +502,6 @@ void idle()
 			tz = endPoint2[2];
 		}
 	}
-
 	else
 		cout << "invalid option" << endl;
 
@@ -492,6 +518,7 @@ void keyFunc(GLint key, GLint xMouse, GLint yMouse)
 	}
 	glutPostRedisplay();
 }
+
 void drawOptions(GLint drawOptions)
 {
 	GLenum mode = GL_LINE;
@@ -499,6 +526,7 @@ void drawOptions(GLint drawOptions)
 	case 1:
 		mode = GL_POINT;
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
+		//glPointSize(100);
 		break;
 	case 2:
 		mode = GL_LINE;
@@ -516,16 +544,24 @@ void textureOptions(GLint drawOptions)
 	GLenum mode = GL_LINE;
 	switch (drawOptions) {
 	case 1:
-		shouldDisplayImportedTexturedOctahedron = false;
-		shouldDisplayManualTexturedOctahedron = false;
+		shouldDisplayTexture2Octahedron = false;
+		shouldDisplayTexture1Octahedron = false;
+		shouldDisplayTexture3Octahedron = false;
 		break;
 	case 2:
-		shouldDisplayImportedTexturedOctahedron = false;
-		shouldDisplayManualTexturedOctahedron = true;
+		shouldDisplayTexture2Octahedron = false;
+		shouldDisplayTexture1Octahedron = true;
+		shouldDisplayTexture3Octahedron = false;
 		break;
 	case 3:
-		shouldDisplayImportedTexturedOctahedron = true;
-		shouldDisplayManualTexturedOctahedron = false;
+		shouldDisplayTexture2Octahedron = true;
+		shouldDisplayTexture1Octahedron = false;
+		shouldDisplayTexture3Octahedron = false;
+		break;
+	case 4:
+		shouldDisplayTexture2Octahedron = false;
+		shouldDisplayTexture1Octahedron = false;
+		shouldDisplayTexture3Octahedron = true;
 		break;
 	}
 	glutPostRedisplay();
@@ -552,8 +588,9 @@ int main(int argc, char** argv)
 	GLint textureModeMenu;
 	textureModeMenu = glutCreateMenu(textureOptions);
 	glutAddMenuEntry("No Texture", 1);
-	glutAddMenuEntry("Manual Texture", 2);
-	glutAddMenuEntry("Imported Texture", 3);
+	glutAddMenuEntry("Texture1", 2);
+	glutAddMenuEntry("Texture2", 3);
+	glutAddMenuEntry("Texture3", 4);
 
 	glutCreateMenu(animationSelection);
 	glutAddMenuEntry("Rotate", 1);
