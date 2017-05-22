@@ -6,6 +6,9 @@
 #include <vector>
 using namespace std;
 
+GLdouble faceNormal[8][3];
+GLdouble vertexNormal[6][3];
+
 bool shouldDisplayTexture1Octahedron = false;
 bool shouldDisplayTexture2Octahedron = false;
 bool shouldDisplayTexture3Octahedron = false;
@@ -20,11 +23,22 @@ GLdouble rotationAxis[3] = { endPoint1[0] - endPoint2[0] ,endPoint1[1] - endPoin
 GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
 GLdouble steps[3] = {};
 
-GLint option = 1;
+GLint option = 0;
 GLdouble width = 50;
 GLdouble height = 100;
-GLdouble octahedronVertex[6][3] = { { width,0,-width },{ -width,0,-width },{ -width,0,width },{ width,0,width },{ 0,height,0 },{ 0,-height,0 } };
-GLint faceIndex[8][3] = { { 3,0,4 },{ 0,1,4 },{ 1,2,4 },{ 3,2,4 },{ 3,0,5 },{ 0,1,5 },{ 1,2,5 },{ 3,2,5 } };
+GLdouble octahedronVertex[6][3] = { { width,0,-width },{ -width,0,-width },{ -width,0,width },{ width,0,width },{ 0,height,0 },
+	{ 0,-height,0 } };
+GLint faceIndex[8][3] = { { 3,0,4 }/*up+x*/,
+						  { 0,1,4 }/*up-z*/,
+						  { 1,2,4 }/*up-x*/,
+						  { 2,3,4 }/*up+z*/,
+						  { 0,3,5 }/*down+x*/,
+						  { 1,0,5 }/*down-z*/,
+						  { 2,1,5 }/*down-x*/,
+						  { 3,2,5 }/*down+z*/ 
+						};
+GLint vertexIndex[6][4] = { {0,1,4,5},{1,2,5,6},{2,3,7,6},{0,3,4,7},{0,1,2,3},{4,5,6,7}};
+
 GLdouble rotationStep = 2;
 GLdouble tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
 
@@ -42,7 +56,48 @@ GLint border = 0;
 const int imageWidth = 10;
 const int imageHeight = 10;
 GLubyte texArray1[imageHeight][imageWidth][4];
+void displayFaceNormal()
+{
+	GLdouble tempPt[3];
+	GLint k, j;
+	GLdouble scale = 500.0;
 
+	glColor3f(1.0, 0.0, 1.0);
+
+	for (k = 0; k < 6; k++)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			tempPt[j] = (octahedronVertex[faceIndex[k][0]][j] + octahedronVertex[faceIndex[k][2]][j]) / 2.0; // average of two opposite vertices
+		}
+
+		glBegin(GL_LINES);
+		glVertex3dv(tempPt);
+		glVertex3d(tempPt[0] + faceNormal[k][0] * scale, tempPt[1] + faceNormal[k][1] * scale, tempPt[2] + faceNormal[k][2] * scale);
+		glEnd();
+	}
+
+	glFlush();
+}
+
+//This function is to display the normal vector for each vertex of the cube which are located at each vertex.
+void displayVertexNormal()
+{
+	GLint k, j;
+	GLdouble scale = 50.0;
+
+	glColor3f(1.0, 1.0, 1.0);
+
+	for (k = 0; k < 8; k++)
+	{
+		glBegin(GL_LINES);
+		glVertex3dv(octahedronVertex[k]);
+		glVertex3d(octahedronVertex[k][0] + vertexNormal[k][0] * scale, octahedronVertex[k][1] + vertexNormal[k][1] * scale, octahedronVertex[k][2] + vertexNormal[k][2] * scale);
+		glEnd();
+	}
+
+	glFlush();
+}
 void makeImage(void)
 {
 	GLint i, j, c;
@@ -234,7 +289,6 @@ GLfloat spotLight_diffuse[] = { 1, 1, 1, 1.0 };
 GLfloat spotLight_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat spotLight_position[4] = { initialPosition[0], initialPosition[1] - 200, initialPosition[2] + 800, 1.0 };
 GLfloat dirVector[] = { 0.0,0.0,-1.0 };
-
 void setSpotLightProperty()
 {
 	glLightfv(GL_LIGHT1, GL_AMBIENT, spotLight_ambient);
@@ -242,8 +296,8 @@ void setSpotLightProperty()
 	glLightfv(GL_LIGHT1, GL_SPECULAR, spotLight_specular);
 	glLightfv(GL_LIGHT1, GL_POSITION, spotLight_position);
 	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, dirVector);
-	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 30.0);
-	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 1.0);
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 60.0);
+	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
 
 	glColor3f(1.0, 1.0, 1.0);
 	//glPointSize(10.0);
@@ -264,9 +318,9 @@ void setPointLightProperty()
 	glLightfv(GL_LIGHT2, GL_AMBIENT, pointLight_ambient);
 	glLightfv(GL_LIGHT2, GL_DIFFUSE, pointLight_diffuse);
 	glLightfv(GL_LIGHT2, GL_SPECULAR, pointLight_specular);
-	glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0);
+	glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 0.01);
 	glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.0001);
-	glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.00001);
+	glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.0001);//important
 
 	glColor3f(1.0, 1.0, 1.0);
 	//glPointSize(10.0);
@@ -296,6 +350,9 @@ void displayFunction()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	drawAxis(xmin1, xmax1, ymin1, ymax1, zfar1);
 	glLineWidth(5);
 	glBegin(GL_LINES);
@@ -307,8 +364,6 @@ void displayFunction()
 	glEnd();
 	glColor3d(1.0, 1.0, 1.0);
 	glLineWidth(5);
-	/*glEnable(GL_LIGHTING);
-	glEnable(GL_COLOR_MATERIAL);*/
 	glEnable(GL_LIGHT1);
 	glEnable(GL_LIGHT2);
 	glPointSize(pointSize);
@@ -338,6 +393,7 @@ void displayFunction()
 	if (shouldDisplayTexture1Octahedron)
 	{
 		drawTexture1Octahedron();
+
 	}
 	else if(shouldDisplayTexture2Octahedron)
 	{
@@ -351,6 +407,8 @@ void displayFunction()
 	{
 		displayOctahedron();
 	}
+	//displayFaceNormal();
+	//displayVertexNormal();
 
 	//glDisable(GL_LIGHT1);
 	//glDisable(GL_LIGHT2);
@@ -384,21 +442,28 @@ void keyboard(unsigned char key, int x, int y) // for the first display window
 	case 'Z':
 		glRotatef(angleStep, 0.0, 0.0, 1.0);
 		break;
-	case 's':
-	case 'S': 
-		glEnable(GL_LIGHTING);
-		break;
 	case 'U':
 	case 'u':
-		rotationStep += 1;
+		if (rotationStep<=10)
+		{
+			rotationStep += 1;
+		}
+		break;
 	case 'd':
 	case 'D':
-		rotationStep -= 1;
-	case 'F':
-	case 'f': glDisable(GL_LIGHTING); 
+		if (rotationStep>=2)
+		{
+			rotationStep -= 1;
+		}
 		break;
-	/*case 'f': glEnable(GL_COLOR_MATERIAL); break;
-	case 'c': glDisable(GL_COLOR_MATERIAL); break;*/
+	case 'F':
+	case 'f': 
+		glShadeModel(GL_FLAT);
+		break;
+	case 's':
+	case 'S':
+		glShadeModel(GL_SMOOTH);
+		break;
 	case 'B':
 		spotLight_position[0] -= 10;
 		glutPostRedisplay();
@@ -440,6 +505,9 @@ void keyboard(unsigned char key, int x, int y) // for the first display window
 		exit(0);
 	default: break;
 	}
+	cout << "New Spotlight Pos: " << spotLight_position[0] <<","<< spotLight_position[1] << "," << spotLight_position[2]<<endl;
+	cout << "New Pointlight Pos: " << pointLight_position[0] << "," << pointLight_position[1] << "," << pointLight_position[2]<< endl;
+
 	glutPostRedisplay();
 }
 
@@ -478,10 +546,10 @@ void idle()
 	if (option == 1)
 	{
 		rotationAngle += rotationStep;
-		if (rotationStep >= 10)
+		/*if (rotationStep >= 10)
 		{
 			rotationStep = 2;
-		}
+		}*/
 		if (rotationAngle > 360)
 		{
 			rotationAngle = 0.0;
@@ -567,6 +635,54 @@ void textureOptions(GLint drawOptions)
 	glutPostRedisplay();
 }
 
+void calculateVertexNormal(GLdouble vexNormal[6][3])
+{
+	GLint k, j;
+
+	for (k = 0; k < 6; k++)
+	{
+
+		for (j = 0; j < 3; j++)
+		{
+			vexNormal[k][j] = (faceNormal[vertexIndex[k][0]][j] + faceNormal[vertexIndex[k][1]][j] + vertexIndex[faceIndex[k][2]][j]) / 3.0;
+		}
+	}
+}
+void calculateFaceNormal(GLdouble normal[8][3])
+{
+	GLdouble temp;
+	GLdouble tempPt[3];
+	GLint k, j;
+
+	GLdouble vert1[3], vert2[3], vert3[3];
+
+	for (k = 0; k < 8; k++)
+	{
+		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
+		for (j = 0; j < 3; j++)
+		{
+			vert1[j] = octahedronVertex[faceIndex[k][0]][j];
+			vert2[j] = octahedronVertex[faceIndex[k][1]][j];
+			vert3[j] = octahedronVertex[faceIndex[k][2]][j];
+		}
+
+		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+		normal[k][0] = tempPt[0] / temp;
+		normal[k][1] = tempPt[1] / temp;
+		normal[k][2] = tempPt[2] / temp;
+	}
+
+}
+
+
 int main(int argc, char** argv)
 {
 	GLint windowID;
@@ -599,6 +715,9 @@ int main(int argc, char** argv)
 	glutAddSubMenu("Texture Style", textureModeMenu);
 	glutAddMenuEntry("Exit", 7);
 	glutAttachMenu(GLUT_LEFT_BUTTON);
+
+	calculateFaceNormal(faceNormal);
+	calculateVertexNormal(vertexNormal);
 
 	glutDisplayFunc(displayFunction);
 	glutSpecialFunc(keyFunc);

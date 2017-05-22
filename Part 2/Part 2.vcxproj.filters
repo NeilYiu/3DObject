@@ -15,39 +15,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Simple OpenGL Image Library\src\stb_image_aug.c">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Simple OpenGL Image Library\src\SOIL.c">
+    <ClCompile Include="image_DXT.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Simple OpenGL Image Library\src\image_helper.c">
+    <ClCompile Include="image_helper.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Simple OpenGL Image Library\src\image_DXT.c">
+    <ClCompile Include="SOIL.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Simple OpenGL Image Library\src\main.cpp">
+    <ClCompile Include="stb_image_aug.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Simple OpenGL Image Library\src\stbi_DDS_aug_c.h">
+    <ClInclude Include="image_DXT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Simple OpenGL Image Library\src\stbi_DDS_aug.h">
+    <ClInclude Include="image_helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Simple OpenGL Image Library\src\stb_image_aug.h">
+    <ClInclude Include="SOIL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Simple OpenGL Image Library\src\SOIL.h">
+    <ClInclude Include="stb_image_aug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Simple OpenGL Image Library\src\image_helper.h">
+    <ClInclude Include="stbi_DDS_aug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Simple OpenGL Image Library\src\image_DXT.h">
+    <ClInclude Include="stbi_DDS_aug_c.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

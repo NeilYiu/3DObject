@@ -148,19 +148,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Simple OpenGL Image Library\src\image_DXT.c" />
-    <ClCompile Include="..\Simple OpenGL Image Library\src\image_helper.c" />
-    <ClCompile Include="..\Simple OpenGL Image Library\src\SOIL.c" />
-    <ClCompile Include="..\Simple OpenGL Image Library\src\stb_image_aug.c" />
-    <ClCompile Include="..\Simple OpenGL Image Library\src\main.cpp" />
+    <ClCompile Include="image_DXT.c" />
+    <ClCompile Include="image_helper.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="SOIL.c" />
+    <ClCompile Include="stb_image_aug.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Simple OpenGL Image Library\src\image_DXT.h" />
-    <ClInclude Include="..\Simple OpenGL Image Library\src\image_helper.h" />
-    <ClInclude Include="..\Simple OpenGL Image Library\src\SOIL.h" />
-    <ClInclude Include="..\Simple OpenGL Image Library\src\stbi_DDS_aug.h" />
-    <ClInclude Include="..\Simple OpenGL Image Library\src\stbi_DDS_aug_c.h" />
-    <ClInclude Include="..\Simple OpenGL Image Library\src\stb_image_aug.h" />
+    <ClInclude Include="image_DXT.h" />
+    <ClInclude Include="image_helper.h" />
+    <ClInclude Include="SOIL.h" />
+    <ClInclude Include="stbi_DDS_aug.h" />
+    <ClInclude Include="stbi_DDS_aug_c.h" />
+    <ClInclude Include="stb_image_aug.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
