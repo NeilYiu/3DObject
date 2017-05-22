@@ -571,7 +571,7 @@ int main(int argc, char** argv)
 {
 	GLint windowID;
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(1000, 1000);
