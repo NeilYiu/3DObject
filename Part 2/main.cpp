@@ -258,7 +258,8 @@ void init()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glOrtho(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
+	glFrustum(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
+		//gluPerspective(120,1,180,500);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -393,7 +394,6 @@ void displayFunction()
 	if (shouldDisplayTexture1Octahedron)
 	{
 		drawTexture1Octahedron();
-
 	}
 	else if(shouldDisplayTexture2Octahedron)
 	{
@@ -536,7 +536,8 @@ void animationSelection(GLint animationOption)
 	case 7:
 		exit(0);
 	default:
-		cout << "invalid option" << endl;
+		//cout << "invalid option" << endl;
+		break;
 	}
 	glutPostRedisplay();
 }
@@ -570,8 +571,8 @@ void idle()
 			tz = endPoint2[2];
 		}
 	}
-	else
-		cout << "invalid option" << endl;
+	//else
+		//cout << "invalid option" << endl;
 
 	glutPostRedisplay();
 }
@@ -714,7 +715,7 @@ int main(int argc, char** argv)
 	glutAddSubMenu("Box Style", displayModeMenu);
 	glutAddSubMenu("Texture Style", textureModeMenu);
 	glutAddMenuEntry("Exit", 7);
-	glutAttachMenu(GLUT_LEFT_BUTTON);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	calculateFaceNormal(faceNormal);
 	calculateVertexNormal(vertexNormal);
