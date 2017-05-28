@@ -6,6 +6,13 @@
 #include <math.h>
 using namespace std;
 
+
+bool shouldUseFlat = true;
+
+GLdouble prisimFaceNormal[7][3];
+GLdouble prisimVertexNormal[7][3];
+
+
 int objectOption = 0;
 
 GLdouble octahedronFaceNormal[8][3];
@@ -25,9 +32,10 @@ GLdouble endPoint1[3] = { 0,0,0 };
 GLdouble endPoint2[3] = { 0,0,0 };
 GLdouble initialPosition[3] = {0,0,0};
 GLdouble rotationAxis[3] = {0,0,0};
+GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
+
 //GLdouble rotationAxis[3] = { endPoint1[0] - endPoint2[0] ,endPoint1[1] - endPoint2[1],endPoint1[2] - endPoint2[2] };
 
-GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
 GLdouble steps[3] = {};
 
 GLint option = 0;
@@ -99,16 +107,31 @@ void drawRotationAxis()
 	glEnd();
 }
 
+
 void DrawTriangleSides()
 {
 	glColor3f(0.0, 0.0, 1.0);
-	for (int k = 0; k < 4; k++)
+	glEnable(GL_NORMALIZE);
+	for (int k = 0; k < 6; k++)
 	{
-		glBegin(GL_TRIANGLES);
-		for (int i = 0; i < 6; i++)
+		if (shouldUseFlat == true)
 		{
+			glNormal3dv(prisimFaceNormal[k]);
+		}
+		glBegin(GL_TRIANGLES);
+		for (int i = 0; i < 3; i++)
+		{
+
+
+
+			if (shouldUseFlat == false)
+			{
+				glNormal3dv(prisimVertexNormal[triFaceIndex[i][k]]);;
+			}
 			glVertex3dv(prisimData[triFaceIndex[k][i]]);
 		}
+
+
 		glEnd();
 	}
 }
@@ -116,15 +139,90 @@ void DrawTriangleSides()
 void DrawBase()
 {
 	glColor3f(0.0, 0.0, 1.0);
-
+	glEnable(GL_NORMALIZE);
+	glNormal3dv(prisimFaceNormal[7]);
 	glBegin(GL_POLYGON);
+	if (shouldUseFlat == true)
+	{
+		glNormal3dv(prisimFaceNormal[7]);
+	}
 	for (int i = 0; i < 6; i++)
 	{
+
+
+		if (shouldUseFlat == false)
+		{
+			glNormal3dv(prisimData[i]);
+		}
+
 		glVertex3dv(prisimData[baseFaceIndex[i]]);
 	}
 	glEnd();
 
 }
+
+void calculatePrisimFaceNormal(GLdouble normal[7][3])
+{
+	GLdouble temp;
+	GLdouble tempPt[3];
+	GLint k, j;
+
+	GLdouble vert1[3], vert2[3], vert3[3];
+
+	for (k = 0; k < 6; k++)
+	{
+		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
+		for (j = 0; j < 3; j++)
+		{
+			vert1[j] = prisimData[triFaceIndex[k][0]][j];
+			vert2[j] = prisimData[triFaceIndex[k][1]][j];
+			vert3[j] = prisimData[triFaceIndex[k][2]][j];
+}
+
+		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+		normal[k][0] = tempPt[0] / temp;
+		normal[k][1] = tempPt[1] / temp;
+		normal[k][2] = tempPt[2] / temp;
+	}
+
+	vert1[0] = prisimData[3][0];
+	vert1[1] = prisimData[3][1];
+	vert1[2] = prisimData[3][2];
+
+	vert2[0] = prisimData[4][0];
+	vert2[1] = prisimData[4][1];
+	vert2[2] = prisimData[4][2];
+
+	vert3[0] = prisimData[5][0];
+	vert3[1] = prisimData[5][1];
+	vert3[2] = prisimData[5][2];
+
+	//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+	tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+	tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+	tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+	//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+	temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+	//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+	normal[6][0] = tempPt[0] / temp;
+	normal[6][1] = tempPt[1] / temp;
+	normal[6][2] = tempPt[2] / temp;
+
+
+}
+
+
+
 
 
 //Mark's Prism*************************************************************************************
@@ -390,16 +488,19 @@ void drawTexture1Octahedron()
 			if (j == 0)
 			{
 				glTexCoord2d(0.0, 0.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 1)
 			{
 				glTexCoord2d(0.0, 1.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 2)
 			{
 				glTexCoord2d(1.0, 1.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 		}
@@ -432,16 +533,19 @@ void drawTexturedOctahedron()
 			if (j == 0)
 			{
 				glTexCoord2d(0.0, 0.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 1)
 			{
 				glTexCoord2d(0.0, 1.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 2)
 			{
 				glTexCoord2d(1.0, 1.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 		}
@@ -460,16 +564,19 @@ void drawTexture3Octahedron()
 	loadCustomTexture("Lifeline.png");
 	drawTexturedOctahedron();
 }
-void TriangleFace(GLint face[3]) // arguments are indices of four vertices of a TriangleFace
+
+void displayOctahedron() {
+	for (GLint i = 0; i < 8; i++)
 {
 	glBegin(GL_TRIANGLES);
-	for (GLint i = 0; i < 3; i++)
+		for (GLint j = 0; j < 3; j++)
 	{
-		glVertex3dv(octahedronVertex[face[i]]);
+			glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
+			glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 	}
 	glEnd();
 }
-
+}
 void CalculateFinalTranslationVector()
 {
 	GLdouble denominator = pow(rotationAxis[0], 2) + pow(rotationAxis[1], 2) + pow(rotationAxis[1], 2);
@@ -489,6 +596,7 @@ void CalcuateFinalTranslation()
 
 	tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
 }
+
 
 //THis function draw the six faces of a cube by calling the TriangleFace function
 void displayOctahedron() {
@@ -600,6 +708,7 @@ void displayFunction()
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_NORMALIZE);
 	glCullFace(GL_BACK);
 	drawAxis(xmin1, xmax1, ymin1, ymax1, zfar1);
 	glLineWidth(5);
@@ -636,8 +745,6 @@ void displayFunction()
 		cout << tx << " , " << ty << " ," << tz << "Final Translations" << endl;
 
 	}
-	//else
-	//cout << "invalid option" << endl;
 
 	if (option == 0)
 	{
@@ -726,10 +833,12 @@ void keyboard(unsigned char key, int x, int y) // for the first display window
 	case 'F':
 	case 'f': 
 		glShadeModel(GL_FLAT);
+		shouldUseFlat = true;
 		break;
 	case 's':
 	case 'S':
 		glShadeModel(GL_SMOOTH);
+		shouldUseFlat = false;
 		break;
 	case 'B':
 		spotLight_position[0] -= 10;
@@ -871,7 +980,6 @@ void idle()
 		tx += translationXStep;
 		ty += translationYStep;
 		tz += translationZStep;
-
 		if (abs(tx) > abs(endPoint1[0]) && abs(ty) > abs(endPoint1[1]) && abs(tz) > abs(endPoint1[2]))
 		{
 			scaleFactor = 1.0;
@@ -880,8 +988,6 @@ void idle()
 			tz = endPoint2[2];
 		}
 	}
-	//else
-		//cout << "invalid option" << endl;
 
 	glutPostRedisplay();
 }
@@ -1035,6 +1141,8 @@ int main(int argc, char** argv)
 
 	calculateOctahedronFaceNormal(octahedronFaceNormal);
 	calculateOctahedronVertexNormal(octahedronVertexNormal);
+	calculatePrisimFaceNormal(prisimFaceNormal);
+
 
 	glutDisplayFunc(displayFunction);
 	glutSpecialFunc(keyFunc);
