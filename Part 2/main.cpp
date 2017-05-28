@@ -17,10 +17,14 @@ bool shouldDisplayTexture3Octahedron = false;
 
 GLfloat pointSize = 10;
 
-GLdouble endPoint1[3] = { 398.974 ,-117.217 ,153.073 };
-GLdouble endPoint2[3] = { -198.974 ,317.217 ,-153.073 };
 
-GLdouble initialPosition[3] = { 137.187,409.385,-99.6725 };
+GLdouble endPoint1Neil[3] = { 398.974 ,-117.217 ,153.073 };
+GLdouble endPoint2Neil[3] = { -198.974 ,317.217 ,-153.073 };
+GLdouble initialPositionNeil[3] = { 137.187,409.385,-99.6725 };
+
+GLdouble endPoint1[3] = { 0,0,0 };
+GLdouble endPoint2[3] = { 0,0,0 };
+GLdouble initialPosition[3] = { 0,0,0 };
 
 GLdouble rotationAxis[3] = { endPoint1[0] - endPoint2[0] ,endPoint1[1] - endPoint2[1],endPoint1[2] - endPoint2[2] };
 GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
@@ -204,46 +208,48 @@ void drawRoof()
 {
 	glBegin(GL_TRIANGLES);
 	//Roof 1
-	glNormal3d(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glNormal3d(initPx - side, side + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx - side, side + (initPy - (side / 2)), initPz - (side / 2));
 
-	glNormal3d(initPx - side, 150 + (initPy - (side / 2)), initPz + (side / 2));
-	glVertex3f(initPx - side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+	glNormal3d(initPx - side, side + (initPy - (side / 2)), initPz + (side / 2));
+	glVertex3f(initPx - side, side + (initPy - (side / 2)), initPz + (side / 2));
 
 	glNormal3d(initPx, initPy + side, initPz);
 	glVertex3f(initPx, initPy + side, initPz);
 
 	//Roof 2
-	glNormal3d(initPx + side, 150 + (initPy - (side / 2)), initPz + (side / 2));
-	glVertex3f(initPx + side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+	glNormal3d(initPx + side, side + (initPy - (side / 2)), initPz + (side / 2));
+	glVertex3f(initPx + side, side + (initPy - (side / 2)), initPz + (side / 2));
 
-	glNormal3d(initPx + side, 150 + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx + side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glNormal3d(initPx + side, side + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx + side, side + (initPy - (side / 2)), initPz - (side / 2));
 
 	glNormal3d(initPx, initPy + side, initPz);
 	glVertex3f(initPx, initPy + side, initPz);
 
 	//Roof 3
-	glNormal3d(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glNormal3d(initPx - side, side + (initPy - (side / 2)), initPz + (side / 2));
+	glVertex3f(initPx - side, side + (initPy - (side / 2)), initPz + (side / 2));
 
-	glNormal3d(initPx + side, 150 + (initPy - (side / 2)), initPz + (side / 2));
-	glVertex3f(initPx + side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+	glNormal3d(initPx + side, side + (initPy - (side / 2)), initPz + (side / 2));
+	glVertex3f(initPx + side, side + (initPy - (side / 2)), initPz + (side / 2));
 
 	glNormal3d(initPx, initPy + side, initPz);
 	glVertex3f(initPx, initPy + side, initPz);
 
 	//Roof 4
-	glNormal3d(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
 
-	glNormal3d(initPx + side, 150 + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx + side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glNormal3d(initPx + side, side + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx + side, side + (initPy - (side / 2)), initPz - (side / 2));
+
+	glNormal3d(initPx - side, side + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx - side, side + (initPy - (side / 2)), initPz - (side / 2));
 
 	glNormal3d(initPx, initPy + side, initPz);
 	glVertex3f(initPx, initPy + side, initPz);
 
 	glEnd();
+
 
 
 
@@ -789,9 +795,21 @@ void animationSelection(GLint animationOption)
 	case 4:
 		//TODO Change the initial position and rotation axis
 		objectOption = 1;
+		/*for (int i = 0; i < 3; i++)
+		{
+		endPoint1[i] = endPoint1Neil[i];
+		endPoint2[i] = endPoint2Neil[i];
+		initialPosition[i] = initialPositionNeil[i];
+		}*/
 		break;
 
 	case 5:
+		for (int i = 0; i < 3; i++)
+		{
+			endPoint1[i] = endPoint1Neil[i];
+			endPoint2[i] = endPoint2Neil[i];
+			initialPosition[i] = initialPositionNeil[i];
+		}
 		objectOption = 2;
 		break;
 
