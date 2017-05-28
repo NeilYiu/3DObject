@@ -456,6 +456,7 @@ void drawTexture3Octahedron()
 	loadCustomTexture("Lifeline.png");
 	drawTexturedOctahedron();
 }
+
 void TriangleFace(GLint face[3]) // arguments are indices of four vertices of a TriangleFace
 {
 	glBegin(GL_TRIANGLES);
@@ -465,7 +466,21 @@ void TriangleFace(GLint face[3]) // arguments are indices of four vertices of a 
 	}
 	glEnd();
 }
-
+//THis function draw the six faces of a cube by calling the TriangleFace function
+void displayOctahedron() {
+	for (GLint i = 0; i < 8; i++)
+	{
+		//TriangleFace(octahedronFaceIndex[i]);
+		glBegin(GL_TRIANGLES);
+		for (GLint j = 0; j < 3; j++)
+		{
+			glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
+			glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
+			glEnable(GL_NORMALIZE);
+		}
+		glEnd();
+	}
+}
 void CalculateFinalTranslationVector()
 {
 	GLdouble denominator = pow(rotationAxis[0], 2) + pow(rotationAxis[1], 2) + pow(rotationAxis[1], 2);
@@ -474,14 +489,6 @@ void CalculateFinalTranslationVector()
 	finalTranslation[0] = rotationAxis[0] * t + endPoint1[0];
 	finalTranslation[1] = rotationAxis[1] * t + endPoint1[1];
 	finalTranslation[2] = rotationAxis[2] * t + endPoint1[2];
-}
-
-//THis function draw the six faces of a cube by calling the TriangleFace function
-void displayOctahedron() {
-	for (GLint i = 0; i < 8; i++)
-	{
-		TriangleFace(octahedronFaceIndex[i]);
-	}
 }
 
 void init()
