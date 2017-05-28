@@ -6,6 +6,13 @@
 #include <math.h>
 using namespace std;
 
+
+bool shouldUseFlat = true;
+
+GLdouble prisimFaceNormal[7][3];
+GLdouble prisimVertexNormal[7][3];
+
+
 int objectOption = 0;
 
 GLdouble octahedronFaceNormal[8][3];
@@ -99,16 +106,31 @@ void drawRotationAxis()
 	glEnd();
 }
 
+
 void DrawTriangleSides()
 {
 	glColor3f(0.0, 0.0, 1.0);
-	for (int k = 0; k < 4; k++)
+	glEnable(GL_NORMALIZE);
+	for (int k = 0; k < 6; k++)
 	{
-		glBegin(GL_TRIANGLES);
-		for (int i = 0; i < 6; i++)
+		if (shouldUseFlat == true)
 		{
+			glNormal3dv(prisimFaceNormal[k]);
+		}
+		glBegin(GL_TRIANGLES);
+		for (int i = 0; i < 3; i++)
+		{
+
+
+
+			if (shouldUseFlat == false)
+			{
+				glNormal3dv(prisimVertexNormal[triFaceIndex[i][k]]);;
+			}
 			glVertex3dv(prisimData[triFaceIndex[k][i]]);
 		}
+
+
 		glEnd();
 	}
 }
@@ -116,15 +138,90 @@ void DrawTriangleSides()
 void DrawBase()
 {
 	glColor3f(0.0, 0.0, 1.0);
-
+	glEnable(GL_NORMALIZE);
+	glNormal3dv(prisimFaceNormal[7]);
 	glBegin(GL_POLYGON);
+	if (shouldUseFlat == true)
+	{
+		glNormal3dv(prisimFaceNormal[7]);
+	}
 	for (int i = 0; i < 6; i++)
 	{
+
+
+		if (shouldUseFlat == false)
+		{
+			glNormal3dv(prisimData[i]);
+		}
+
 		glVertex3dv(prisimData[baseFaceIndex[i]]);
 	}
 	glEnd();
 
 }
+
+void calculatePrisimFaceNormal(GLdouble normal[7][3])
+{
+	GLdouble temp;
+	GLdouble tempPt[3];
+	GLint k, j;
+
+	GLdouble vert1[3], vert2[3], vert3[3];
+
+	for (k = 0; k < 6; k++)
+	{
+		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
+		for (j = 0; j < 3; j++)
+		{
+			vert1[j] = prisimData[triFaceIndex[k][0]][j];
+			vert2[j] = prisimData[triFaceIndex[k][1]][j];
+			vert3[j] = prisimData[triFaceIndex[k][2]][j];
+		}
+
+		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+		normal[k][0] = tempPt[0] / temp;
+		normal[k][1] = tempPt[1] / temp;
+		normal[k][2] = tempPt[2] / temp;
+	}
+
+	vert1[0] = prisimData[3][0];
+	vert1[1] = prisimData[3][1];
+	vert1[2] = prisimData[3][2];
+
+	vert2[0] = prisimData[4][0];
+	vert2[1] = prisimData[4][1];
+	vert2[2] = prisimData[4][2];
+
+	vert3[0] = prisimData[5][0];
+	vert3[1] = prisimData[5][1];
+	vert3[2] = prisimData[5][2];
+
+	//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+	tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+	tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+	tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+	//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+	temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+	//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+	normal[6][0] = tempPt[0] / temp;
+	normal[6][1] = tempPt[1] / temp;
+	normal[6][2] = tempPt[2] / temp;
+
+
+}
+
+
+
 
 
 //Mark's Prism*************************************************************************************
@@ -720,12 +817,14 @@ void keyboard(unsigned char key, int x, int y) // for the first display window
 		}
 		break;
 	case 'F':
-	case 'f': 
+	case 'f':
 		glShadeModel(GL_FLAT);
+		shouldUseFlat = true;
 		break;
 	case 's':
 	case 'S':
 		glShadeModel(GL_SMOOTH);
+		shouldUseFlat = false;
 		break;
 	case 'B':
 		spotLight_position[0] -= 10;
@@ -1014,6 +1113,8 @@ int main(int argc, char** argv)
 
 	calculateOctahedronFaceNormal(octahedronFaceNormal);
 	calculateOctahedronVertexNormal(octahedronVertexNormal);
+	calculatePrisimFaceNormal(prisimFaceNormal);
+
 
 	glutDisplayFunc(displayFunction);
 	glutSpecialFunc(keyFunc);
