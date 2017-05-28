@@ -50,9 +50,9 @@ GLdouble rotationStep = 2;
 GLdouble tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
 
 double stepPortion = 0.007;
-GLdouble translationXStep = rotationAxis[0] * stepPortion;
-GLdouble translationYStep = rotationAxis[1] * stepPortion;
-GLdouble translationZStep = rotationAxis[2] * stepPortion;
+GLdouble translationXStep = 0;
+GLdouble translationYStep = 0;
+GLdouble translationZStep = 0;
 
 GLdouble rotationAngle = 0;
 GLdouble xmin1 = -800, xmax1 = 800, ymin1 = -800, ymax1 = 800, zmin1 = -800, zmax1 = 800, znear1 = -800, zfar1 = 800;
@@ -144,6 +144,10 @@ GLint axisP2x = -14.1978;
 GLint axisP2y = 451.465;
 GLint axisP2z = -153.073;
 GLdouble side = 150;
+
+GLdouble endPoint1Kevin[3] = { axisP1x, axisP1y, axisP1z };
+GLdouble endPoint2Kevin[3] = { axisP2x, axisP2y, axisP2z };
+GLdouble initialPositionKevin[3] = { initPx, initPy, initPz };
 
 void calculateCubePoints(GLdouble side)
 {
@@ -471,9 +475,19 @@ void CalculateFinalTranslationVector()
 	GLdouble denominator = pow(rotationAxis[0], 2) + pow(rotationAxis[1], 2) + pow(rotationAxis[1], 2);
 	GLdouble numerator = -rotationAxis[0] * endPoint1[0] - rotationAxis[1] * endPoint1[1] - rotationAxis[2] * endPoint1[2];
 	GLdouble t = numerator / denominator;
+
 	finalTranslation[0] = rotationAxis[0] * t + endPoint1[0];
 	finalTranslation[1] = rotationAxis[1] * t + endPoint1[1];
 	finalTranslation[2] = rotationAxis[2] * t + endPoint1[2];
+}
+
+void CalcuateFinalTranslation()
+{
+	translationXStep = rotationAxis[0] * stepPortion;
+	translationYStep = rotationAxis[1] * stepPortion;
+	translationZStep = rotationAxis[2] * stepPortion;
+
+	tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
 }
 
 //THis function draw the six faces of a cube by calling the TriangleFace function
@@ -618,6 +632,9 @@ void displayFunction()
 	{
 		glTranslated(tx, ty, tz);
 		glScaled(scaleFactor, scaleFactor, scaleFactor);
+
+		cout << tx << " , " << ty << " ," << tz << "Final Translations" << endl;
+
 	}
 	//else
 	//cout << "invalid option" << endl;
@@ -784,18 +801,34 @@ void animationSelection(GLint animationOption)
 		option = 2;
 		break;
 	case 3:
-		//TODO Change the initial position and rotation axis
+		for (int i = 0; i < 3; i++)
+		{
+			endPoint1[i] = POne[i];
+			endPoint2[i] = PTwo[i];
+
+			initialPosition[i] = initialPositionMark[i];
+			rotationAxis[i] = endPoint1[i] - endPoint2[i];
+		}
+
+		CalcuateFinalTranslation();
+		CalculateFinalTranslationVector();
+
 		objectOption = 0;
 		break;
 	case 4:
-		//TODO Change the initial position and rotation axis
-		objectOption = 1;
-		/*for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++)
 		{
-		endPoint1[i] = endPoint1Neil[i];
-		endPoint2[i] = endPoint2Neil[i];
-		initialPosition[i] = initialPositionNeil[i];
-		}*/
+			endPoint1[i] = endPoint1Kevin[i];
+			endPoint2[i] = endPoint2Kevin[i];
+
+			initialPosition[i] = initialPositionKevin[i];
+			rotationAxis[i] = endPoint1[i] - endPoint2[i];
+		}
+		CalcuateFinalTranslation();
+		CalculateFinalTranslationVector();
+
+		objectOption = 1;
+
 		break;
 
 	case 5:
@@ -806,6 +839,7 @@ void animationSelection(GLint animationOption)
 			initialPosition[i] = initialPositionNeil[i];
 			rotationAxis[i] = endPoint1[i] - endPoint2[i];
 		}
+		CalcuateFinalTranslation();
 		CalculateFinalTranslationVector();
 
 		objectOption = 2;
