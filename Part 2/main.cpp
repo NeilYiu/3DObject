@@ -284,18 +284,18 @@ void calculateCubePoints(GLdouble side)
 	cubeData[0][2] = initPz - (side / 2);
 
 
-	cubeData[1][0] = initPx - side;
+	cubeData[1][0] = initPx + side;
 	cubeData[1][1] = initPy - (side / 2);
-	cubeData[1][2] = initPz + (side / 2);
+	cubeData[1][2] = initPz - (side / 2);
 
 
 	cubeData[2][0] = initPx + side;
 	cubeData[2][1] = initPy - (side / 2);
 	cubeData[2][2] = initPz + (side / 2);
 
-	cubeData[3][0] = initPx + side;
+	cubeData[3][0] = initPx - side;
 	cubeData[3][1] = initPy - (side / 2);
-	cubeData[3][2] = initPz - (side / 2);
+	cubeData[3][2] = initPz + (side / 2);
 
 
 	cubeData[4][0] = cubeData[0][0];
@@ -315,6 +315,7 @@ void calculateCubePoints(GLdouble side)
 	cubeData[7][2] = cubeData[3][2];
 
 }
+
 
 void quad(GLint face[4]) // arguments are indices of vertives of a quad in vertex array
 {
