@@ -8,8 +8,8 @@ using namespace std;
 
 int objectOption = 0;
 
-GLdouble faceNormal[8][3];
-GLdouble vertexNormal[6][3];
+GLdouble octahedronFaceNormal[8][3];
+GLdouble octahedronVertexNormal[6][3];
 
 bool shouldDisplayTexture1Octahedron = false;
 bool shouldDisplayTexture2Octahedron = false;
@@ -31,7 +31,7 @@ GLdouble width = 50;
 GLdouble height = 100;
 GLdouble octahedronVertex[6][3] = { { width,0,-width },{ -width,0,-width },{ -width,0,width },{ width,0,width },{ 0,height,0 },
 	{ 0,-height,0 } };
-GLint faceIndex[8][3] = { { 3,0,4 }/*up+x*/,
+GLint octahedronFaceIndex[8][3] = { { 3,0,4 }/*up+x*/,
 						  { 0,1,4 }/*up-z*/,
 						  { 1,2,4 }/*up-x*/,
 						  { 2,3,4 }/*up+z*/,
@@ -40,7 +40,7 @@ GLint faceIndex[8][3] = { { 3,0,4 }/*up+x*/,
 						  { 2,1,5 }/*down-x*/,
 						  { 3,2,5 }/*down+z*/ 
 						};
-GLint vertexIndex[6][4] = { {0,1,4,5},{1,2,5,6},{2,3,7,6},{0,3,4,7},{0,1,2,3},{4,5,6,7}};
+GLint octahedronVertexIndex[6][4] = { {0,1,4,5},{1,2,5,6},{2,3,7,6},{0,3,4,7},{0,1,2,3},{4,5,6,7}};
 
 GLdouble rotationStep = 2;
 GLdouble tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
@@ -122,6 +122,7 @@ void DrawBase()
 	glEnd();
 
 }
+
 
 //Mark's Prism*************************************************************************************
 
@@ -384,17 +385,17 @@ void drawTexture1Octahedron()
 			if (j == 0)
 			{
 				glTexCoord2d(0.0, 0.0);
-				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 1)
 			{
 				glTexCoord2d(0.0, 1.0);
-				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 2)
 			{
 				glTexCoord2d(1.0, 1.0);
-				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 		}
 		glEnd();
@@ -426,17 +427,17 @@ void drawTexturedOctahedron()
 			if (j == 0)
 			{
 				glTexCoord2d(0.0, 0.0);
-				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 1)
 			{
 				glTexCoord2d(0.0, 1.0);
-				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 2)
 			{
 				glTexCoord2d(1.0, 1.0);
-				glVertex3dv(octahedronVertex[faceIndex[i][j]]);
+				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 		}
 		glEnd();
@@ -478,7 +479,7 @@ void CalculateFinalTranslationVector()
 void displayOctahedron() {
 	for (GLint i = 0; i < 8; i++)
 	{
-		TriangleFace(faceIndex[i]);
+		TriangleFace(octahedronFaceIndex[i]);
 	}
 }
 
@@ -894,7 +895,7 @@ void textureOptions(GLint drawOptions)
 	glutPostRedisplay();
 }
 
-void calculateVertexNormal(GLdouble vexNormal[6][3])
+void calculateOctahedronVertexNormal(GLdouble vexNormal[6][3])
 {
 	GLint k, j;
 
@@ -903,11 +904,11 @@ void calculateVertexNormal(GLdouble vexNormal[6][3])
 
 		for (j = 0; j < 3; j++)
 		{
-			vexNormal[k][j] = (faceNormal[vertexIndex[k][0]][j] + faceNormal[vertexIndex[k][1]][j] + vertexIndex[faceIndex[k][2]][j]) / 3.0;
+			vexNormal[k][j] = (octahedronFaceNormal[octahedronVertexIndex[k][0]][j] + octahedronFaceNormal[octahedronVertexIndex[k][1]][j] + octahedronVertexIndex[octahedronFaceIndex[k][2]][j]) / 3.0;
 		}
 	}
 }
-void calculateFaceNormal(GLdouble normal[8][3])
+void calculateOctahedronFaceNormal(GLdouble normal[8][3])
 {
 	GLdouble temp;
 	GLdouble tempPt[3];
@@ -920,9 +921,9 @@ void calculateFaceNormal(GLdouble normal[8][3])
 		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
 		for (j = 0; j < 3; j++)
 		{
-			vert1[j] = octahedronVertex[faceIndex[k][0]][j];
-			vert2[j] = octahedronVertex[faceIndex[k][1]][j];
-			vert3[j] = octahedronVertex[faceIndex[k][2]][j];
+			vert1[j] = octahedronVertex[octahedronFaceIndex[k][0]][j];
+			vert2[j] = octahedronVertex[octahedronFaceIndex[k][1]][j];
+			vert3[j] = octahedronVertex[octahedronFaceIndex[k][2]][j];
 		}
 
 		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
@@ -982,8 +983,8 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("Exit", 7);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
-	calculateFaceNormal(faceNormal);
-	calculateVertexNormal(vertexNormal);
+	calculateOctahedronFaceNormal(octahedronFaceNormal);
+	calculateOctahedronVertexNormal(octahedronVertexNormal);
 
 	glutDisplayFunc(displayFunction);
 	glutSpecialFunc(keyFunc);
