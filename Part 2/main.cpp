@@ -155,7 +155,7 @@ void DrawBase()
 
 		if (shouldUseFlat == false)
 		{
-			glNormal3dv(prisimData[i]);
+			glNormal3dv(prisimVertexNormal[i]);
 		}
 
 		glVertex3dv(prisimData[baseFaceIndex[i]]);

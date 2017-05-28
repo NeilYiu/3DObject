@@ -1,4 +1,4 @@
-﻿Build started 28/05/2017 6:07:33 PM.
+﻿Build started 28/05/2017 6:21:28 PM.
      1>Project "C:\Users\11418593\Source\Repos\3DObject\Part 2\Part 2.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\11418593\Source\Repos\3DObject\Glew and Glut\glew-1.11.0\include" /I"C:\Users\11418593\Source\Repos\3DObject\Glew and Glut\freeglut\include" /I"C:\Users\11418593\Source\Repos\3DObject\Simple OpenGL Image Library" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
@@ -62,4 +62,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.68
+Time Elapsed 00:00:02.17
