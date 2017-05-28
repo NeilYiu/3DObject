@@ -623,7 +623,7 @@ void CalculateFinalTranslationVector()
 	finalTranslation[2] = rotationAxis[2] * t + endPoint1[2];
 }
 
-void CalcuateFinalTranslation()
+void CalculateTranslationSteps()
 {
 	translationXStep = rotationAxis[0] * stepPortion;
 	translationYStep = rotationAxis[1] * stepPortion;
@@ -945,7 +945,7 @@ void animationSelection(GLint animationOption)
 			rotationAxis[i] = endPoint1[i] - endPoint2[i];
 		}
 
-		CalcuateFinalTranslation();
+		CalculateTranslationSteps();
 		CalculateFinalTranslationVector();
 
 		objectOption = 0;
@@ -959,7 +959,7 @@ void animationSelection(GLint animationOption)
 			initialPosition[i] = initialPositionKevin[i];
 			rotationAxis[i] = endPoint1[i] - endPoint2[i];
 		}
-		CalcuateFinalTranslation();
+		CalculateTranslationSteps();
 		CalculateFinalTranslationVector();
 
 		objectOption = 1;
@@ -974,7 +974,7 @@ void animationSelection(GLint animationOption)
 			initialPosition[i] = initialPositionNeil[i];
 			rotationAxis[i] = endPoint1[i] - endPoint2[i];
 		}
-		CalcuateFinalTranslation();
+		CalculateTranslationSteps();
 		CalculateFinalTranslationVector();
 
 		objectOption = 2;
@@ -1138,8 +1138,19 @@ int main(int argc, char** argv)
 	makeImage();
 	init();
 	CalculatePrisimPoints(initialPositionMark);
-	//CalculateFinalTranslationVector();
 	calculateCubePoints(side);
+	for (int i = 0; i < 3; i++)
+	{
+		endPoint1[i] = POne[i];
+		endPoint2[i] = PTwo[i];
+
+		initialPosition[i] = initialPositionMark[i];
+		rotationAxis[i] = endPoint1[i] - endPoint2[i];
+	}
+
+	CalculateTranslationSteps();
+	CalculateFinalTranslationVector();
+
 	GLint displayModeMenu;
 	displayModeMenu = glutCreateMenu(drawOptions);
 	glutAddMenuEntry("Verteces", 1);
