@@ -17,16 +17,16 @@ bool shouldDisplayTexture3Octahedron = false;
 
 GLfloat pointSize = 10;
 
-
 GLdouble endPoint1Neil[3] = { 398.974 ,-117.217 ,153.073 };
 GLdouble endPoint2Neil[3] = { -198.974 ,317.217 ,-153.073 };
 GLdouble initialPositionNeil[3] = { 137.187,409.385,-99.6725 };
 
 GLdouble endPoint1[3] = { 0,0,0 };
 GLdouble endPoint2[3] = { 0,0,0 };
-GLdouble initialPosition[3] = { 0,0,0 };
+GLdouble initialPosition[3] = {0,0,0};
+GLdouble rotationAxis[3] = {0,0,0};
+//GLdouble rotationAxis[3] = { endPoint1[0] - endPoint2[0] ,endPoint1[1] - endPoint2[1],endPoint1[2] - endPoint2[2] };
 
-GLdouble rotationAxis[3] = { endPoint1[0] - endPoint2[0] ,endPoint1[1] - endPoint2[1],endPoint1[2] - endPoint2[2] };
 GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
 GLdouble steps[3] = {};
 
@@ -84,7 +84,6 @@ void CalculatePrisimPoints(GLdouble * centerPoints)
 
 	for (GLint i = 0; i < hexigonBaseVerts; i++)
 	{
-
 		theta = 2.0 * M_PI * i / hexigonBaseVerts;
 		prisimData[i][0] = centerPoints[0] + radius * cos(theta);
 		prisimData[i][1] = centerPoints[1] - prismHeight / 2;
@@ -249,10 +248,6 @@ void drawRoof()
 	glVertex3f(initPx, initPy + side, initPz);
 
 	glEnd();
-
-
-
-
 
 	////roof side one
 	//glBegin(GL_QUADS);
@@ -809,7 +804,10 @@ void animationSelection(GLint animationOption)
 			endPoint1[i] = endPoint1Neil[i];
 			endPoint2[i] = endPoint2Neil[i];
 			initialPosition[i] = initialPositionNeil[i];
+			rotationAxis[i] = endPoint1[i] - endPoint2[i];
 		}
+		CalculateFinalTranslationVector();
+
 		objectOption = 2;
 		break;
 
@@ -974,7 +972,7 @@ int main(int argc, char** argv)
 	makeImage();
 	init();
 	CalculatePrisimPoints(initialPositionMark);
-	CalculateFinalTranslationVector();
+	//CalculateFinalTranslationVector();
 	calculateCubePoints(side);
 	GLint displayModeMenu;
 	displayModeMenu = glutCreateMenu(drawOptions);
