@@ -78,6 +78,7 @@ GLdouble theta;
 GLdouble initialPositionMark[3] = { 251.001, 310.254, -182.363 };
 GLdouble POne[3] = { 328.825, -66.2508, 282.843 };
 GLdouble PTwo[3] = { -128.825, 266.251, -282.843 };
+GLdouble Origin[3] = { 0, 0, 0 };
 GLdouble prisimData[7][3];
 GLint baseFaceIndex[6] = { 0, 1, 2, 3, 4, 5 };
 GLint hexigonBaseVerts = 6;
@@ -108,7 +109,7 @@ void drawRotationAxis()
 }
 
 
-//Test Push
+
 
 void DrawTriangleSides()
 {
@@ -1141,8 +1142,9 @@ int main(int argc, char** argv)
 	windowID = glutCreateWindow("Part 2 - 3D Object");
 	makeImage();
 	init();
-	CalculatePrisimPoints(initialPositionMark);
+	CalculatePrisimPoints(Origin);
 	calculateCubePoints(side);
+	/*
 	for (int i = 0; i < 3; i++)
 	{
 		endPoint1[i] = POne[i];
@@ -1151,6 +1153,7 @@ int main(int argc, char** argv)
 		initialPosition[i] = initialPositionMark[i];
 		rotationAxis[i] = endPoint1[i] - endPoint2[i];
 	}
+	*/
 
 	CalculateTranslationSteps();
 	CalculateFinalTranslationVector();
