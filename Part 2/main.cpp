@@ -125,8 +125,6 @@ void DrawTriangleSides()
 		for (int i = 0; i < 3; i++)
 		{
 
-
-
 			if (shouldUseFlat == false)
 			{
 				glNormal3dv(prisimVertexNormal[triFaceIndex[i][k]]);;
@@ -774,7 +772,6 @@ void displayFunction()
 		glScaled(scaleFactor, scaleFactor, scaleFactor);
 
 		cout << tx << " , " << ty << " ," << tz << "Final Translations" << endl;
-
 	}
 
 	if (option == 0)
@@ -782,15 +779,15 @@ void displayFunction()
 		glTranslated(initialPosition[0], initialPosition[1], initialPosition[2]);
 	}
 
-	if (shouldDisplayTexture1Octahedron)
+	if (shouldDisplayTexture1Octahedron&&objectOption==2)
 	{
 		drawTexture1Octahedron();
 	}
-	else if(shouldDisplayTexture2Octahedron)
+	else if(shouldDisplayTexture2Octahedron&&objectOption == 2)
 	{
 		drawTexture2Octahedron();
 	}
-	else if(shouldDisplayTexture3Octahedron)
+	else if(shouldDisplayTexture3Octahedron&&objectOption == 2)
 	{
 		drawTexture3Octahedron();
 	}
@@ -954,6 +951,8 @@ void animationSelection(GLint animationOption)
 		CalculateFinalTranslationVector();
 
 		objectOption = 0;
+
+		scaleFactor = 1.0;
 		break;
 	case 4:
 		for (int i = 0; i < 3; i++)
@@ -968,6 +967,7 @@ void animationSelection(GLint animationOption)
 		CalculateFinalTranslationVector();
 
 		objectOption = 1;
+		scaleFactor = 1.0;
 
 		break;
 
@@ -983,6 +983,8 @@ void animationSelection(GLint animationOption)
 		CalculateFinalTranslationVector();
 
 		objectOption = 2;
+		scaleFactor = 1.0;
+
 		break;
 
 	default:
@@ -1144,7 +1146,7 @@ int main(int argc, char** argv)
 	init();
 	CalculatePrisimPoints(Origin);
 	calculateCubePoints(side);
-	/*
+	
 	for (int i = 0; i < 3; i++)
 	{
 		endPoint1[i] = POne[i];
@@ -1153,7 +1155,6 @@ int main(int argc, char** argv)
 		initialPosition[i] = initialPositionMark[i];
 		rotationAxis[i] = endPoint1[i] - endPoint2[i];
 	}
-	*/
 
 	CalculateTranslationSteps();
 	CalculateFinalTranslationVector();
