@@ -75,7 +75,7 @@ GLubyte texArray1[imageHeight][imageWidth][4];
 //Mark's Prism*************************************************************************************
 GLint triFaceIndex[6][3] = { { 1, 0, 6 },{ 2, 1, 6 },{ 3, 2, 6 },{ 4, 3, 6 },{ 5, 4, 6 },{ 0, 5, 6 } };
 GLdouble theta;
-GLdouble initialPositionMark[3] = { 251.001, 310.254, 182.363 };
+GLdouble initialPositionMark[3] = { 251.001, 310.254, -182.363 };
 GLdouble POne[3] = { 328.825, -66.2508, 282.843 };
 GLdouble PTwo[3] = { -128.825, 266.251, -282.843 };
 GLdouble prisimData[7][3];
@@ -594,6 +594,8 @@ void drawTexture3Octahedron()
 }
 
 void displayOctahedron() {
+	glEnable(GL_NORMALIZE);
+
 	for (GLint i = 0; i < 8; i++)
 	{
 		if (shouldUseFlat == true)
@@ -607,7 +609,7 @@ void displayOctahedron() {
 			{
 				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 			}
-				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
+			glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 		}
 		glEnd();
 	}
@@ -734,7 +736,7 @@ void displayFunction()
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_NORMALIZE);
+	//glEnable(GL_NORMALIZE);
 	glCullFace(GL_BACK);
 	drawAxis(xmin1, xmax1, ymin1, ymax1, zfar1);
 	glLineWidth(5);
