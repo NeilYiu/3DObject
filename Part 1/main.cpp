@@ -356,6 +356,8 @@ void idleNeil()
 }
 void animationNeil()
 {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	if (displayOption == 2)
 	{
 		drawTriangle();
