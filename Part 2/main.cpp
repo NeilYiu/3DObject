@@ -144,7 +144,7 @@ void DrawBase()
 	glBegin(GL_POLYGON);
 	if (shouldUseFlat == true)
 	{
-		glNormal3dv(prisimFaceNormal[7]);
+		glNormal3dv(prisimFaceNormal[6]);
 	}
 	for (int i = 0; i < 6; i++)
 	{
@@ -177,7 +177,7 @@ void calculatePrisimFaceNormal(GLdouble normal[7][3])
 			vert1[j] = prisimData[triFaceIndex[k][0]][j];
 			vert2[j] = prisimData[triFaceIndex[k][1]][j];
 			vert3[j] = prisimData[triFaceIndex[k][2]][j];
-}
+		}
 
 		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
 		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
@@ -221,9 +221,37 @@ void calculatePrisimFaceNormal(GLdouble normal[7][3])
 
 }
 
+void CalculatePrisimVertexNormals(GLdouble vertexNormal[7][3]) {
+
+	vertexNormal[0][0] = (prisimFaceNormal[5][0] + prisimFaceNormal[0][0] + prisimFaceNormal[6][0]) / 3;
+	vertexNormal[0][1] = (prisimFaceNormal[5][1] + prisimFaceNormal[0][1] + prisimFaceNormal[6][1]) / 3;
+	vertexNormal[0][2] = (prisimFaceNormal[5][2] + prisimFaceNormal[0][2] + prisimFaceNormal[6][2]) / 3;
+
+	for (int i = 1; i < 6; i++)
+	{
+		vertexNormal[i][0] = (prisimFaceNormal[i - 1][0] + prisimFaceNormal[i][0] + prisimFaceNormal[6][0]) / 3;
+		vertexNormal[i][1] = (prisimFaceNormal[i - 1][1] + prisimFaceNormal[i][1] + prisimFaceNormal[6][1]) / 3;
+		vertexNormal[i][2] = (prisimFaceNormal[i - 1][2] + prisimFaceNormal[i][2] + prisimFaceNormal[6][2]) / 3;
+	}
+
+	vertexNormal[6][0] = 0;
+	vertexNormal[6][1] = 0;
+	vertexNormal[6][2] = 0;
+
+	for (int i = 0; i < 6; i++)
+	{
+		vertexNormal[6][0] += prisimFaceNormal[i][0];
+		vertexNormal[6][1] += prisimFaceNormal[i][1];
+		vertexNormal[6][2] += prisimFaceNormal[i][2];
+	}
+
+	vertexNormal[6][0] = vertexNormal[6][0] / 6;
+	vertexNormal[6][1] = vertexNormal[6][1] / 6;
+	vertexNormal[6][2] = vertexNormal[6][2] / 6;
 
 
 
+}
 
 //Mark's Prism*************************************************************************************
 
@@ -567,15 +595,22 @@ void drawTexture3Octahedron()
 
 void displayOctahedron() {
 	for (GLint i = 0; i < 8; i++)
-{
-	glBegin(GL_TRIANGLES);
-		for (GLint j = 0; j < 3; j++)
 	{
-			glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
-			glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
+		if (shouldUseFlat == true)
+		{
+			glNormal3dv(octahedronFaceNormal[i]);
+		}
+		glBegin(GL_TRIANGLES);
+		for (GLint j = 0; j < 3; j++)
+		{
+			if (shouldUseFlat == false)
+			{
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
+			}
+				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
+		}
+		glEnd();
 	}
-	glEnd();
-}
 }
 void CalculateFinalTranslationVector()
 {
@@ -595,15 +630,6 @@ void CalcuateFinalTranslation()
 	translationZStep = rotationAxis[2] * stepPortion;
 
 	tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
-}
-
-
-//THis function draw the six faces of a cube by calling the TriangleFace function
-void displayOctahedron() {
-	for (GLint i = 0; i < 8; i++)
-	{
-		TriangleFace(octahedronFaceIndex[i]);
-	}
 }
 
 void init()
@@ -1142,7 +1168,7 @@ int main(int argc, char** argv)
 	calculateOctahedronFaceNormal(octahedronFaceNormal);
 	calculateOctahedronVertexNormal(octahedronVertexNormal);
 	calculatePrisimFaceNormal(prisimFaceNormal);
-
+	CalculatePrisimVertexNormals(prisimVertexNormal);
 
 	glutDisplayFunc(displayFunction);
 	glutSpecialFunc(keyFunc);
