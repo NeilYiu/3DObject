@@ -1,65 +1,50 @@
-﻿Build started 28/05/2017 8:13:37 PM.
-     1>Project "C:\Users\11418593\Source\Repos\3DObject\Part 2\Part 2.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\11418593\Source\Repos\3DObject\Glew and Glut\glew-1.11.0\include" /I"C:\Users\11418593\Source\Repos\3DObject\Glew and Glut\freeglut\include" /I"C:\Users\11418593\Source\Repos\3DObject\Simple OpenGL Image Library" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(49): warning C4838: conversion from 'GLdouble' to 'GLfloat' requires a narrowing conversion
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(49): warning C4244: 'initializing': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(125): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(126): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(127): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(128): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(129): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(130): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(132): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(133): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(134): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(137): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(138): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(139): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(381): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(384): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(387): warning C4244: 'argument': conversion from 'GLint' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(387): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(391): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(394): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(397): warning C4244: 'argument': conversion from 'GLint' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(397): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(401): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(404): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(407): warning C4244: 'argument': conversion from 'GLint' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(407): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(412): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(415): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(418): warning C4244: 'argument': conversion from 'GLint' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(418): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(439): warning C4101: 'c': unreferenced local variable
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(663): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(664): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(667): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(668): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(671): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(672): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(724): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(725): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(726): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(763): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(764): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(890): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(893): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(896): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(899): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(902): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11418593\source\repos\3dobject\part 2\main.cpp(905): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\11418593\Source\Repos\3DObject\Debug\Part 2.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\11418593\Source\Repos\3DObject\Glew and Glut\glew-1.11.0\lib" /LIBPATH:"C:\Users\11418593\Source\Repos\3DObject\Glew and Glut\freeglut\lib" freeglut.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\11418593\Source\Repos\3DObject\Debug\Part 2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\11418593\Source\Repos\3DObject\Debug\Part 2.lib" /MACHINE:X86 Debug\image_DXT.obj
-         Debug\image_helper.obj
-         Debug\main.obj
-         Debug\SOIL.obj
-         Debug\stb_image_aug.obj
-         Part 2.vcxproj -> C:\Users\11418593\Source\Repos\3DObject\Debug\Part 2.exe
-     1>Done Building Project "C:\Users\11418593\Source\Repos\3DObject\Part 2\Part 2.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:01.61
+﻿  main.cpp
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(263): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(264): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(265): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(266): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(267): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(268): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(270): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(271): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(272): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(275): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(276): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(277): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(343): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(346): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(349): warning C4244: 'argument': conversion from 'GLint' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(349): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(353): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(356): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(359): warning C4244: 'argument': conversion from 'GLint' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(359): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(363): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(366): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(369): warning C4244: 'argument': conversion from 'GLint' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(369): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(374): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(377): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(380): warning C4244: 'argument': conversion from 'GLint' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(380): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(468): warning C4101: 'c': unreferenced local variable
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(659): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(660): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(663): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(664): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(667): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(668): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(676): warning C4838: conversion from 'GLdouble' to 'GLfloat' requires a narrowing conversion
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(676): warning C4244: 'initializing': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(707): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(708): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(709): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(748): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(749): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(831): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(834): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(837): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(840): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(843): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\cg\assignments\assignment2\3dobject\part 2\main.cpp(846): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+  Part 2.vcxproj -> C:\Users\ClassicNeil\Desktop\CG\Assignments\Assignment2\3DObject\Debug\Part 2.exe
