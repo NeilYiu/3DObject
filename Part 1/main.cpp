@@ -5,6 +5,7 @@
 #include <vector>
 using namespace std;
 
+int objectOption = 0;
 GLint displayOption = 2;
 GLdouble height = 60;
 GLdouble baseWidth = 60;
@@ -419,21 +420,6 @@ void displayFunction()
 	//glFlush();
 };
 
-void Selection(GLint animationOption)
-{
-	switch (animationOption) {
-	case 1:
-		displayOption = 1;
-		break;
-	case 2:
-		displayOption = 2;
-		break;
-	default:
-		cout << "invalid option" << endl;
-	}
-	glutPostRedisplay();
-}
-
 void idle()
 {
 	if (displayOption == 1)
@@ -655,10 +641,9 @@ void idle()
 	}
 	glutPostRedisplay();
 }
-
-void displayMode(GLint displayOptions)
+void Selection(GLint animationOption)
 {
-	switch (displayOptions) {
+	switch (animationOption) {
 	case 1:
 		displayOption = 1;
 		glutIdleFunc(idle);
@@ -667,6 +652,21 @@ void displayMode(GLint displayOptions)
 		displayOption = 2;
 		glutIdleFunc(nullptr);
 		break;
+	case 3:
+		objectOption = 0;
+		glutIdleFunc(nullptr);
+		break;
+	case 4:
+		objectOption = 1;
+		glutIdleFunc(nullptr);
+		break;
+	case 5:
+		objectOption = 2;
+		glutIdleFunc(nullptr);
+		break;
+
+	default:
+		cout << "invalid option" << endl;
 	}
 	glutPostRedisplay();
 }
@@ -686,13 +686,21 @@ int main(int argc, char** argv)
 
 	init();
 
-	subMenu = glutCreateMenu(displayMode);
-	glutAddMenuEntry("Animation", 1);
-	glutAddMenuEntry("Result", 2);
+	//subMenu = glutCreateMenu(displayMode);
+	//glutAddMenuEntry("Animation", 1);
+	//glutAddMenuEntry("Result", 2);
+	//glutAddMenuEntry("Neil's Cross", 3);
+	//glutAddMenuEntry("Mark's Wormhole", 4);
+	//glutAddMenuEntry("Kevin's Knot", 5);
 
 	glutCreateMenu(Selection);
+	glutAddMenuEntry("Animation", 1);
+	glutAddMenuEntry("Result", 2);
+	glutAddMenuEntry("Neil's Cross", 3);
+	glutAddMenuEntry("Mark's Wormhole", 4);
+	glutAddMenuEntry("Kevin's Knot", 5);
 
-	glutAddSubMenu("Display Mode", subMenu);
+	//glutAddSubMenu("Display Mode", subMenu);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	glutDisplayFunc(displayFunction);
