@@ -1,2 +1,9 @@
-﻿  LINK : C:\Users\ClassicNeil\Desktop\CG\Assignments\Assignment2\3DObject\Debug\Part 2.exe not found or not built by the last incremental link; performing full link
-  Part 2.vcxproj -> C:\Users\ClassicNeil\Desktop\CG\Assignments\Assignment2\3DObject\Debug\Part 2.exe
+﻿Build started 28/05/2017 5:39:59 PM.
+     1>Project "C:\Users\11418593\Source\Repos\3DObject\Part 2\Part 2.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         Part 2.vcxproj -> C:\Users\11418593\Source\Repos\3DObject\Debug\Part 2.exe
+     1>Done Building Project "C:\Users\11418593\Source\Repos\3DObject\Part 2\Part 2.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.14
