@@ -32,9 +32,10 @@ GLdouble endPoint1[3] = { 0,0,0 };
 GLdouble endPoint2[3] = { 0,0,0 };
 GLdouble initialPosition[3] = {0,0,0};
 GLdouble rotationAxis[3] = {0,0,0};
+GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
+
 //GLdouble rotationAxis[3] = { endPoint1[0] - endPoint2[0] ,endPoint1[1] - endPoint2[1],endPoint1[2] - endPoint2[2] };
 
-GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
 GLdouble steps[3] = {};
 
 GLint option = 0;
@@ -560,20 +561,9 @@ void drawTexture3Octahedron()
 	drawTexturedOctahedron();
 }
 
-void TriangleFace(GLint face[3]) // arguments are indices of four vertices of a TriangleFace
-{
-	glBegin(GL_TRIANGLES);
-	for (GLint i = 0; i < 3; i++)
-	{
-		glVertex3dv(octahedronVertex[face[i]]);
-	}
-	glEnd();
-}
-//THis function draw the six faces of a cube by calling the TriangleFace function
 void displayOctahedron() {
 	for (GLint i = 0; i < 8; i++)
 	{
-		//TriangleFace(octahedronFaceIndex[i]);
 		glBegin(GL_TRIANGLES);
 		for (GLint j = 0; j < 3; j++)
 		{
@@ -729,9 +719,7 @@ void displayFunction()
 		glTranslated(tx, ty, tz);
 		glScaled(scaleFactor, scaleFactor, scaleFactor);
 	}
-	//else
-	//cout << "invalid option" << endl;
-
+	
 	if (option == 0)
 	{
 		glTranslated(initialPosition[0], initialPosition[1], initialPosition[2]);
@@ -949,7 +937,6 @@ void idle()
 		tx += translationXStep;
 		ty += translationYStep;
 		tz += translationZStep;
-
 		if (abs(tx) > abs(endPoint1[0]) && abs(ty) > abs(endPoint1[1]) && abs(tz) > abs(endPoint1[2]))
 		{
 			scaleFactor = 1.0;
@@ -958,9 +945,7 @@ void idle()
 			tz = endPoint2[2];
 		}
 	}
-	//else
-		//cout << "invalid option" << endl;
-
+	
 	glutPostRedisplay();
 }
 
