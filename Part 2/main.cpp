@@ -386,16 +386,19 @@ void drawTexture1Octahedron()
 			if (j == 0)
 			{
 				glTexCoord2d(0.0, 0.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 1)
 			{
 				glTexCoord2d(0.0, 1.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 2)
 			{
 				glTexCoord2d(1.0, 1.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 		}
@@ -428,16 +431,19 @@ void drawTexturedOctahedron()
 			if (j == 0)
 			{
 				glTexCoord2d(0.0, 0.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 1)
 			{
 				glTexCoord2d(0.0, 1.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 			if (j == 2)
 			{
 				glTexCoord2d(1.0, 1.0);
+				glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 				glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
 			}
 		}
@@ -476,7 +482,6 @@ void displayOctahedron() {
 		{
 			glNormal3dv(octahedronVertexNormal[octahedronFaceIndex[i][j]]);
 			glVertex3dv(octahedronVertex[octahedronFaceIndex[i][j]]);
-			glEnable(GL_NORMALIZE);
 		}
 		glEnd();
 	}
@@ -593,6 +598,7 @@ void displayFunction()
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_NORMALIZE);
 	glCullFace(GL_BACK);
 	drawAxis(xmin1, xmax1, ymin1, ymax1, zfar1);
 	glLineWidth(5);
