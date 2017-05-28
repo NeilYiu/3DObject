@@ -7,52 +7,20 @@
 using namespace std;
 
 
+//General Globals 
+
 bool shouldUseFlat = true;
-
-GLdouble prisimFaceNormal[7][3];
-GLdouble prisimVertexNormal[7][3];
-
-
 int objectOption = 0;
-
-GLdouble octahedronFaceNormal[8][3];
-GLdouble octahedronVertexNormal[6][3];
-
-bool shouldDisplayTexture1Octahedron = false;
-bool shouldDisplayTexture2Octahedron = false;
-bool shouldDisplayTexture3Octahedron = false;
 
 GLfloat pointSize = 10;
 
-GLdouble endPoint1Neil[3] = { 398.974 ,-117.217 ,153.073 };
-GLdouble endPoint2Neil[3] = { -198.974 ,317.217 ,-153.073 };
-GLdouble initialPositionNeil[3] = { 137.187,409.385,-99.6725 };
-
-GLdouble endPoint1[3] = { 0,0,0 };
-GLdouble endPoint2[3] = { 0,0,0 };
-GLdouble initialPosition[3] = {0,0,0};
-GLdouble rotationAxis[3] = {0,0,0};
-GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
-
-//GLdouble rotationAxis[3] = { endPoint1[0] - endPoint2[0] ,endPoint1[1] - endPoint2[1],endPoint1[2] - endPoint2[2] };
-
-GLdouble steps[3] = {};
 
 GLint option = 0;
-GLdouble width = 50;
-GLdouble height = 100;
-GLdouble octahedronVertex[6][3] = { { width,0,-width },{ -width,0,-width },{ -width,0,width },{ width,0,width },{ 0,height,0 },
-	{ 0,-height,0 } };
-GLint octahedronFaceIndex[8][3] = { { 3,0,4 }/*up+x*/,
-						  { 0,1,4 }/*up-z*/,
-						  { 1,2,4 }/*up-x*/,
-						  { 2,3,4 }/*up+z*/,
-						  { 0,3,5 }/*down+x*/,
-						  { 1,0,5 }/*down-z*/,
-						  { 2,1,5 }/*down-x*/,
-						  { 3,2,5 }/*down+z*/ 
-						};
-GLint octahedronVertexIndex[6][4] = { {0,1,4,5},{1,2,5,6},{2,3,7,6},{0,3,4,7},{0,1,2,3},{4,5,6,7}};
+GLdouble endPoint1[3] = { 0,0,0 };
+GLdouble endPoint2[3] = { 0,0,0 };
+GLdouble initialPosition[3] = { 0,0,0 };
+GLdouble rotationAxis[3] = { 0,0,0 };
+GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
 
 GLdouble rotationStep = 2;
 GLdouble tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
@@ -70,20 +38,115 @@ GLuint textureID;
 GLint border = 0;
 const int imageWidth = 10;
 const int imageHeight = 10;
-GLubyte texArray1[imageHeight][imageWidth][4];
 
-//Mark's Prism*************************************************************************************
-GLint triFaceIndex[6][3] = { { 1, 0, 6 },{ 2, 1, 6 },{ 3, 2, 6 },{ 4, 3, 6 },{ 5, 4, 6 },{ 0, 5, 6 } };
-GLdouble theta;
-GLdouble initialPositionMark[3] = { 251.001, 310.254, -182.363 };
-GLdouble POne[3] = { 328.825, -66.2508, 282.843 };
-GLdouble PTwo[3] = { -128.825, 266.251, -282.843 };
-GLdouble Origin[3] = { 0, 0, 0 };
+
+
+//Light Globals 
+
+GLfloat spotLight_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+GLfloat spotLight_diffuse[] = { 1, 1, 1, 1.0 };
+GLfloat spotLight_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat spotLight_position[4] = { initialPosition[0], initialPosition[1] - 200, initialPosition[2] + 800, 1.0 };
+GLfloat dirVector[] = { 0.0,0.0,-1.0 };
+
+GLfloat pointLight_position[4] = { -150.0, 0.0, 0.0, 1.0 };
+GLfloat pointLight_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+GLfloat pointLight_diffuse[] = { 1, 1, 1, 1.0 };
+GLfloat pointLight_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+
+GLfloat ambientCoef[] = { 0.8f, 0.0f, 0.0f };
+GLfloat diffuseCoef[] = { 0.8f, 0.0f, 0.0f };
+GLfloat specularCoef[] = { 1.0f, 1.0f, 1.0f };
+GLfloat mat_shininess = 128.0f;
+
+
+
+
+// Globals For Mark's Prisim
+
+GLdouble prisimFaceNormal[7][3];
+GLdouble prisimVertexNormal[7][3];
 GLdouble prisimData[7][3];
-GLint baseFaceIndex[6] = { 0, 1, 2, 3, 4, 5 };
+GLint triFaceIndex[6][3] = { { 1, 0, 6 },{ 2, 1, 6 },{ 3, 2, 6 },{ 4, 3, 6 },{ 5, 4, 6 },{ 0, 5, 6 } }; //fix name
+GLint baseFaceIndex[6] = { 0, 1, 2, 3, 4, 5 }; //fix name 
+
 GLint hexigonBaseVerts = 6;
 GLdouble radius = 100;
 GLdouble prismHeight = 200;
+
+GLdouble theta;
+
+
+GLdouble initialPositionMark[3] = { 251.001, 310.254, -182.363 };
+GLdouble POne[3] = { 328.825, -66.2508, 282.843 }; //fix name
+GLdouble PTwo[3] = { -128.825, 266.251, -282.843 }; //fix name
+
+// End Globals For Mark's Prisim 
+
+
+GLdouble octahedronFaceNormal[8][3];
+GLdouble octahedronVertexNormal[6][3];
+
+bool shouldDisplayTexture1Octahedron = false;
+bool shouldDisplayTexture2Octahedron = false;
+bool shouldDisplayTexture3Octahedron = false;
+
+GLdouble endPoint1Neil[3] = { 398.974 ,-117.217 ,153.073 };
+GLdouble endPoint2Neil[3] = { -198.974 ,317.217 ,-153.073 };
+GLdouble initialPositionNeil[3] = { 137.187,409.385,-99.6725 };
+
+GLdouble steps[3] = {};
+
+
+GLdouble width = 50;
+GLdouble height = 100;
+GLdouble octahedronVertex[6][3] = { { width,0,-width },{ -width,0,-width },{ -width,0,width },{ width,0,width },{ 0,height,0 },
+{ 0,-height,0 } };
+GLint octahedronFaceIndex[8][3] = { { 3,0,4 }/*up+x*/,
+{ 0,1,4 }/*up-z*/,
+{ 1,2,4 }/*up-x*/,
+{ 2,3,4 }/*up+z*/,
+{ 0,3,5 }/*down+x*/,
+{ 1,0,5 }/*down-z*/,
+{ 2,1,5 }/*down-x*/,
+{ 3,2,5 }/*down+z*/
+};
+GLint octahedronVertexIndex[6][4] = { { 0,1,4,5 },{ 1,2,5,6 },{ 2,3,7,6 },{ 0,3,4,7 },{ 0,1,2,3 },{ 4,5,6,7 } };
+
+
+GLubyte texArray1[imageHeight][imageWidth][4];
+
+
+//Globals for Kevin's house
+
+GLint faceIndexKevin[6][4] = { { 0, 1, 2, 3 },{ 6, 2, 1, 5 },{ 4, 7, 6, 5 },{ 7, 4, 0, 3 },{ 5, 1, 0, 4 },{ 7, 3, 2, 6 }};
+GLint vertexIndexKevin[8][3] = { { 0, 3, 4 },{ 0, 1, 4 },{ 0, 1, 5 },{ 0, 3, 5 },{ 2, 3, 4 },{ 1, 2, 4 },{ 1, 2, 5 },{ 2, 3, 5 } };
+
+GLint roofIndexKevin[4][3] = { {0, 4, 1} ,{ 1, 4, 2 } ,{ 2, 4, 3 } ,{ 3, 4, 0 }};
+GLint roofFaceIndexKevin[4][3] = { { 0, 4, 1 } ,{ 1, 4, 2 } ,{ 2, 4, 3 } ,{ 3, 4, 0 } };
+
+GLdouble cubeData[8][3];
+GLdouble roofData[5][3];
+
+GLdouble faceNormalCubeKevin[6][3];
+GLdouble vertexNormalCubeKevin[8][3];
+
+GLdouble faceNormalRoofKevin[4][3];
+GLdouble vertexNormalRoofKevin[5][3];
+
+GLint initPx = 43.0533;
+GLint initPy = 336.356;
+GLint initPz = -132.504;
+
+GLdouble side = 150;
+
+GLdouble endPoint1Kevin[3] = { 214.198, -251.465,  153.073 };
+GLdouble endPoint2Kevin[3] = { -14.1978, 451.465, -153.073 };
+GLdouble initialPositionKevin[3] = { initPx, initPy, initPz };
+
+
+//Mark's Prism*************************************************************************************
+
 
 void CalculatePrisimPoints(GLdouble * centerPoints)
 {
@@ -99,17 +162,101 @@ void CalculatePrisimPoints(GLdouble * centerPoints)
 		prisimData[i][2] = centerPoints[2] + radius * sin(theta);
 	}
 }
-void drawRotationAxis()
+
+void calculatePrisimFaceNormal(GLdouble normal[7][3])
 {
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3d(POne[0], POne[1], POne[2]);
-	glVertex3d(PTwo[0], PTwo[1], PTwo[2]);
-	glEnd();
+	GLdouble temp;
+	GLdouble tempPt[3];
+	GLint k, j;
+
+	GLdouble vert1[3], vert2[3], vert3[3];
+
+	for (k = 0; k < 6; k++)
+	{
+		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
+		for (j = 0; j < 3; j++)
+		{
+			vert1[j] = prisimData[triFaceIndex[k][0]][j];
+			vert2[j] = prisimData[triFaceIndex[k][1]][j];
+			vert3[j] = prisimData[triFaceIndex[k][2]][j];
+		}
+
+		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+		normal[k][0] = tempPt[0] / temp;
+		normal[k][1] = tempPt[1] / temp;
+		normal[k][2] = tempPt[2] / temp;
+	}
+
+	//get three points from the hexigon base for calculating it's normal vector
+
+	vert1[0] = prisimData[3][0];
+	vert1[1] = prisimData[3][1];
+	vert1[2] = prisimData[3][2];
+
+	vert2[0] = prisimData[4][0];
+	vert2[1] = prisimData[4][1];
+	vert2[2] = prisimData[4][2];
+
+	vert3[0] = prisimData[5][0];
+	vert3[1] = prisimData[5][1];
+	vert3[2] = prisimData[5][2];
+
+	//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+	tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+	tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+	tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+	//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+	temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+	//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+	normal[6][0] = tempPt[0] / temp;
+	normal[6][1] = tempPt[1] / temp;
+	normal[6][2] = tempPt[2] / temp;
+
+
 }
 
 
+void CalculatePrisimVertexNormals(GLdouble vertexNormal[7][3]) {
 
+	vertexNormal[0][0] = (prisimFaceNormal[5][0] + prisimFaceNormal[0][0] + prisimFaceNormal[6][0]) / 3;
+	vertexNormal[0][1] = (prisimFaceNormal[5][1] + prisimFaceNormal[0][1] + prisimFaceNormal[6][1]) / 3;
+	vertexNormal[0][2] = (prisimFaceNormal[5][2] + prisimFaceNormal[0][2] + prisimFaceNormal[6][2]) / 3;
+
+	for (int i = 1; i < 6; i++)
+	{
+		vertexNormal[i][0] = (prisimFaceNormal[i - 1][0] + prisimFaceNormal[i][0] + prisimFaceNormal[6][0]) / 3;
+		vertexNormal[i][1] = (prisimFaceNormal[i - 1][1] + prisimFaceNormal[i][1] + prisimFaceNormal[6][1]) / 3;
+		vertexNormal[i][2] = (prisimFaceNormal[i - 1][2] + prisimFaceNormal[i][2] + prisimFaceNormal[6][2]) / 3;
+	}
+
+	vertexNormal[6][0] = 0;
+	vertexNormal[6][1] = 0;
+	vertexNormal[6][2] = 0;
+
+	for (int i = 0; i < 6; i++)
+	{
+		vertexNormal[6][0] += prisimFaceNormal[i][0];
+		vertexNormal[6][1] += prisimFaceNormal[i][1];
+		vertexNormal[6][2] += prisimFaceNormal[i][2];
+	}
+
+	vertexNormal[6][0] = vertexNormal[6][0] / 6;
+	vertexNormal[6][1] = vertexNormal[6][1] / 6;
+	vertexNormal[6][2] = vertexNormal[6][2] / 6;
+
+
+
+}
 
 void DrawTriangleSides()
 {
@@ -162,119 +309,14 @@ void DrawBase()
 
 }
 
-void calculatePrisimFaceNormal(GLdouble normal[7][3])
-{
-	GLdouble temp;
-	GLdouble tempPt[3];
-	GLint k, j;
-
-	GLdouble vert1[3], vert2[3], vert3[3];
-
-	for (k = 0; k < 6; k++)
-	{
-		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
-		for (j = 0; j < 3; j++)
-		{
-			vert1[j] = prisimData[triFaceIndex[k][0]][j];
-			vert2[j] = prisimData[triFaceIndex[k][1]][j];
-			vert3[j] = prisimData[triFaceIndex[k][2]][j];
-		}
-
-		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
-		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
-		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
-		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
-
-		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
-		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
-
-		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
-		normal[k][0] = tempPt[0] / temp;
-		normal[k][1] = tempPt[1] / temp;
-		normal[k][2] = tempPt[2] / temp;
-	}
-
-	vert1[0] = prisimData[3][0];
-	vert1[1] = prisimData[3][1];
-	vert1[2] = prisimData[3][2];
-
-	vert2[0] = prisimData[4][0];
-	vert2[1] = prisimData[4][1];
-	vert2[2] = prisimData[4][2];
-
-	vert3[0] = prisimData[5][0];
-	vert3[1] = prisimData[5][1];
-	vert3[2] = prisimData[5][2];
-
-	//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
-	tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
-	tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
-	tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
-
-	//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
-	temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
-
-	//The following three statements are to normalise the normal vector to make its magnitude be one unit 
-	normal[6][0] = tempPt[0] / temp;
-	normal[6][1] = tempPt[1] / temp;
-	normal[6][2] = tempPt[2] / temp;
-
-
-}
-
-void CalculatePrisimVertexNormals(GLdouble vertexNormal[7][3]) {
-
-	vertexNormal[0][0] = (prisimFaceNormal[5][0] + prisimFaceNormal[0][0] + prisimFaceNormal[6][0]) / 3;
-	vertexNormal[0][1] = (prisimFaceNormal[5][1] + prisimFaceNormal[0][1] + prisimFaceNormal[6][1]) / 3;
-	vertexNormal[0][2] = (prisimFaceNormal[5][2] + prisimFaceNormal[0][2] + prisimFaceNormal[6][2]) / 3;
-
-	for (int i = 1; i < 6; i++)
-	{
-		vertexNormal[i][0] = (prisimFaceNormal[i - 1][0] + prisimFaceNormal[i][0] + prisimFaceNormal[6][0]) / 3;
-		vertexNormal[i][1] = (prisimFaceNormal[i - 1][1] + prisimFaceNormal[i][1] + prisimFaceNormal[6][1]) / 3;
-		vertexNormal[i][2] = (prisimFaceNormal[i - 1][2] + prisimFaceNormal[i][2] + prisimFaceNormal[6][2]) / 3;
-	}
-
-	vertexNormal[6][0] = 0;
-	vertexNormal[6][1] = 0;
-	vertexNormal[6][2] = 0;
-
-	for (int i = 0; i < 6; i++)
-	{
-		vertexNormal[6][0] += prisimFaceNormal[i][0];
-		vertexNormal[6][1] += prisimFaceNormal[i][1];
-		vertexNormal[6][2] += prisimFaceNormal[i][2];
-	}
-
-	vertexNormal[6][0] = vertexNormal[6][0] / 6;
-	vertexNormal[6][1] = vertexNormal[6][1] / 6;
-	vertexNormal[6][2] = vertexNormal[6][2] / 6;
 
 
 
-}
 
-//Mark's Prism*************************************************************************************
+//End Mark's Prism*************************************************************************************
 
 //Kevin's house************************************************************************************
-GLint faceIndexKevin[6][4] = { { 0, 1, 2, 3 },{ 6, 2, 1, 5 },{ 4, 7, 6, 5 },{ 7, 4, 0, 3 },{ 5, 1, 0, 4 },{ 7, 3, 2, 6 } };
-GLint vertexIndexKevin[8][3] = { { 0, 3, 4 },{ 0, 1, 4 },{ 0, 1, 5 },{ 0, 3, 5 },{ 2, 3, 4 },{ 1, 2, 4 },{ 1, 2, 5 },{ 2, 3, 5 } };
-GLdouble cubeData[8][3];
-GLint initPx = 43.0533;
-GLint initPy = 336.356;
-GLint initPz = -132.504;
-GLint axisP1x = 214.198;
-GLint axisP1y = -251.465;
-GLint axisP1z = 153.073;
 
-GLint axisP2x = -14.1978;
-GLint axisP2y = 451.465;
-GLint axisP2z = -153.073;
-GLdouble side = 150;
-
-GLdouble endPoint1Kevin[3] = { axisP1x, axisP1y, axisP1z };
-GLdouble endPoint2Kevin[3] = { axisP2x, axisP2y, axisP2z };
-GLdouble initialPositionKevin[3] = { initPx, initPy, initPz };
 
 void calculateCubePoints(GLdouble side)
 {
@@ -313,19 +355,177 @@ void calculateCubePoints(GLdouble side)
 	cubeData[7][0] = cubeData[3][0];
 	cubeData[7][1] = cubeData[0][1] + side;
 	cubeData[7][2] = cubeData[3][2];
+}
+
+void calculateRoofPoints(GLdouble side)
+{
+	//Corner 1
+	roofData[0][0] = cubeData[4][0];
+	roofData[0][1] = cubeData[4][1];
+	roofData[0][2] = cubeData[4][2];
+
+	//Corner 2
+	roofData[1][0] = cubeData[5][0];
+	roofData[1][1] = cubeData[5][1];
+	roofData[1][2] = cubeData[5][2];
+
+	//Corner 3
+	roofData[2][0] = cubeData[6][0];
+	roofData[2][1] = cubeData[6][1];
+	roofData[2][2] = cubeData[6][2];
+
+	//Corner 4
+	roofData[3][0] = cubeData[7][0];
+	roofData[3][1] = cubeData[7][1];
+	roofData[3][2] = cubeData[7][2];
+
+	//Tip of Triangle
+	roofData[4][0] = initPx;
+	roofData[4][1] = initPy + side;
+	roofData[4][2] = initPz;
 
 }
 
+void calculateHouseFaceNormal(GLdouble normal[6][3])
+{
+	GLdouble temp;
+	GLdouble tempPt[3];
+	GLint k, j;
+
+	GLdouble vert1[3], vert2[3], vert3[3];
+
+	for (k = 0; k < 6; k++)
+	{
+		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
+		for (j = 0; j < 3; j++)
+		{
+			vert1[j] = cubeData[faceIndexKevin[k][0]][j];
+			vert2[j] = cubeData[faceIndexKevin[k][1]][j];
+			vert3[j] = cubeData[faceIndexKevin[k][2]][j];
+		}
+
+		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+		normal[k][0] = tempPt[0] / temp;
+		normal[k][1] = tempPt[1] / temp;
+		normal[k][2] = tempPt[2] / temp;
+	}
+
+
+
+}
+
+void calculateHouseVertexNormal(GLdouble vexNormal[8][3])
+{
+	GLint k, j;
+
+	for (k = 0; k < 8; k++)
+	{
+
+		for (j = 0; j < 3; j++)
+		{
+			vexNormal[k][j] = (faceNormalCubeKevin[vertexIndexKevin[k][0]][j] + faceNormalCubeKevin[vertexIndexKevin[k][1]][j] + faceNormalCubeKevin[vertexIndexKevin[k][2]][j]) / 3.0;
+		}
+	}
+}
+
+void calculateRoofFaceNormal(GLdouble normal[4][3])
+{
+	GLdouble temp;
+	GLdouble tempPt[3];
+	GLint k, j;
+
+	GLdouble vert1[3], vert2[3], vert3[3];
+
+	for (k = 0; k < 4; k++)
+	{
+		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
+		for (j = 0; j < 3; j++)
+		{
+			vert1[j] = roofData[roofFaceIndexKevin[k][0]][j];
+			vert2[j] = roofData[roofFaceIndexKevin[k][4]][j];
+			vert3[j] = roofData[roofFaceIndexKevin[k][1]][j];
+		}
+
+		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+		normal[k][0] = tempPt[0] / temp;
+		normal[k][1] = tempPt[1] / temp;
+		normal[k][2] = tempPt[2] / temp;
+	}
+}
+
+void calculateRoofVertexNormal(GLdouble vexNormal[5][3])
+{
+	GLint k, j;
+
+	for (k = 0; k < 5; k++)
+	{
+
+		for (j = 0; j < 3; j++)
+		{
+			vexNormal[k][j] = (faceNormalRoofKevin[roofIndexKevin[k][0]][j] + faceNormalRoofKevin[roofIndexKevin[k][1]][j] + faceNormalRoofKevin[roofIndexKevin[k][2]][j]) / 3.0;
+		}
+	}
+}
+
+void displayCubeWithVertexNormal(GLdouble vertData[8][3], GLint faceIndexData[6][4], GLdouble vertNormalData[8][3]) {
+	GLint i, j;
+
+	for (GLint i = 0; i < 6; i++)
+	{
+		glBegin(GL_QUADS);
+		for (GLint j = 0; j < 4; j++)
+		{
+			glNormal3dv(vertNormalData[faceIndexData[i][j]]);
+			glVertex3dv(vertData[faceIndexData[i][j]]);
+		}
+
+		glEnd();
+		glFlush();
+	}
+}
+
+void displayRoofWithVertexNormal(GLdouble vertData[5][3], GLint faceIndexData[4][3], GLdouble vertNormalData[5][3]) {
+	GLint i, j;
+
+	for (GLint i = 0; i < 5; i++)
+	{
+		glBegin(GL_TRIANGLES);
+		for (GLint j = 0; j < 3; j++)
+		{
+			glNormal3dv(vertNormalData[faceIndexData[i][j]]);
+			glVertex3dv(vertData[faceIndexData[i][j]]);
+		}
+
+		glEnd();
+		glFlush();
+	}
+}
 
 void quad(GLint face[4]) // arguments are indices of vertives of a quad in vertex array
 {
+	glEnable(GL_NORMALIZE);
+
 	glBegin(GL_QUADS);
 	for (GLint i = 0; i < 4; i++)
 	{
-		glNormal3dv(cubeData[face[i]]);
 		glVertex3dv(cubeData[face[i]]);
 	}
-
 	glEnd();
 	glFlush();
 }
@@ -335,134 +535,45 @@ void displayCube() {
 		quad(faceIndexKevin[i]);
 }
 
-void drawRoof()
+void drawRoof(GLint face[3])
 {
+	glEnable(GL_NORMALIZE);
+
 	glBegin(GL_TRIANGLES);
-	//Roof 1
-	glNormal3d(initPx - side, side + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx - side, side + (initPy - (side / 2)), initPz - (side / 2));
-
-	glNormal3d(initPx - side, side + (initPy - (side / 2)), initPz + (side / 2));
-	glVertex3f(initPx - side, side + (initPy - (side / 2)), initPz + (side / 2));
-
-	glNormal3d(initPx, initPy + side, initPz);
-	glVertex3f(initPx, initPy + side, initPz);
-
-	//Roof 2
-	glNormal3d(initPx + side, side + (initPy - (side / 2)), initPz + (side / 2));
-	glVertex3f(initPx + side, side + (initPy - (side / 2)), initPz + (side / 2));
-
-	glNormal3d(initPx + side, side + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx + side, side + (initPy - (side / 2)), initPz - (side / 2));
-
-	glNormal3d(initPx, initPy + side, initPz);
-	glVertex3f(initPx, initPy + side, initPz);
-
-	//Roof 3
-	glNormal3d(initPx - side, side + (initPy - (side / 2)), initPz + (side / 2));
-	glVertex3f(initPx - side, side + (initPy - (side / 2)), initPz + (side / 2));
-
-	glNormal3d(initPx + side, side + (initPy - (side / 2)), initPz + (side / 2));
-	glVertex3f(initPx + side, side + (initPy - (side / 2)), initPz + (side / 2));
-
-	glNormal3d(initPx, initPy + side, initPz);
-	glVertex3f(initPx, initPy + side, initPz);
-
-	//Roof 4
-
-	glNormal3d(initPx + side, side + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx + side, side + (initPy - (side / 2)), initPz - (side / 2));
-
-	glNormal3d(initPx - side, side + (initPy - (side / 2)), initPz - (side / 2));
-	glVertex3f(initPx - side, side + (initPy - (side / 2)), initPz - (side / 2));
-
-	glNormal3d(initPx, initPy + side, initPz);
-	glVertex3f(initPx, initPy + side, initPz);
-
+		for (GLint i = 0; i < 3; i++)
+		{
+			glVertex3dv(roofData[face[i]]);	
+		}
 	glEnd();
+	glFlush();
+}
 
-	////roof side one
-	//glBegin(GL_QUADS);
-	//glNormal3d(0, side, 0);
-	//glVertex3f(0, side, 0);
-
-	//glNormal3d(side * 2, side, 0);
-	//glVertex3f(side * 2, side, 0);
-
-	//glNormal3d(side * 2 - 50, side + 25, side / 2);
-	//glVertex3f(side * 2 - 50, side + 25, side / 2);
-
-	//glNormal3d(50, side + 25, side / 2);
-	//glVertex3f(50, side + 25, side / 2);
-
-	////roof side two
-	//glNormal3d(0, side, side);
-	//glVertex3f(0, side, side);
-
-	//glNormal3d(side * 2, side, side);
-	//glVertex3f(side * 2, side, side);
-
-	//glNormal3d(side * 2 - 50, side + 25, side / 2);
-	//glVertex3f(side * 2 - 50, side + 25, side / 2);
-
-	//glNormal3d(50, side + 25, side / 2);
-	//glVertex3f(50, side + 25, side / 2);
-	//glEnd();
+void displayRoof() {
+	for (GLint i = 0; i < 4; i++)
+		drawRoof(roofFaceIndexKevin[i]);
 }
 
 void drawHouse()
 {
-	displayCube();
-	drawRoof();
+	if (shouldUseFlat == true) {
+		displayCubeWithVertexNormal(cubeData, faceIndexKevin, vertexNormalCubeKevin);
+		displayRoofWithVertexNormal(roofData, roofFaceIndexKevin, vertexNormalRoofKevin);
+	}
+	else if (shouldUseFlat == false)
+	{
+		displayCube();
+		displayRoof();
+	}
+
+
 }
 
 
-//Kevin's house************************************************************************************
+//End Kevin's house************************************************************************************
 
 
+//Neil's Octahedron ***********************************************************************************
 
-//void displayFaceNormal()
-//{
-//	GLdouble tempPt[3];
-//	GLint k, j;
-//	GLdouble scale = 500.0;
-//
-//	glColor3f(1.0, 0.0, 1.0);
-//
-//	for (k = 0; k < 6; k++)
-//	{
-//		for (j = 0; j < 3; j++)
-//		{
-//			tempPt[j] = (octahedronVertex[faceIndex[k][0]][j] + octahedronVertex[faceIndex[k][2]][j]) / 2.0; // average of two opposite vertices
-//		}
-//
-//		glBegin(GL_LINES);
-//		glVertex3dv(tempPt);
-//		glVertex3d(tempPt[0] + faceNormal[k][0] * scale, tempPt[1] + faceNormal[k][1] * scale, tempPt[2] + faceNormal[k][2] * scale);
-//		glEnd();
-//	}
-//
-//	glFlush();
-//}
-//
-////This function is to display the normal vector for each vertex of the cube which are located at each vertex.
-//void displayVertexNormal()
-//{
-//	GLint k, j;
-//	GLdouble scale = 50.0;
-//
-//	glColor3f(1.0, 1.0, 1.0);
-//
-//	for (k = 0; k < 8; k++)
-//	{
-//		glBegin(GL_LINES);
-//		glVertex3dv(octahedronVertex[k]);
-//		glVertex3d(octahedronVertex[k][0] + vertexNormal[k][0] * scale, octahedronVertex[k][1] + vertexNormal[k][1] * scale, octahedronVertex[k][2] + vertexNormal[k][2] * scale);
-//		glEnd();
-//	}
-//
-//	glFlush();
-//}
 void makeImage(void)
 {
 	GLint i, j, c;
@@ -496,11 +607,7 @@ void makeImage(void)
 void drawTexture1Octahedron()
 {
 	glEnable(GL_TEXTURE_2D);
-
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -540,6 +647,8 @@ void drawTexture1Octahedron()
 	glDisable(GL_TEXTURE_2D);
 	glFlush();
 }
+
+
 void loadCustomTexture(char fileName[])
 {
 	textureID = SOIL_load_OGL_texture
@@ -552,6 +661,7 @@ void loadCustomTexture(char fileName[])
 		//SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB //SOIL_FLAG_TEXTURE_RECTANGLE  
 	);
 }
+
 void drawTexturedOctahedron()
 {
 	glEnable(GL_TEXTURE_2D);
@@ -584,11 +694,14 @@ void drawTexturedOctahedron()
 	glFlush();
 	glDisable(GL_TEXTURE_2D);
 }
+
+
 void drawTexture2Octahedron()
 {
 	loadCustomTexture("MCR.png");
 	drawTexturedOctahedron();
 }
+
 void drawTexture3Octahedron()
 {
 	loadCustomTexture("Lifeline.png");
@@ -616,25 +729,58 @@ void displayOctahedron() {
 		glEnd();
 	}
 }
-void CalculateFinalTranslationVector()
-{
-	GLdouble denominator = pow(rotationAxis[0], 2) + pow(rotationAxis[1], 2) + pow(rotationAxis[1], 2);
-	GLdouble numerator = -rotationAxis[0] * endPoint1[0] - rotationAxis[1] * endPoint1[1] - rotationAxis[2] * endPoint1[2];
-	GLdouble t = numerator / denominator;
 
-	finalTranslation[0] = rotationAxis[0] * t + endPoint1[0];
-	finalTranslation[1] = rotationAxis[1] * t + endPoint1[1];
-	finalTranslation[2] = rotationAxis[2] * t + endPoint1[2];
+void calculateOctahedronVertexNormal(GLdouble vexNormal[6][3])
+{
+	GLint k, j;
+
+	for (k = 0; k < 6; k++)
+	{
+
+		for (j = 0; j < 3; j++)
+		{
+			vexNormal[k][j] = (octahedronFaceNormal[octahedronVertexIndex[k][0]][j] + octahedronFaceNormal[octahedronVertexIndex[k][1]][j] + octahedronVertexIndex[octahedronFaceIndex[k][2]][j]) / 3.0;
+		}
+	}
 }
 
-void CalculateTranslationSteps()
+void calculateOctahedronFaceNormal(GLdouble normal[8][3])
 {
-	translationXStep = rotationAxis[0] * stepPortion;
-	translationYStep = rotationAxis[1] * stepPortion;
-	translationZStep = rotationAxis[2] * stepPortion;
+	GLdouble temp;
+	GLdouble tempPt[3];
+	GLint k, j;
 
-	tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
+	GLdouble vert1[3], vert2[3], vert3[3];
+
+	for (k = 0; k < 8; k++)
+	{
+		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
+		for (j = 0; j < 3; j++)
+		{
+			vert1[j] = octahedronVertex[octahedronFaceIndex[k][0]][j];
+			vert2[j] = octahedronVertex[octahedronFaceIndex[k][1]][j];
+			vert3[j] = octahedronVertex[octahedronFaceIndex[k][2]][j];
+		}
+
+		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
+		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
+		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
+		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
+
+		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
+		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
+
+		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
+		normal[k][0] = tempPt[0] / temp;
+		normal[k][1] = tempPt[1] / temp;
+		normal[k][2] = tempPt[2] / temp;
+	}
+
 }
+
+//End Neil's Octahedron ********************************************************************************************************
+
+//setup 
 
 void init()
 {
@@ -644,7 +790,6 @@ void init()
 	glLoadIdentity();
 
 	glFrustum(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
-		//gluPerspective(120,1,180,500);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -670,11 +815,29 @@ void drawAxis(GLdouble xmin, GLdouble xmax, GLdouble ymin, GLdouble ymax, GLdoub
 	glLineWidth(1);
 }
 
-GLfloat spotLight_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-GLfloat spotLight_diffuse[] = { 1, 1, 1, 1.0 };
-GLfloat spotLight_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat spotLight_position[4] = { initialPosition[0], initialPosition[1] - 200, initialPosition[2] + 800, 1.0 };
-GLfloat dirVector[] = { 0.0,0.0,-1.0 };
+void CalculateFinalTranslationVector()
+{
+	GLdouble denominator = pow(rotationAxis[0], 2) + pow(rotationAxis[1], 2) + pow(rotationAxis[1], 2);
+	GLdouble numerator = -rotationAxis[0] * endPoint1[0] - rotationAxis[1] * endPoint1[1] - rotationAxis[2] * endPoint1[2];
+	GLdouble t = numerator / denominator;
+
+	finalTranslation[0] = rotationAxis[0] * t + endPoint1[0];
+	finalTranslation[1] = rotationAxis[1] * t + endPoint1[1];
+	finalTranslation[2] = rotationAxis[2] * t + endPoint1[2];
+}
+
+void CalculateTranslationSteps()
+{
+	translationXStep = rotationAxis[0] * stepPortion;
+	translationYStep = rotationAxis[1] * stepPortion;
+	translationZStep = rotationAxis[2] * stepPortion;
+
+	tx = endPoint2[0], ty = endPoint2[1], tz = endPoint2[2];
+}
+
+
+//lighting
+
 void setSpotLightProperty()
 {
 	glLightfv(GL_LIGHT1, GL_AMBIENT, spotLight_ambient);
@@ -686,18 +849,13 @@ void setSpotLightProperty()
 	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
 
 	glColor3f(1.0, 1.0, 1.0);
-	//glPointSize(10.0);
 	glBegin(GL_POINTS);
 	glVertex3f(spotLight_position[0], spotLight_position[1], spotLight_position[2]);
 	glEnd();
-	//glPointSize(1.0);
 	glFlush();
 }
 
-GLfloat pointLight_position[4] = { -150.0, 0.0, 0.0, 1.0 };
-GLfloat pointLight_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-GLfloat pointLight_diffuse[] = { 1, 1, 1, 1.0 };
-GLfloat pointLight_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+
 void setPointLightProperty()
 {
 	glLightfv(GL_LIGHT2, GL_POSITION, pointLight_position);
@@ -717,10 +875,7 @@ void setPointLightProperty()
 	glFlush();
 }
 
-GLfloat ambientCoef[] = { 0.8f, 0.0f, 0.0f };
-GLfloat diffuseCoef[] = { 0.8f, 0.0f, 0.0f };
-GLfloat specularCoef[] = { 1.0f, 1.0f, 1.0f };
-GLfloat mat_shininess = 128.0f;
+
 
 void setMaterialProperty()
 {
@@ -731,6 +886,8 @@ void setMaterialProperty()
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
 }
 
+//Display function
+
 void displayFunction()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -738,7 +895,6 @@ void displayFunction()
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
-	//glEnable(GL_NORMALIZE);
 	glCullFace(GL_BACK);
 	drawAxis(xmin1, xmax1, ymin1, ymax1, zfar1);
 	glLineWidth(5);
@@ -810,11 +966,6 @@ void displayFunction()
 			displayOctahedron();
 		}
 	}
-	//displayFaceNormal();
-	//displayVertexNormal();
-
-	//glDisable(GL_LIGHT1);
-	//glDisable(GL_LIGHT2);
 
 	glPopMatrix();
 	Sleep(20);
@@ -822,6 +973,55 @@ void displayFunction()
 
 	glFlush();
 }
+//idle 
+
+void idle()
+{
+	if (option == 1)
+	{
+		rotationAngle += rotationStep;
+
+		if (rotationAngle > 360)
+		{
+			rotationAngle = 0.0;
+		}
+	}
+	else if (option == 2)
+	{
+		scaleFactor += 0.01;
+		tx += translationXStep;
+		ty += translationYStep;
+		tz += translationZStep;
+		if (abs(tx) > abs(endPoint1[0]) && abs(ty) > abs(endPoint1[1]) && abs(tz) > abs(endPoint1[2]))
+		{
+			scaleFactor = 1.0;
+			tx = endPoint2[0];
+			ty = endPoint2[1];
+			tz = endPoint2[2];
+		}
+	}
+
+	glutPostRedisplay();
+}
+
+
+
+//reshape Function
+
+void reshapeFcn(GLint newWidth, GLint newHeight)
+{
+	glViewport(0, 0, newWidth, newHeight);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glRotatef(45, 1, 1, 0);
+}
+
+//Controls 
 
 void keyboard(unsigned char key, int x, int y) // for the first display window
 {
@@ -916,18 +1116,7 @@ void keyboard(unsigned char key, int x, int y) // for the first display window
 	glutPostRedisplay();
 }
 
-void reshapeFcn(GLint newWidth, GLint newHeight)
-{
-	glViewport(0, 0, newWidth, newHeight);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glRotatef(45, 1, 1, 0);
-}
 
 void animationSelection(GLint animationOption)
 {
@@ -994,37 +1183,7 @@ void animationSelection(GLint animationOption)
 	glutPostRedisplay();
 }
 
-void idle()
-{
-	if (option == 1)
-	{
-		rotationAngle += rotationStep;
-		/*if (rotationStep >= 10)
-		{
-			rotationStep = 2;
-		}*/
-		if (rotationAngle > 360)
-		{
-			rotationAngle = 0.0;
-		}
-	}
-	else if (option == 2)
-	{
-		scaleFactor += 0.01;
-		tx += translationXStep;
-		ty += translationYStep;
-		tz += translationZStep;
-		if (abs(tx) > abs(endPoint1[0]) && abs(ty) > abs(endPoint1[1]) && abs(tz) > abs(endPoint1[2]))
-		{
-			scaleFactor = 1.0;
-			tx = endPoint2[0];
-			ty = endPoint2[1];
-			tz = endPoint2[2];
-		}
-	}
 
-	glutPostRedisplay();
-}
 
 void keyFunc(GLint key, GLint xMouse, GLint yMouse)
 {
@@ -1044,7 +1203,6 @@ void drawOptions(GLint drawOptions)
 	case 1:
 		mode = GL_POINT;
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
-		//glPointSize(100);
 		break;
 	case 2:
 		mode = GL_LINE;
@@ -1085,56 +1243,10 @@ void textureOptions(GLint drawOptions)
 	glutPostRedisplay();
 }
 
-void calculateOctahedronVertexNormal(GLdouble vexNormal[6][3])
-{
-	GLint k, j;
-
-	for (k = 0; k < 6; k++)
-	{
-
-		for (j = 0; j < 3; j++)
-		{
-			vexNormal[k][j] = (octahedronFaceNormal[octahedronVertexIndex[k][0]][j] + octahedronFaceNormal[octahedronVertexIndex[k][1]][j] + octahedronVertexIndex[octahedronFaceIndex[k][2]][j]) / 3.0;
-		}
-	}
-}
-void calculateOctahedronFaceNormal(GLdouble normal[8][3])
-{
-	GLdouble temp;
-	GLdouble tempPt[3];
-	GLint k, j;
-
-	GLdouble vert1[3], vert2[3], vert3[3];
-
-	for (k = 0; k < 8; k++)
-	{
-		//Use three temperory vectors to get the three vertices under consideration to simplify the expressions of normal vector components
-		for (j = 0; j < 3; j++)
-		{
-			vert1[j] = octahedronVertex[octahedronFaceIndex[k][0]][j];
-			vert2[j] = octahedronVertex[octahedronFaceIndex[k][1]][j];
-			vert3[j] = octahedronVertex[octahedronFaceIndex[k][2]][j];
-		}
-
-		//The following three statements are the code version of formula in topic slide 12 (Module 2 part 2)
-		tempPt[0] = (vert2[1] - vert1[1])*(vert3[2] - vert1[2]) - (vert2[2] - vert1[2])*(vert3[1] - vert1[1]);
-		tempPt[1] = -(vert2[0] - vert1[0])*(vert3[2] - vert1[2]) + (vert2[2] - vert1[2])*(vert3[0] - vert1[0]);
-		tempPt[2] = (vert2[0] - vert1[0])*(vert3[1] - vert1[1]) - (vert2[1] - vert1[1])*(vert3[0] - vert1[0]);
-
-		//THis is to calculate the magnitude if the normal vector using the formula mag = sqrt(x^2+y^2+z^2)
-		temp = sqrt((tempPt[0] * tempPt[0] + tempPt[1] * tempPt[1] + tempPt[2] * tempPt[2]));
-
-		//The following three statements are to normalise the normal vector to make its magnitude be one unit 
-		normal[k][0] = tempPt[0] / temp;
-		normal[k][1] = tempPt[1] / temp;
-		normal[k][2] = tempPt[2] / temp;
-	}
-
-}
-
 
 int main(int argc, char** argv)
 {
+	//setup window
 	GLint windowID;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -1145,8 +1257,9 @@ int main(int argc, char** argv)
 	windowID = glutCreateWindow("Part 2 - 3D Object");
 	makeImage();
 	init();
-	CalculatePrisimPoints(Origin);
+	CalculatePrisimPoints(initialPosition);
 	calculateCubePoints(side);
+	calculateRoofPoints(side);
 	
 	for (int i = 0; i < 3; i++)
 	{
@@ -1165,6 +1278,7 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("Verteces", 1);
 	glutAddMenuEntry("Edges", 2);
 	glutAddMenuEntry("Everything", 3);
+
 	GLint textureModeMenu;
 	textureModeMenu = glutCreateMenu(textureOptions);
 	glutAddMenuEntry("No Texture", 1);
@@ -1189,6 +1303,11 @@ int main(int argc, char** argv)
 	calculateOctahedronVertexNormal(octahedronVertexNormal);
 	calculatePrisimFaceNormal(prisimFaceNormal);
 	CalculatePrisimVertexNormals(prisimVertexNormal);
+	calculateHouseFaceNormal(faceNormalCubeKevin);
+	calculateHouseVertexNormal(vertexNormalCubeKevin);
+
+	calculateRoofFaceNormal(faceNormalRoofKevin);
+	calculateRoofVertexNormal(vertexNormalRoofKevin);
 
 	glutDisplayFunc(displayFunction);
 	glutSpecialFunc(keyFunc);
