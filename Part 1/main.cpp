@@ -5,10 +5,12 @@
 #include <vector>
 using namespace std;
 
+int objectOption = 0;
 GLint displayOption = 2;
 GLdouble height = 60;
 GLdouble baseWidth = 60;
 GLdouble yOffset = 0;
+GLint replay = 0;
 
 GLdouble initialTriangleVertices[3][2] = { { 0,0 - yOffset },{ baseWidth*0.5,height - yOffset },{ -baseWidth*0.5,height - yOffset } };
 int currentTriangleRoundCount = 0;
@@ -132,11 +134,229 @@ void initializeUnitTransformations()
 		completedRotations.push_back(false);
 	}
 }
-
-void displayFunction()
+void idleNeil()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	//glPushMatrix();
+	if (displayOption == 1)
+	{
+		if (currentTriangleRoundCount == 0)
+		{
+			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
+			{
+				if (!completedRotations[i])
+				{
+					if (rzs[i] >= totalRotations[i])
+					{
+						rzs[i] = totalRotations[i];
+						completedRotations[i] = true;
+					}
+					else
+					{
+						rzs[i] += tzStep;
+					}
+				}
+				else if (!completedTranslates[i])
+				{
+					if (tys[i] >= totalTranslations[i])
+					{
+						tys[i] = totalTranslations[i];
+						completedTranslates[i] = true;
+					}
+					else
+					{
+						tys[i] += tyStep;
+					}
+				}
+				else if (!completedScales[i])
+				{
+
+					if (sxs[i] >= totalScales[i] && sys[i] >= totalScales[i] && szs[i] >= totalScales[i])
+					{
+						completedScales[i] = true;
+						if (i == totalTriangleCountOfOneRow - 1)
+						{
+							rowStartToDrawFlag = true;
+							currentTriangleRoundCount++;
+						}
+					}
+					else
+					{
+						sxs[i] += sxStep;
+						sys[i] += syStep;
+						szs[i] += szStep;
+					}
+				}
+			}
+		}
+		if (currentTriangleRoundCount == 1)
+		{
+			if (rowStartToDrawFlag)
+			{
+				initializeUnitTransformations();
+				calculateTransformations();
+				rowStartToDrawFlag = false;
+			}
+
+			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
+			{
+				if (!completedRotations[i])
+				{
+					if (rzs[i] >= totalRotations[i])
+					{
+						rzs[i] = totalRotations[i];
+
+						completedRotations[i] = true;
+					}
+					else
+					{
+						rzs[i] += tzStep;
+					}
+				}
+				else if (!completedTranslates[i])
+				{
+					if (txs[i] >= totalTranslations[i])
+					{
+						txs[i] = totalTranslations[i];
+						completedTranslates[i] = true;
+					}
+					else
+					{
+						txs[i] += txStep;
+					}
+				}
+				else if (!completedScales[i])
+				{
+					if (sxs[i] >= totalScales[i] && sys[i] >= totalScales[i] && szs[i] >= totalScales[i])
+					{
+						completedScales[i] = true;
+						if (i == totalTriangleCountOfOneRow - 1)
+						{
+							rowStartToDrawFlag = true;
+							currentTriangleRoundCount++;
+						}
+					}
+					else
+					{
+						sxs[i] += sxStep;
+						sys[i] += syStep;
+						szs[i] += szStep;
+					}
+				}
+			}
+		}
+		if (currentTriangleRoundCount == 2)
+		{
+			if (rowStartToDrawFlag)
+			{
+				initializeUnitTransformations();
+				calculateTransformations();
+				rowStartToDrawFlag = false;
+			}
+			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
+			{
+				if (!completedRotations[i])
+				{
+					if (rzs[i] >= totalRotations[i])
+					{
+						rzs[i] = totalRotations[i];
+						completedRotations[i] = true;
+					}
+					else
+					{
+						rzs[i] += tzStep;
+					}
+				}
+				else if (!completedTranslates[i])
+				{
+					if (tys[i] >= totalTranslations[i])
+					{
+						tys[i] = totalTranslations[i];
+						completedTranslates[i] = true;
+					}
+					else
+					{
+						tys[i] += tyStep;
+					}
+				}
+				else if (!completedScales[i])
+				{
+					if (sxs[i] >= totalScales[i] && sys[i] >= totalScales[i] && szs[i] >= totalScales[i])
+					{
+						completedScales[i] = true;
+						if (i == totalTriangleCountOfOneRow - 1)
+						{
+							rowStartToDrawFlag = true;
+							currentTriangleRoundCount++;
+						}
+					}
+					else
+					{
+						sxs[i] += sxStep;
+						sys[i] += syStep;
+						szs[i] += szStep;
+					}
+				}
+			}
+		}
+		if (currentTriangleRoundCount == 3)
+		{
+			if (rowStartToDrawFlag)
+			{
+				initializeUnitTransformations();
+				calculateTransformations();
+				rowStartToDrawFlag = false;
+			}
+			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
+			{
+				if (!completedRotations[i])
+				{
+					if (rzs[i] >= totalRotations[i])
+					{
+						rzs[i] = totalRotations[i];
+
+						completedRotations[i] = true;
+					}
+					else
+					{
+						rzs[i] += tzStep;
+					}
+				}
+				else if (!completedTranslates[i])
+				{
+					if (txs[i] >= totalTranslations[i])
+					{
+						txs[i] = totalTranslations[i];
+						completedTranslates[i] = true;
+					}
+					else
+					{
+						txs[i] += txStep;
+					}
+				}
+				else if (!completedScales[i])
+				{
+					if (sxs[i] >= totalScales[i] && sys[i] >= totalScales[i] && szs[i] >= totalScales[i])
+					{
+						completedScales[i] = true;
+						if (i == totalTriangleCountOfOneRow - 1)
+						{
+							rowStartToDrawFlag = true;
+							currentTriangleRoundCount++;
+						}
+					}
+					else
+					{
+						sxs[i] += sxStep;
+						sys[i] += syStep;
+						szs[i] += szStep;
+					}
+				}
+			}
+		}
+	}
+}
+void animationNeil()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	if (displayOption == 2)
 	{
@@ -201,7 +421,7 @@ void displayFunction()
 
 		if (currentTriangleRoundCount == 0)
 		{
-			for (int i = 1; i<totalTriangleCountOfOneRow; i++)
+			for (int i = 1; i < totalTriangleCountOfOneRow; i++)
 			{
 				glPushMatrix();
 				const GLdouble translateMatrix[16] = { 1,0,0,0,0,1,0,0,0,0,1,0,0,tys[i],0,1 };
@@ -229,7 +449,7 @@ void displayFunction()
 				glPopMatrix();
 			}
 
-			for (int i = 0; i<totalTriangleCountOfOneRow; i++)
+			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
 			{
 				glPushMatrix();
 				GLdouble translateMatrix[16] = { 1,0,0,0,0,1,0,0,0,0,1,0,txs[i],0,0,1 };
@@ -275,7 +495,7 @@ void displayFunction()
 				drawTriangle();
 				glPopMatrix();
 			}
-			for (int i = 0; i<totalTriangleCountOfOneRow; i++)
+			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
 			{
 				glPushMatrix();
 				GLdouble translateMatrix[16] = { 1,0,0,0,0,1,0,0,0,0,1,0,0,-tys[i],0,1 };
@@ -340,7 +560,7 @@ void displayFunction()
 				drawTriangle();
 				glPopMatrix();
 			}
-			for (int i = 0; i<totalTriangleCountOfOneRow; i++)
+			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
 			{
 				glPushMatrix();
 				GLdouble translateMatrix[16] = { 1,0,0,0,0,1,0,0,0,0,1,0,-txs[i],0,0,1 };
@@ -408,257 +628,161 @@ void displayFunction()
 			}
 		}
 	}
-
+	
 	if (displayOption == 1)
 	{
 		Sleep(50);
 	}
+}
+//Kevin's knot******************************************************************************
+GLdouble xmin1 = -300, xmax1 = 300, ymin1 = -300, ymax1 = 300, znear1 = -500, zfar1 = 500;
+GLdouble tyTotalKevin = 0;
+GLdouble tyTotal1Kevin = 0;
+GLdouble tyStepKevin = 10;
+GLdouble faceData1[4][2] = { { 150, -300 },{ 300, -450 } ,{ 150, -600 },{ 0, -450 } };
+GLdouble faceData2[4][2] = { { -150 ,300 },{ -300, 450 } ,{ -150 , 600 },{ 0 , 450 } };
+//Display Left Quad
+void displayQuad1()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glColor3f(1, 0, 0);
+	glBegin(GL_QUADS);
+	for (GLint i = 0; i < 4; i++)
+	{
+		glVertex2dv(faceData2[i]);
 
+	}
+	glEnd();
+}
+
+//Display Right Quad
+void displayQuad()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glColor3f(1, 0, 0);
+	glBegin(GL_QUADS);
+	for (GLint i = 0; i < 4; i++)
+	{
+		glVertex2dv(faceData1[i]);
+
+	}
+	glEnd();
+}
+
+//Translate Quad to go up
+void translateQuad(void)
+{
+	glPushMatrix();
+
+	glTranslated(0, tyTotalKevin, 0);
+	displayQuad();
+
+	glPopMatrix();
+}
+
+//Translate Quad to go down
+void translateQuad1(void)
+{
+	glPushMatrix();
+
+	glTranslated(0, tyTotal1Kevin, 0);
+	displayQuad1();
+
+	glPopMatrix();
+}
+
+//Counter for replaying the display, also to refresh screen when done(kinda)
+void remakeSquare()
+{
+	if (replay < 100) {
+		replay++;
+		tyTotalKevin = 0;
+		tyTotal1Kevin = 0;
+	}
+	else {
+		replay = 0;
+	}
+}
+void animationKevin()
+{
+
+	glLineWidth(5);
+	//animation
+	if (displayOption == 1) {
+		for (GLint i = 0; i <= replay; i++) {
+			translateQuad();
+			tyTotalKevin += tyStepKevin;
+			if (tyTotalKevin > ymax1 * 3) {
+				tyTotalKevin = -ymax1 * 2;
+			}
+		}
+
+		for (GLint i = 0; i <= replay; i++) {
+			translateQuad1();
+			tyTotal1Kevin -= tyStepKevin;
+			if (tyTotal1Kevin < ymin1 * 3) {
+				tyTotal1Kevin = ymax1 * 2;
+			}
+		}
+	}
+
+	//final image
+	if (displayOption == 2) {
+		for (GLint i = 0; i <= 100; i++) {
+			translateQuad();
+			tyTotalKevin = 100;
+			if (tyTotalKevin > ymax1 * 3) {
+				tyTotalKevin = -ymax1 * 2;
+			}
+		}
+
+		for (GLint i = 0; i <= 100; i++) {
+			translateQuad1();
+			tyTotal1Kevin = 100;
+			if (tyTotal1Kevin < ymin1 * 3) {
+				tyTotal1Kevin = ymax1 * 2;
+			}
+		}
+	}
+
+	remakeSquare();
+}
+//Kevin's knot******************************************************************************
+GLint timeDelay = 90;
+
+void delay(GLint value) {
+	glutPostRedisplay();
+	glutTimerFunc(timeDelay, delay, 0);
+}
+
+void displayFunction()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	if (objectOption == 0) {
+		animationNeil();
+	}
+	if (objectOption == 2)
+	{
+		glLineWidth(5);
+		animationKevin();
+	}
 	glutSwapBuffers();
-
-	//glFlush();
 };
 
+void idle()
+{	
+	if (objectOption == 0)
+	{
+		idleNeil();
+	}
+	if (objectOption==2)
+	{
+	}
+	glutPostRedisplay();
+}
 void Selection(GLint animationOption)
 {
 	switch (animationOption) {
-	case 1:
-		displayOption = 1;
-		break;
-	case 2:
-		displayOption = 2;
-		break;
-	default:
-		cout << "invalid option" << endl;
-	}
-	glutPostRedisplay();
-}
-
-void idle()
-{
-	if (displayOption == 1)
-	{
-		if (currentTriangleRoundCount == 0)
-		{
-			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
-			{
-				if (!completedRotations[i])
-				{
-					if (rzs[i] >= totalRotations[i])
-					{
-						rzs[i] = totalRotations[i];
-						completedRotations[i] = true;
-					}
-					else
-					{
-						rzs[i] += tzStep;
-					}
-				}
-				else if (!completedTranslates[i])
-				{
-					if (tys[i] >= totalTranslations[i])
-					{
-						tys[i] = totalTranslations[i];
-						completedTranslates[i] = true;
-					}
-					else
-					{
-						tys[i] += tyStep;
-					}
-				}
-				else if (!completedScales[i])
-				{
-
-					if (sxs[i] >= totalScales[i] && sys[i] >= totalScales[i] && szs[i] >= totalScales[i])
-					{
-						completedScales[i] = true;
-						if (i == totalTriangleCountOfOneRow - 1)
-						{
-							rowStartToDrawFlag = true;
-							currentTriangleRoundCount++;
-						}
-					}
-					else
-					{
-						sxs[i] += sxStep;
-						sys[i] += syStep;
-						szs[i] += szStep;
-					}
-				}
-			}
-		}
-		if (currentTriangleRoundCount == 1)
-		{
-			if (rowStartToDrawFlag)
-			{
-				initializeUnitTransformations();
-				calculateTransformations();
-				rowStartToDrawFlag = false;
-			}
-
-			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
-			{
-				if (!completedRotations[i])
-				{
-					if (rzs[i] >= totalRotations[i])
-					{
-						rzs[i] = totalRotations[i];
-
-						completedRotations[i] = true;
-					}
-					else
-					{
-						rzs[i] += tzStep;
-					}
-				}
-				else if (!completedTranslates[i])
-				{
-					if (txs[i] >= totalTranslations[i])
-					{
-						txs[i] = totalTranslations[i];
-						completedTranslates[i] = true;
-					}
-					else
-					{
-						txs[i] += txStep;
-					}
-				}
-				else if (!completedScales[i])
-				{
-					if (sxs[i] >= totalScales[i] && sys[i] >= totalScales[i] && szs[i] >= totalScales[i])
-					{
-						completedScales[i] = true;
-						if (i == totalTriangleCountOfOneRow - 1)
-						{
-							rowStartToDrawFlag = true;
-							currentTriangleRoundCount++;
-						}
-					}
-					else
-					{
-						sxs[i] += sxStep;
-						sys[i] += syStep;
-						szs[i] += szStep;
-					}
-				}
-			}
-		}
-		if (currentTriangleRoundCount == 2)
-		{
-			if (rowStartToDrawFlag)
-			{
-				initializeUnitTransformations();
-				calculateTransformations();
-				rowStartToDrawFlag = false;
-			}
-			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
-			{
-				if (!completedRotations[i])
-				{
-					if (rzs[i] >= totalRotations[i])
-					{
-						rzs[i] = totalRotations[i];
-						completedRotations[i] = true;
-					}
-					else
-					{
-						rzs[i] += tzStep;
-					}
-				}
-				else if (!completedTranslates[i])
-				{
-					if (tys[i] >= totalTranslations[i])
-					{
-						tys[i] = totalTranslations[i];
-						completedTranslates[i] = true;
-					}
-					else
-					{
-						tys[i] += tyStep;
-					}
-				}
-				else if (!completedScales[i])
-				{
-					if (sxs[i] >= totalScales[i] && sys[i] >= totalScales[i] && szs[i] >= totalScales[i])
-					{
-						completedScales[i] = true;
-						if (i == totalTriangleCountOfOneRow - 1)
-						{
-							rowStartToDrawFlag = true;
-							currentTriangleRoundCount++;
-						}
-					}
-					else
-					{
-						sxs[i] += sxStep;
-						sys[i] += syStep;
-						szs[i] += szStep;
-					}
-				}
-			}
-		}
-		if (currentTriangleRoundCount == 3)
-		{
-			if (rowStartToDrawFlag)
-			{
-				initializeUnitTransformations();
-				calculateTransformations();
-				rowStartToDrawFlag = false;
-			}
-			for (int i = 0; i < totalTriangleCountOfOneRow; i++)
-			{
-				if (!completedRotations[i])
-				{
-					if (rzs[i] >= totalRotations[i])
-					{
-						rzs[i] = totalRotations[i];
-
-						completedRotations[i] = true;
-					}
-					else
-					{
-						rzs[i] += tzStep;
-					}
-				}
-				else if (!completedTranslates[i])
-				{
-					if (txs[i] >= totalTranslations[i])
-					{
-						txs[i] = totalTranslations[i];
-						completedTranslates[i] = true;
-					}
-					else
-					{
-						txs[i] += txStep;
-					}
-				}
-				else if (!completedScales[i])
-				{
-					if (sxs[i] >= totalScales[i] && sys[i] >= totalScales[i] && szs[i] >= totalScales[i])
-					{
-						completedScales[i] = true;
-						if (i == totalTriangleCountOfOneRow - 1)
-						{
-							rowStartToDrawFlag = true;
-							currentTriangleRoundCount++;
-						}
-					}
-					else
-					{
-						sxs[i] += sxStep;
-						sys[i] += syStep;
-						szs[i] += szStep;
-					}
-				}
-			}
-		}
-	}
-	glutPostRedisplay();
-}
-
-void displayMode(GLint displayOptions)
-{
-	switch (displayOptions) {
 	case 1:
 		displayOption = 1;
 		glutIdleFunc(idle);
@@ -667,6 +791,18 @@ void displayMode(GLint displayOptions)
 		displayOption = 2;
 		glutIdleFunc(nullptr);
 		break;
+	case 3:
+		objectOption = 0;
+		break;
+	case 4:
+		objectOption = 1;
+		break;
+	case 5:
+		objectOption = 2;
+		break;
+
+	default:
+		cout << "invalid option" << endl;
 	}
 	glutPostRedisplay();
 }
@@ -686,16 +822,25 @@ int main(int argc, char** argv)
 
 	init();
 
-	subMenu = glutCreateMenu(displayMode);
-	glutAddMenuEntry("Animation", 1);
-	glutAddMenuEntry("Result", 2);
+	//subMenu = glutCreateMenu(displayMode);
+	//glutAddMenuEntry("Animation", 1);
+	//glutAddMenuEntry("Result", 2);
+	//glutAddMenuEntry("Neil's Cross", 3);
+	//glutAddMenuEntry("Mark's Wormhole", 4);
+	//glutAddMenuEntry("Kevin's Knot", 5);
 
 	glutCreateMenu(Selection);
+	glutAddMenuEntry("Animation", 1);
+	glutAddMenuEntry("Result", 2);
+	glutAddMenuEntry("Neil's Cross", 3);
+	glutAddMenuEntry("Mark's Wormhole", 4);
+	glutAddMenuEntry("Kevin's Knot", 5);
 
-	glutAddSubMenu("Display Mode", subMenu);
+	//glutAddSubMenu("Display Mode", subMenu);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	glutDisplayFunc(displayFunction);
+	delay(0);
 
 	glutMainLoop();
 
