@@ -1,10 +1,12 @@
 #include <iostream>
 #define _USE_MATH_DEFINES
-//#include <math.h>
 #include "SOIL.h"
 #include <GL/glut.h>
 #include <vector>
+#include <math.h>
 using namespace std;
+
+int objectOption = 0;
 
 GLdouble faceNormal[8][3];
 GLdouble vertexNormal[6][3];
@@ -17,8 +19,9 @@ GLfloat pointSize = 10;
 
 GLdouble endPoint1[3] = { 398.974 ,-117.217 ,153.073 };
 GLdouble endPoint2[3] = { -198.974 ,317.217 ,-153.073 };
+
 GLdouble initialPosition[3] = { 137.187,409.385,-99.6725 };
-//597.948, -434.434, 306.146
+
 GLdouble rotationAxis[3] = { endPoint1[0] - endPoint2[0] ,endPoint1[1] - endPoint2[1],endPoint1[2] - endPoint2[2] };
 GLdouble lineLengh = pow(endPoint1 - endPoint2, 2);
 GLdouble steps[3] = {};
@@ -56,48 +59,276 @@ GLint border = 0;
 const int imageWidth = 10;
 const int imageHeight = 10;
 GLubyte texArray1[imageHeight][imageWidth][4];
-void displayFaceNormal()
+
+//Mark's Prism*************************************************************************************
+GLint triFaceIndex[6][3] = { { 1, 0, 6 },{ 2, 1, 6 },{ 3, 2, 6 },{ 4, 3, 6 },{ 5, 4, 6 },{ 0, 5, 6 } };
+GLdouble theta;
+GLdouble initialPositionMark[3] = { 251.001, 310.254, 182.363 };
+GLdouble POne[3] = { 328.825, -66.2508, 282.843 };
+GLdouble PTwo[3] = { -128.825, 266.251, -282.843 };
+GLdouble prisimData[7][3];
+GLint baseFaceIndex[6] = { 0, 1, 2, 3, 4, 5 };
+GLint hexigonBaseVerts = 6;
+GLdouble radius = 100;
+GLdouble prismHeight = 200;
+
+void CalculatePrisimPoints(GLdouble * centerPoints)
 {
-	GLdouble tempPt[3];
-	GLint k, j;
-	GLdouble scale = 500.0;
+	prisimData[6][0] = centerPoints[0];
+	prisimData[6][1] = centerPoints[1] + prismHeight / 2;
+	prisimData[6][2] = centerPoints[2];
 
-	glColor3f(1.0, 0.0, 1.0);
-
-	for (k = 0; k < 6; k++)
+	for (GLint i = 0; i < hexigonBaseVerts; i++)
 	{
-		for (j = 0; j < 3; j++)
+
+		theta = 2.0 * M_PI * i / hexigonBaseVerts;
+		prisimData[i][0] = centerPoints[0] + radius * cos(theta);
+		prisimData[i][1] = centerPoints[1] - prismHeight / 2;
+		prisimData[i][2] = centerPoints[2] + radius * sin(theta);
+	}
+}
+void drawRotationAxis()
+{
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3d(POne[0], POne[1], POne[2]);
+	glVertex3d(PTwo[0], PTwo[1], PTwo[2]);
+	glEnd();
+}
+
+void DrawTriangleSides()
+{
+	glColor3f(0.0, 0.0, 1.0);
+	for (int k = 0; k < 4; k++)
+	{
+		glBegin(GL_TRIANGLES);
+		for (int i = 0; i < 6; i++)
 		{
-			tempPt[j] = (octahedronVertex[faceIndex[k][0]][j] + octahedronVertex[faceIndex[k][2]][j]) / 2.0; // average of two opposite vertices
+			glVertex3dv(prisimData[triFaceIndex[k][i]]);
 		}
-
-		glBegin(GL_LINES);
-		glVertex3dv(tempPt);
-		glVertex3d(tempPt[0] + faceNormal[k][0] * scale, tempPt[1] + faceNormal[k][1] * scale, tempPt[2] + faceNormal[k][2] * scale);
 		glEnd();
 	}
-
-	glFlush();
 }
 
-//This function is to display the normal vector for each vertex of the cube which are located at each vertex.
-void displayVertexNormal()
+void DrawBase()
 {
-	GLint k, j;
-	GLdouble scale = 50.0;
+	glColor3f(0.0, 0.0, 1.0);
 
-	glColor3f(1.0, 1.0, 1.0);
-
-	for (k = 0; k < 8; k++)
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 6; i++)
 	{
-		glBegin(GL_LINES);
-		glVertex3dv(octahedronVertex[k]);
-		glVertex3d(octahedronVertex[k][0] + vertexNormal[k][0] * scale, octahedronVertex[k][1] + vertexNormal[k][1] * scale, octahedronVertex[k][2] + vertexNormal[k][2] * scale);
-		glEnd();
+		glVertex3dv(prisimData[baseFaceIndex[i]]);
+	}
+	glEnd();
+
+}
+
+//Mark's Prism*************************************************************************************
+
+//Kevin's house************************************************************************************
+GLint faceIndexKevin[6][4] = { { 0, 1, 2, 3 },{ 6, 2, 1, 5 },{ 4, 7, 6, 5 },{ 7, 4, 0, 3 },{ 5, 1, 0, 4 },{ 7, 3, 2, 6 } };
+GLint vertexIndexKevin[8][3] = { { 0, 3, 4 },{ 0, 1, 4 },{ 0, 1, 5 },{ 0, 3, 5 },{ 2, 3, 4 },{ 1, 2, 4 },{ 1, 2, 5 },{ 2, 3, 5 } };
+GLdouble cubeData[8][3];
+GLint initPx = 43.0533;
+GLint initPy = 336.356;
+GLint initPz = -132.504;
+GLint axisP1x = 214.198;
+GLint axisP1y = -251.465;
+GLint axisP1z = 153.073;
+
+GLint axisP2x = -14.1978;
+GLint axisP2y = 451.465;
+GLint axisP2z = -153.073;
+GLdouble side = 150;
+
+void calculateCubePoints(GLdouble side)
+{
+
+	cubeData[0][0] = initPx - side;
+	cubeData[0][1] = initPy - (side / 2);
+	cubeData[0][2] = initPz - (side / 2);
+
+
+	cubeData[1][0] = initPx - side;
+	cubeData[1][1] = initPy - (side / 2);
+	cubeData[1][2] = initPz + (side / 2);
+
+
+	cubeData[2][0] = initPx + side;
+	cubeData[2][1] = initPy - (side / 2);
+	cubeData[2][2] = initPz + (side / 2);
+
+	cubeData[3][0] = initPx + side;
+	cubeData[3][1] = initPy - (side / 2);
+	cubeData[3][2] = initPz - (side / 2);
+
+
+	cubeData[4][0] = cubeData[0][0];
+	cubeData[4][1] = cubeData[0][1] + side;
+	cubeData[4][2] = cubeData[0][2];
+
+	cubeData[5][0] = cubeData[1][0];
+	cubeData[5][1] = cubeData[0][1] + side;
+	cubeData[5][2] = cubeData[1][2];
+
+	cubeData[6][0] = cubeData[2][0];
+	cubeData[6][1] = cubeData[0][1] + side;
+	cubeData[6][2] = cubeData[2][2];
+
+	cubeData[7][0] = cubeData[3][0];
+	cubeData[7][1] = cubeData[0][1] + side;
+	cubeData[7][2] = cubeData[3][2];
+
+}
+
+void quad(GLint face[4]) // arguments are indices of vertives of a quad in vertex array
+{
+	glBegin(GL_QUADS);
+	for (GLint i = 0; i < 4; i++)
+	{
+		glNormal3dv(cubeData[face[i]]);
+		glVertex3dv(cubeData[face[i]]);
 	}
 
+	glEnd();
 	glFlush();
 }
+
+void displayCube() {
+	for (GLint i = 0; i < 6; i++)
+		quad(faceIndexKevin[i]);
+}
+
+void drawRoof()
+{
+	glBegin(GL_TRIANGLES);
+	//Roof 1
+	glNormal3d(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+
+	glNormal3d(initPx - side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+	glVertex3f(initPx - side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+
+	glNormal3d(initPx, initPy + side, initPz);
+	glVertex3f(initPx, initPy + side, initPz);
+
+	//Roof 2
+	glNormal3d(initPx + side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+	glVertex3f(initPx + side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+
+	glNormal3d(initPx + side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx + side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+
+	glNormal3d(initPx, initPy + side, initPz);
+	glVertex3f(initPx, initPy + side, initPz);
+
+	//Roof 3
+	glNormal3d(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+
+	glNormal3d(initPx + side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+	glVertex3f(initPx + side, 150 + (initPy - (side / 2)), initPz + (side / 2));
+
+	glNormal3d(initPx, initPy + side, initPz);
+	glVertex3f(initPx, initPy + side, initPz);
+
+	//Roof 4
+	glNormal3d(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx - side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+
+	glNormal3d(initPx + side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+	glVertex3f(initPx + side, 150 + (initPy - (side / 2)), initPz - (side / 2));
+
+	glNormal3d(initPx, initPy + side, initPz);
+	glVertex3f(initPx, initPy + side, initPz);
+
+	glEnd();
+
+
+
+
+	////roof side one
+	//glBegin(GL_QUADS);
+	//glNormal3d(0, side, 0);
+	//glVertex3f(0, side, 0);
+
+	//glNormal3d(side * 2, side, 0);
+	//glVertex3f(side * 2, side, 0);
+
+	//glNormal3d(side * 2 - 50, side + 25, side / 2);
+	//glVertex3f(side * 2 - 50, side + 25, side / 2);
+
+	//glNormal3d(50, side + 25, side / 2);
+	//glVertex3f(50, side + 25, side / 2);
+
+	////roof side two
+	//glNormal3d(0, side, side);
+	//glVertex3f(0, side, side);
+
+	//glNormal3d(side * 2, side, side);
+	//glVertex3f(side * 2, side, side);
+
+	//glNormal3d(side * 2 - 50, side + 25, side / 2);
+	//glVertex3f(side * 2 - 50, side + 25, side / 2);
+
+	//glNormal3d(50, side + 25, side / 2);
+	//glVertex3f(50, side + 25, side / 2);
+	//glEnd();
+}
+
+void drawHouse()
+{
+	displayCube();
+	drawRoof();
+}
+
+
+//Kevin's house************************************************************************************
+
+
+
+//void displayFaceNormal()
+//{
+//	GLdouble tempPt[3];
+//	GLint k, j;
+//	GLdouble scale = 500.0;
+//
+//	glColor3f(1.0, 0.0, 1.0);
+//
+//	for (k = 0; k < 6; k++)
+//	{
+//		for (j = 0; j < 3; j++)
+//		{
+//			tempPt[j] = (octahedronVertex[faceIndex[k][0]][j] + octahedronVertex[faceIndex[k][2]][j]) / 2.0; // average of two opposite vertices
+//		}
+//
+//		glBegin(GL_LINES);
+//		glVertex3dv(tempPt);
+//		glVertex3d(tempPt[0] + faceNormal[k][0] * scale, tempPt[1] + faceNormal[k][1] * scale, tempPt[2] + faceNormal[k][2] * scale);
+//		glEnd();
+//	}
+//
+//	glFlush();
+//}
+//
+////This function is to display the normal vector for each vertex of the cube which are located at each vertex.
+//void displayVertexNormal()
+//{
+//	GLint k, j;
+//	GLdouble scale = 50.0;
+//
+//	glColor3f(1.0, 1.0, 1.0);
+//
+//	for (k = 0; k < 8; k++)
+//	{
+//		glBegin(GL_LINES);
+//		glVertex3dv(octahedronVertex[k]);
+//		glVertex3d(octahedronVertex[k][0] + vertexNormal[k][0] * scale, octahedronVertex[k][1] + vertexNormal[k][1] * scale, octahedronVertex[k][2] + vertexNormal[k][2] * scale);
+//		glEnd();
+//	}
+//
+//	glFlush();
+//}
 void makeImage(void)
 {
 	GLint i, j, c;
@@ -377,7 +608,10 @@ void displayFunction()
 	{
 		glTranslated(finalTranslation[0], finalTranslation[1], finalTranslation[2]);
 		glRotated(rotationAngle, rotationAxis[0], rotationAxis[1], rotationAxis[2]);
+		glTranslated(initialPosition[0] - finalTranslation[0], initialPosition[1] - finalTranslation[1],
+				initialPosition[2] - finalTranslation[2]);
 	}
+
 	if (option == 2)
 	{
 		glTranslated(tx, ty, tz);
@@ -386,7 +620,7 @@ void displayFunction()
 	//else
 	//cout << "invalid option" << endl;
 
-	if (option != 2)
+	if (option == 0)
 	{
 		glTranslated(initialPosition[0], initialPosition[1], initialPosition[2]);
 	}
@@ -405,7 +639,21 @@ void displayFunction()
 	}
 	else
 	{
-		displayOctahedron();
+		if (objectOption == 0)
+		{
+			
+			DrawBase();
+			DrawTriangleSides();
+		}
+		if (objectOption == 1)
+		{
+			glTranslated(-initPx, -initPy, -initPz);
+			drawHouse();
+		}
+		if (objectOption == 2)
+		{
+			displayOctahedron();
+		}
 	}
 	//displayFaceNormal();
 	//displayVertexNormal();
@@ -533,10 +781,20 @@ void animationSelection(GLint animationOption)
 	case 2:
 		option = 2;
 		break;
-	case 7:
-		exit(0);
+	case 3:
+		//TODO Change the initial position and rotation axis
+		objectOption = 0;
+		break;
+	case 4:
+		//TODO Change the initial position and rotation axis
+		objectOption = 1;
+		break;
+
+	case 5:
+		objectOption = 2;
+		break;
+
 	default:
-		//cout << "invalid option" << endl;
 		break;
 	}
 	glutPostRedisplay();
@@ -692,11 +950,13 @@ int main(int argc, char** argv)
 
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(1000, 1000);
-
+	
 	windowID = glutCreateWindow("Part 2 - 3D Object");
 	makeImage();
 	init();
+	CalculatePrisimPoints(initialPositionMark);
 	CalculateFinalTranslationVector();
+	calculateCubePoints(side);
 	GLint displayModeMenu;
 	displayModeMenu = glutCreateMenu(drawOptions);
 	glutAddMenuEntry("Verteces", 1);
@@ -714,6 +974,11 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("Translation", 2);
 	glutAddSubMenu("Box Style", displayModeMenu);
 	glutAddSubMenu("Texture Style", textureModeMenu);
+
+	glutAddMenuEntry("Mark's Prism", 3);
+	glutAddMenuEntry("Kevin's House", 4);
+	glutAddMenuEntry("Neil's Octahedron", 5);
+
 	glutAddMenuEntry("Exit", 7);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
