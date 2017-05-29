@@ -12,6 +12,8 @@ GLdouble baseWidth = 60;
 GLdouble yOffset = 0;
 GLint replay = 0;
 
+GLdouble xmin1 = -800, xmax1 = 800, ymin1 = -800, ymax1 = 800, znear1 = -500, zfar1 = 500;
+
 GLdouble initialTriangleVertices[3][2] = { { 0,0 - yOffset },{ baseWidth*0.5,height - yOffset },{ -baseWidth*0.5,height - yOffset } };
 int currentTriangleRoundCount = 0;
 int totalTriangleCountOfOneRow = 6;//Can't be changed for the moment
@@ -635,10 +637,9 @@ void animationNeil()
 	}
 }
 //Kevin's knot******************************************************************************
-GLdouble xmin1 = -300, xmax1 = 300, ymin1 = -300, ymax1 = 300, znear1 = -500, zfar1 = 500;
 GLdouble tyTotalKevin = 0;
 GLdouble tyTotal1Kevin = 0;
-GLdouble tyStepKevin = 10;
+GLdouble tyStepKevin = 20;
 GLdouble faceData1[4][2] = { { 150, -300 },{ 300, -450 } ,{ 150, -600 },{ 0, -450 } };
 GLdouble faceData2[4][2] = { { -150 ,300 },{ -300, 450 } ,{ -150 , 600 },{ 0 , 450 } };
 //Display Left Quad
@@ -703,12 +704,11 @@ void remakeSquare()
 		replay = 0;
 	}
 }
-void animationKevin()
-{
 
-	glLineWidth(5);
-	//animation
-	if (displayOption == 1) {
+void idleKevin()
+{
+	if (displayOption == 1)
+	{
 		for (GLint i = 0; i <= replay; i++) {
 			translateQuad();
 			tyTotalKevin += tyStepKevin;
@@ -718,19 +718,52 @@ void animationKevin()
 		}
 
 		for (GLint i = 0; i <= replay; i++) {
-			translateQuad1();
 			tyTotal1Kevin -= tyStepKevin;
+			translateQuad1();
+
 			if (tyTotal1Kevin < ymin1 * 3) {
 				tyTotal1Kevin = ymax1 * 2;
 			}
 		}
+	}
+	if (displayOption == 1)
+	{
+		Sleep(50);
+	}
+}
+void animationKevin()
+{
+
+	glLineWidth(5);
+	//animation
+	if (displayOption == 1) {
+
+		for (GLint i = 0; i <= replay; i++) {
+			translateQuad();
+			tyTotalKevin += tyStepKevin;
+			if (tyTotalKevin > ymax1 * 3) {
+				tyTotalKevin = -ymax1 * 2;
+			}
+		}
+
+		for (GLint i = 0; i <= replay; i++) {
+			tyTotal1Kevin -= tyStepKevin;
+			translateQuad1();
+
+			if (tyTotal1Kevin < ymin1 * 3) {
+				tyTotal1Kevin = ymax1 * 2;
+			}
+		}
+
+
+
 	}
 
 	//final image
 	if (displayOption == 2) {
 		for (GLint i = 0; i <= 100; i++) {
 			translateQuad();
-			tyTotalKevin = 100;
+			tyTotalKevin += tyStepKevin;
 			if (tyTotalKevin > ymax1 * 3) {
 				tyTotalKevin = -ymax1 * 2;
 			}
@@ -738,7 +771,7 @@ void animationKevin()
 
 		for (GLint i = 0; i <= 100; i++) {
 			translateQuad1();
-			tyTotal1Kevin = 100;
+			tyTotal1Kevin -= tyStepKevin;
 			if (tyTotal1Kevin < ymin1 * 3) {
 				tyTotal1Kevin = ymax1 * 2;
 			}
@@ -748,12 +781,12 @@ void animationKevin()
 	remakeSquare();
 }
 //Kevin's knot******************************************************************************
-GLint timeDelay = 90;
-
-void delay(GLint value) {
-	glutPostRedisplay();
-	glutTimerFunc(timeDelay, delay, 0);
-}
+//GLint timeDelay = 5000;
+//
+//void delay(GLint value) {
+//	glutPostRedisplay();
+//	glutTimerFunc(timeDelay, delay, 0);
+//}
 
 void displayFunction()
 {
@@ -777,6 +810,7 @@ void idle()
 	}
 	if (objectOption==2)
 	{
+		idleKevin();
 	}
 	glutPostRedisplay();
 }
@@ -840,7 +874,7 @@ int main(int argc, char** argv)
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	glutDisplayFunc(displayFunction);
-	delay(0);
+//	delay(0);
 
 	glutMainLoop();
 

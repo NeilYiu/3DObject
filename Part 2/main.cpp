@@ -1147,10 +1147,10 @@ void animationSelection(GLint animationOption)
 	case 4:
 		for (int i = 0; i < 3; i++)
 		{
-			endPoint1[i] = endPoint1Kevin[i];
-			endPoint2[i] = endPoint2Kevin[i];
+			endPoint1[i] = endPoint1Neil[i];
+			endPoint2[i] = endPoint2Neil[i];
 
-			initialPosition[i] = initialPositionKevin[i];
+			initialPosition[i] = initialPositionNeil[i];
 			rotationAxis[i] = endPoint1[i] - endPoint2[i];
 		}
 		CalculateTranslationSteps();
