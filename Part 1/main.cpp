@@ -640,8 +640,9 @@ void animationNeil()
 GLdouble tyTotalKevin = 0;
 GLdouble tyTotal1Kevin = 0;
 GLdouble tyStepKevin = 20;
-GLdouble faceData1[4][2] = { { 150, -300 },{ 300, -450 } ,{ 150, -600 },{ 0, -450 } };
-GLdouble faceData2[4][2] = { { -150 ,300 },{ -300, 450 } ,{ -150 , 600 },{ 0 , 450 } };
+GLdouble faceData1[4][2] = { { 150, ymin1+150 },{  300, ymin1 } ,{ 150, ymin1-150},{ 0, ymin1 } };
+
+GLdouble faceData2[4][2] = { { -150 ,ymax1 +150 },{ -300, ymax1} ,{ -150 , ymax1-150 },{ 0 , ymax1 } };
 //Display Left Quad
 void displayQuad1()
 {
@@ -692,7 +693,7 @@ void translateQuad1(void)
 	glPopMatrix();
 }
 
-//Counter for replaying the display, also to refresh screen when done(kinda)
+//Counter for replaying the display, also to refresh screen when done
 void remakeSquare()
 {
 	if (replay < 100) {
@@ -712,17 +713,16 @@ void idleKevin()
 		for (GLint i = 0; i <= replay; i++) {
 			translateQuad();
 			tyTotalKevin += tyStepKevin;
-			if (tyTotalKevin > ymax1 * 3) {
-				tyTotalKevin = -ymax1 * 2;
+			if (tyTotalKevin > ymax1) {
+				tyTotalKevin = -ymax1;
 			}
 		}
 
 		for (GLint i = 0; i <= replay; i++) {
 			tyTotal1Kevin -= tyStepKevin;
 			translateQuad1();
-
-			if (tyTotal1Kevin < ymin1 * 3) {
-				tyTotal1Kevin = ymax1 * 2;
+			if (tyTotal1Kevin < ymin1) {
+				tyTotal1Kevin = ymax1;
 			}
 		}
 	}
@@ -750,7 +750,7 @@ void animationKevin()
 			tyTotal1Kevin -= tyStepKevin;
 			translateQuad1();
 
-			if (tyTotal1Kevin < ymin1 * 3) {
+			if (tyTotal1Kevin < ymin1 *3) {
 				tyTotal1Kevin = ymax1 * 2;
 			}
 		}
@@ -781,12 +781,7 @@ void animationKevin()
 	remakeSquare();
 }
 //Kevin's knot******************************************************************************
-//GLint timeDelay = 5000;
-//
-//void delay(GLint value) {
-//	glutPostRedisplay();
-//	glutTimerFunc(timeDelay, delay, 0);
-//}
+
 
 void displayFunction()
 {

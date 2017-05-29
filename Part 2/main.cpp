@@ -60,8 +60,6 @@ GLfloat specularCoef[] = { 1.0f, 1.0f, 1.0f };
 GLfloat mat_shininess = 128.0f;
 
 
-
-
 // Globals For Mark's Prisim
 
 GLdouble prisimFaceNormal[7][3];
