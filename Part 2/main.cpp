@@ -129,7 +129,7 @@ GLint roofFaceIndexKevin[4][3] = { { 0, 4, 1 } ,{ 1, 4, 2 } ,{ 2, 4, 3 } ,{ 3, 4
 GLdouble cubeData[8][3];
 GLdouble roofData[5][3];
 
-GLdouble faceNormalCubeKevin[6][3];
+GLdouble faceNormalCubeKevin[8][3];
 GLdouble vertexNormalCubeKevin[8][3];
 
 GLdouble faceNormalRoofKevin[4][3];
@@ -311,14 +311,11 @@ void DrawBase()
 }
 
 
-
-
-
 //End Mark's Prism*************************************************************************************
 
 //Kevin's house************************************************************************************
 
-
+//Calculation of Points-------------------------------------------------------------------------------
 void calculateCubePoints(GLdouble side)
 {
 
@@ -387,6 +384,7 @@ void calculateRoofPoints(GLdouble side)
 
 }
 
+//House Normal --------------------------------------------------------------------------------------
 void calculateHouseFaceNormal(GLdouble normal[6][3])
 {
 	GLdouble temp;
@@ -418,9 +416,6 @@ void calculateHouseFaceNormal(GLdouble normal[6][3])
 		normal[k][1] = tempPt[1] / temp;
 		normal[k][2] = tempPt[2] / temp;
 	}
-
-
-
 }
 
 void calculateHouseVertexNormal(GLdouble vexNormal[8][3])
@@ -437,6 +432,7 @@ void calculateHouseVertexNormal(GLdouble vexNormal[8][3])
 	}
 }
 
+//Roof Normal -----------------------------------------------------------------------------------------
 void calculateRoofFaceNormal(GLdouble normal[4][3])
 {
 	GLdouble temp;
@@ -479,14 +475,14 @@ void calculateRoofVertexNormal(GLdouble vexNormal[5][3])
 
 		for (j = 0; j < 3; j++)
 		{
-			vexNormal[k][j] = (faceNormalRoofKevin[roofIndexKevin[k][0]][j] + faceNormalRoofKevin[roofIndexKevin[k][1]][j] + faceNormalRoofKevin[roofIndexKevin[k][2]][j]) / 3.0;
+			vexNormal[k][j] = (faceNormalRoofKevin[roofIndexKevin[k][0]][j] + faceNormalRoofKevin[roofIndexKevin[k][1]][j] + faceNormalRoofKevin[roofIndexKevin[k][2]][j] + faceNormalRoofKevin[roofIndexKevin[k][3]][j]) / 4.0;
 		}
 	}
 }
 
 void displayCubeWithVertexNormal(GLdouble vertData[8][3], GLint faceIndexData[6][4], GLdouble vertNormalData[8][3]) {
 	GLint i, j;
-
+	glEnable(GL_NORMALIZE);
 	for (GLint i = 0; i < 6; i++)
 	{
 		glBegin(GL_QUADS);
@@ -504,6 +500,7 @@ void displayCubeWithVertexNormal(GLdouble vertData[8][3], GLint faceIndexData[6]
 void displayRoofWithVertexNormal(GLdouble vertData[5][3], GLint faceIndexData[4][3], GLdouble vertNormalData[5][3]) {
 	GLint i, j;
 
+	glEnable(GL_NORMALIZE);
 	for (GLint i = 0; i < 5; i++)
 	{
 		glBegin(GL_TRIANGLES);
@@ -522,13 +519,26 @@ void quad(GLint face[4]) // arguments are indices of vertives of a quad in verte
 {
 	glEnable(GL_NORMALIZE);
 
-	glBegin(GL_QUADS);
-	for (GLint i = 0; i < 4; i++)
+	for (GLint i = 0; i < 8; i++)
 	{
-		glVertex3dv(cubeData[face[i]]);
+		if (shouldUseFlat == true)
+		{
+			glNormal3dv(faceNormalCubeKevin[i]);
+		}
+		glBegin(GL_QUADS);
+
+		for (GLint j = 0; j < 4; j++)
+		{
+			if (shouldUseFlat == false)
+			{
+				glNormal3dv(vertexNormalCubeKevin[faceIndexKevin[i][j]]);
+			}
+			glVertex3dv(cubeData[face[j]]);
+		}
 	}
 	glEnd();
 	glFlush();
+
 }
 
 void displayCube() {
@@ -539,12 +549,22 @@ void displayCube() {
 void drawRoof(GLint face[3])
 {
 	glEnable(GL_NORMALIZE);
-
-	glBegin(GL_TRIANGLES);
-		for (GLint i = 0; i < 3; i++)
+	for (GLint i = 0; i < 5; i++)
+	{
+		if (shouldUseFlat == true)
 		{
-			glVertex3dv(roofData[face[i]]);	
+			glNormal3dv(faceNormalRoofKevin[i]);
 		}
+		glBegin(GL_TRIANGLES);
+		for (GLint j = 0; j < 3; j++)
+		{
+			if (shouldUseFlat == false)
+				{
+					glNormal3dv(vertexNormalRoofKevin[roofIndexKevin[i][j]]);
+			}
+			glVertex3dv(roofData[face[j]]);
+		}
+	}
 	glEnd();
 	glFlush();
 }
@@ -556,17 +576,8 @@ void displayRoof() {
 
 void drawHouse()
 {
-	if (shouldUseFlat == true) {
-		displayCubeWithVertexNormal(cubeData, faceIndexKevin, vertexNormalCubeKevin);
-		displayRoofWithVertexNormal(roofData, roofFaceIndexKevin, vertexNormalRoofKevin);
-	}
-	else if (shouldUseFlat == false)
-	{
 		displayCube();
 		displayRoof();
-	}
-
-
 }
 
 
@@ -1229,6 +1240,7 @@ void textureOptions(GLint drawOptions)
 		shouldDisplayTexture2Octahedron = false;
 		shouldDisplayTexture1Octahedron = true;
 		shouldDisplayTexture3Octahedron = false;
+
 		break;
 	case 3:
 		shouldDisplayTexture2Octahedron = true;
