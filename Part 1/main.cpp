@@ -5,6 +5,19 @@
 #include <vector>
 using namespace std;
 
+GLint numVert = 5;
+GLint xmin = -600, xmax = 600, ymin = -600, ymax = 600;
+GLdouble radius = 500;
+GLdouble curentPentagonCentre[2];
+GLdouble points[5][2];
+GLdouble resetz = -200;
+GLdouble counter;
+GLdouble angleAdjustment = 49.95;
+GLdouble scalingFactor = 0.8;
+
+int option;
+int singleFrame;
+
 int objectOption = 0;
 GLint displayOption = 2;
 GLdouble height = 60;
@@ -636,6 +649,112 @@ void animationNeil()
 		Sleep(50);
 	}
 }
+
+//Marks **********************************************************************************
+
+void getPentagonPoints(GLdouble centre[], GLint NumVert)
+{
+	GLdouble angle = 0.0;
+	GLint k = 0;
+	for (k = 0; k < NumVert; k++) {
+		angle = 2.0 * M_PI * k / NumVert;
+
+		//shift the angle the lines are drawn along so that the pentagon sits with its base on the x axis
+		points[k][0] = centre[0] + radius * cos((angle - angleAdjustment));
+		points[k][1] = centre[1] + radius * sin((angle - angleAdjustment));
+	}
+}
+
+//Pentagon Drawing function, similar to the Polygon drawing function give by Helen Lu in week 3
+void drawOriginalPentagon(GLdouble verts[5][2]) {
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 5; i++)
+	{
+		GLdouble x = verts[i][0];
+		GLdouble y = verts[i][1];
+		glVertex2d(x, y);
+	}
+	glEnd();
+	glFlush();
+
+
+}
+
+
+void displayFrozenFrameFunction()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLoadIdentity();
+	glPushMatrix();
+	GLdouble movementDistance = 0;
+	curentPentagonCentre[0] = 0;
+	curentPentagonCentre[1] = 0;
+
+
+	for (int i = 0; i < 20; i++)
+	{
+		movementDistance += 4;
+
+		//called backwards, cause that's the way matrixes work
+		glTranslated(curentPentagonCentre[0] + movementDistance, curentPentagonCentre[1] + movementDistance, 0);
+		glTranslated(curentPentagonCentre[0], curentPentagonCentre[1], 0);
+		glScaled(scalingFactor, scalingFactor, 0);
+		glTranslated(-curentPentagonCentre[0], -curentPentagonCentre[1], 0);
+		curentPentagonCentre[0] += movementDistance;
+		curentPentagonCentre[1] += movementDistance;
+		glColor3f(0.0, 0.0, 1.0);
+
+
+
+		glLineWidth(3);
+		drawOriginalPentagon(points);
+
+	}
+
+	glPopMatrix();
+	glutSwapBuffers();
+
+	glFlush();
+}
+
+
+void displayAnimationFunction() {
+
+
+	//glClear(GL_COLOR_BUFFER_BIT); 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLoadIdentity();
+	glPushMatrix();
+	GLdouble movementDistance = 0;
+
+	curentPentagonCentre[0] = 0;
+	curentPentagonCentre[1] = 0;
+	for (int i = 0; i < counter; i++)
+	{
+		movementDistance += 4;
+
+		//called backwards, cause that's the way matrixes work
+		glTranslated(curentPentagonCentre[0] + movementDistance, curentPentagonCentre[1] + movementDistance, 0);
+		glTranslated(curentPentagonCentre[0], curentPentagonCentre[1], 0);
+		glScaled(scalingFactor, scalingFactor, 0);
+		glTranslated(-curentPentagonCentre[0], -curentPentagonCentre[1], 0);
+		curentPentagonCentre[0] += movementDistance;
+		curentPentagonCentre[1] += movementDistance;
+		glColor3f(0.0, 0.0, 1.0);
+
+
+
+		glLineWidth(3);
+		drawOriginalPentagon(points);
+	}
+	glPopMatrix();
+
+	//Sleep(200);
+	//glutSwapBuffers();
+
+	//glFlush();
+}
 //Kevin's knot******************************************************************************
 GLdouble tyTotalKevin = 0;
 GLdouble tyTotal1Kevin = 0;
@@ -794,6 +913,11 @@ void displayFunction()
 	if (objectOption == 0) {
 		animationNeil();
 	}
+
+	if (objectOption == 1)
+	{
+
+	}
 	if (objectOption == 2)
 	{
 		glLineWidth(5);
@@ -807,6 +931,19 @@ void idle()
 	if (objectOption == 0)
 	{
 		idleNeil();
+	}
+
+	if (objectOption == 1)
+	{
+		
+			if (counter < 20)
+			{
+				counter++;
+			}
+			else
+				counter = 0;
+			glutPostRedisplay();
+
 	}
 	if (objectOption==2)
 	{
@@ -827,12 +964,16 @@ void Selection(GLint animationOption)
 		break;
 	case 3:
 		objectOption = 0;
+		glutDisplayFunc(displayFunction);
 		break;
+
 	case 4:
 		objectOption = 1;
+		glutDisplayFunc(displayAnimationFunction); 
 		break;
 	case 5:
 		objectOption = 2;
+		glutDisplayFunc(displayFunction);
 		break;
 
 	default:
@@ -855,6 +996,10 @@ int main(int argc, char** argv)
 	glutCreateWindow("Part 1 - 2D shapes");
 
 	init();
+
+	curentPentagonCentre[0] = resetz;
+	curentPentagonCentre[1] = resetz;
+	getPentagonPoints(curentPentagonCentre, numVert);
 
 	//subMenu = glutCreateMenu(displayMode);
 	//glutAddMenuEntry("Animation", 1);
