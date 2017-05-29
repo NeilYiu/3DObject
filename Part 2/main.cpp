@@ -902,12 +902,15 @@ void drawTexture3Octahedron()
 
 void drawTexturedHouse2()
 {
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	loadCustomTexture("bug.png");
+	glColor3f(1,1,0);
 	drawTextureHouse();
 }
 
 void drawTexturedRoof2()
 {
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	loadCustomTexture("bug.png");
 	drawTextureRoof();
 }
