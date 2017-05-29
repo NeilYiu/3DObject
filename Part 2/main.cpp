@@ -166,11 +166,7 @@ void loadCustomTexture(char fileName[])
 			);
 }
 
-
 //Mark's Prism*************************************************************************************
-
-
-
 
 
 void CalculatePrisimPoints(GLdouble * centerPoints)

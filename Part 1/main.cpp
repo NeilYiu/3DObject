@@ -685,7 +685,6 @@ void drawOriginalPentagon(GLdouble verts[5][2]) {
 	glEnd();
 	glFlush();
 
-
 }
 
 
@@ -714,8 +713,6 @@ void animationMark()
 			curentPentagonCentre[0] += movementDistance;
 			curentPentagonCentre[1] += movementDistance;
 			glColor3f(0.0, 0.0, 1.0);
-
-
 
 			glLineWidth(3);
 			drawOriginalPentagon(points);
@@ -749,8 +746,6 @@ void animationMark()
 			curentPentagonCentre[1] += movementDistance;
 			glColor3f(0.0, 0.0, 1.0);
 
-
-
 			glLineWidth(3);
 			drawOriginalPentagon(points);
 		}
@@ -768,6 +763,7 @@ GLdouble tyTotal1Kevin = 0;
 GLdouble tyStepKevin = 20;
 GLdouble faceData1[4][2] = { { 150, -300 },{ 300, -450 } ,{ 150, -600 },{ 0, -450 } };
 GLdouble faceData2[4][2] = { { -150 ,300 },{ -300, 450 } ,{ -150 , 600 },{ 0 , 450 } };
+
 //Display Left Quad
 void displayQuad1()
 {
@@ -819,46 +815,11 @@ void translateQuad1(void)
 }
 
 //Counter for replaying the display, also to refresh screen when done(kinda)
-void remakeSquare()
-{
-	if (replay < 100) {
-		replay++;
-		tyTotalKevin = 0;
-		tyTotal1Kevin = 0;
-	}
-	else {
-		replay = 0;
-	}
-}
 
-void idleKevin()
-{
-	if (displayOption == 1)
-	{
-		for (GLint i = 0; i <= replay; i++) {
-			translateQuad();
-			tyTotalKevin += tyStepKevin;
-			if (tyTotalKevin > ymax1 * 3) {
-				tyTotalKevin = -ymax1 * 2;
-			}
-		}
-
-		for (GLint i = 0; i <= replay; i++) {
-			tyTotal1Kevin -= tyStepKevin;
-			translateQuad1();
-
-			if (tyTotal1Kevin < ymin1 * 3) {
-				tyTotal1Kevin = ymax1 * 2;
-			}
-		}
-	}
-	if (displayOption == 1)
-	{
-		Sleep(50);
-	}
-}
 void animationKevin()
 {
+	tyTotalKevin = 0;
+	tyTotal1Kevin = 0;
 
 	glLineWidth(5);
 	//animation
@@ -867,44 +828,37 @@ void animationKevin()
 		for (GLint i = 0; i <= replay; i++) {
 			translateQuad();
 			tyTotalKevin += tyStepKevin;
-			if (tyTotalKevin > ymax1 * 3) {
-				tyTotalKevin = -ymax1 * 2;
+			if (replay == 45)
+			{
+				Sleep(10);
 			}
 		}
-
 		for (GLint i = 0; i <= replay; i++) {
-			tyTotal1Kevin -= tyStepKevin;
 			translateQuad1();
-
-			if (tyTotal1Kevin < ymin1 * 3) {
-				tyTotal1Kevin = ymax1 * 2;
+			tyTotal1Kevin -= tyStepKevin;
+			if (replay == 45)
+			{
+				Sleep(10);
 			}
 		}
-
-
+		Sleep(50);
 
 	}
 
-	//final image
 	if (displayOption == 2) {
-		for (GLint i = 0; i <= 100; i++) {
+
+		for (GLint i = 0; i <= 45; i++) {
 			translateQuad();
 			tyTotalKevin += tyStepKevin;
-			if (tyTotalKevin > ymax1 * 3) {
-				tyTotalKevin = -ymax1 * 2;
-			}
 		}
-
-		for (GLint i = 0; i <= 100; i++) {
+		for (GLint i = 0; i <= 45; i++) {
 			translateQuad1();
 			tyTotal1Kevin -= tyStepKevin;
-			if (tyTotal1Kevin < ymin1 * 3) {
-				tyTotal1Kevin = ymax1 * 2;
-			}
 		}
 	}
 
-	remakeSquare();
+
+
 }
 // End Kevin's knot******************************************************************************
 
@@ -950,9 +904,15 @@ void idle()
 	}
 	if (objectOption == 2)
 	{
-		idleKevin();
+
+		if (replay < 45) {
+			replay++;
+		}
+	else {
+			replay = 0;
+		}
+		glutPostRedisplay();
 	}
-	glutPostRedisplay();
 }
 
 //control Functions
