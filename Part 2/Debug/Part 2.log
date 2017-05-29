@@ -1,55 +1,17 @@
-﻿Build started 29/05/2017 1:30:19 PM.
+﻿Build started 29/05/2017 4:02:38 PM.
      1>Project "C:\Users\11254164\Source\Repos\3DObject\Part 2\Part 2.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\11254164\Source\Repos\3DObject\Glew and Glut\glew-1.11.0\include" /I"C:\Users\11254164\Source\Repos\3DObject\Glew and Glut\freeglut\include" /I"C:\Users\11254164\Source\Repos\3DObject\Simple OpenGL Image Library" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TC /analyze- /errorReport:prompt image_DXT.c image_helper.c SOIL.c stb_image_aug.c
-         stb_image_aug.c
-     1>c:\users\11254164\source\repos\3dobject\part 2\stbi_dds_aug_c.h(362): warning C4018: '>': signed/unsigned mismatch
-     1>c:\users\11254164\source\repos\3dobject\part 2\stbi_dds_aug_c.h(366): warning C4018: '>': signed/unsigned mismatch
-     1>c:\users\11254164\source\repos\3dobject\part 2\stbi_dds_aug_c.h(390): warning C4018: '<': signed/unsigned mismatch
-     1>c:\users\11254164\source\repos\3dobject\part 2\stbi_dds_aug_c.h(427): warning C4018: '<': signed/unsigned mismatch
-         SOIL.c
-     1>c:\users\11254164\source\repos\3dobject\part 2\soil.c(1719): warning C4018: '<=': signed/unsigned mismatch
-     1>c:\users\11254164\source\repos\3dobject\part 2\soil.c(1729): warning C4018: '<': signed/unsigned mismatch
-         image_helper.c
-     1>c:\users\11254164\source\repos\3dobject\part 2\image_helper.c(325): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\image_helper.c(366): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\image_helper.c(373): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\image_helper.c(415): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\image_helper.c(422): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-         image_DXT.c
-         Generating Code...
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\11254164\Source\Repos\3DObject\Glew and Glut\glew-1.11.0\include" /I"C:\Users\11254164\Source\Repos\3DObject\Glew and Glut\freeglut\include" /I"C:\Users\11254164\Source\Repos\3DObject\Simple OpenGL Image Library" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\11254164\Source\Repos\3DObject\Simple OpenGL Image Library" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(49): warning C4838: conversion from 'GLdouble' to 'GLfloat' requires a narrowing conversion
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(49): warning C4244: 'initializing': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(137): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(138): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(139): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(145): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(487): warning C4101: 'j': unreferenced local variable
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(487): warning C4101: 'i': unreferenced local variable
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(504): warning C4101: 'j': unreferenced local variable
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(504): warning C4101: 'i': unreferenced local variable
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(579): warning C4101: 'c': unreferenced local variable
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(804): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(805): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(808): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(809): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(812): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(813): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(865): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(866): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(867): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(904): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(905): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(1031): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(1034): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(1037): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(1040): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(1043): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(1046): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(50): warning C4838: conversion from 'GLdouble' to 'GLfloat' requires a narrowing conversion
+     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(150): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
+     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(568): warning C4101: 'j': unreferenced local variable
+     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(568): warning C4101: 'i': unreferenced local variable
+     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(585): warning C4101: 'j': unreferenced local variable
+     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(585): warning C4101: 'i': unreferenced local variable
+     1>c:\users\11254164\source\repos\3dobject\part 2\main.cpp(675): warning C4101: 'c': unreferenced local variable
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\11254164\Source\Repos\3DObject\Debug\Part 2.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\11254164\Source\Repos\3DObject\Glew and Glut\glew-1.11.0\lib" /LIBPATH:"C:\Users\11254164\Source\Repos\3DObject\Glew and Glut\freeglut\lib" freeglut.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\11254164\Source\Repos\3DObject\Debug\Part 2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\11254164\Source\Repos\3DObject\Debug\Part 2.lib" /MACHINE:X86 Debug\image_DXT.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\11254164\Source\Repos\3DObject\Debug\Part 2.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\11254164\Source\Repos\3DObject\Debug\Part 2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\11254164\Source\Repos\3DObject\Debug\Part 2.lib" /MACHINE:X86 Debug\image_DXT.obj
          Debug\image_helper.obj
          Debug\main.obj
          Debug\SOIL.obj
@@ -59,4 +21,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:05.97
+Time Elapsed 00:00:03.01
