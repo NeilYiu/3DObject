@@ -15,8 +15,9 @@
 using namespace std;
 
 
-//General Globals 
 
+//General Globals 
+GLint colorOption = 0;
 bool shouldUseFlat = true;
 int objectOption = 0;
 
@@ -266,7 +267,6 @@ void CalculatePrisimVertexNormals(GLdouble vertexNormal[7][3]) {
 
 void DrawTriangleSides()
 {
-	glColor3f(0.0, 0.0, 1.0);
 	glEnable(GL_NORMALIZE);
 	for (int k = 0; k < 6; k++)
 	{
@@ -292,7 +292,6 @@ void DrawTriangleSides()
 
 void DrawBase()
 {
-	glColor3f(0.0, 0.0, 1.0);
 	glEnable(GL_NORMALIZE);
 	glNormal3dv(prisimFaceNormal[7]);
 	glBegin(GL_POLYGON);
@@ -602,7 +601,6 @@ void displayPistol() {
 		for (GLint i = 0; i < 3; i++)
 		{
 			glLineWidth(0.01);
-			glColor3f(0, 1, 1);
 			GLfloat vers[3] = { pistolVertices[idx[i]][0],pistolVertices[idx[i]][1],pistolVertices[idx[i]][2] };
 			glVertex3fv(vers);
 		}
@@ -1079,21 +1077,56 @@ void displayFunction()
 	{
 		if (objectOption == 0)
 		{
-
+			if (colorOption == 0) {
+				glColor3f(1, 0, 0);
+			}
+			if (colorOption == 1) {
+				glColor3f(0, 1, 0);
+			}
+			if (colorOption == 2) {
+				glColor3f(0, 0, 1);
+			}
 			DrawBase();
 			DrawTriangleSides();
 		}
 		if (objectOption == 1)
 		{
+			if (colorOption == 0) {
+				glColor3f(1, 0, 0);
+			}
+			if (colorOption == 1) {
+				glColor3f(0, 1, 0);
+			}
+			if (colorOption == 2) {
+				glColor3f(0, 0, 1);
+			}
 			glTranslated(-initPx, -initPy, -initPz);
 			drawHouse();
 		}
 		if (objectOption == 2)
 		{
+			if (colorOption == 0) {
+				glColor3f(1, 0, 0);
+			}
+			if (colorOption == 1) {
+				glColor3f(0, 1, 0);
+			}
+			if (colorOption == 2) {
+				glColor3f(0, 0, 1);
+			}
 			displayOctahedron();
 		}
 		if (objectOption == 3)
 		{
+			if (colorOption == 0) {
+				glColor3f(1, 0, 0);
+			}
+			if (colorOption == 1) {
+				glColor3f(0, 1, 0);
+			}
+			if (colorOption == 2) {
+				glColor3f(0, 0, 1);
+			}
 			glScalef(55, 55, 55);
 			displayPistol();
 		}
@@ -1345,14 +1378,6 @@ void drawOptions(GLint drawOptions)
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
 		break;
 	case 2:
-		/*if (objectOption == 3)
-		{
-		glLineWidth(0.01);
-		}
-		else
-		{
-		glLineWidth(1);
-		}*/
 		mode = GL_LINE;
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
 
@@ -1362,6 +1387,26 @@ void drawOptions(GLint drawOptions)
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
 	}
 	glutPostRedisplay();
+}
+
+void colorOptions(GLint colorOptions)
+{
+	switch (colorOptions)
+	{
+	case 1:
+		colorOption = 0;
+		break;
+	case 2:
+		colorOption = 1;
+		break;
+	case 3:
+		colorOption = 2;
+		break;
+	default:
+		break;
+	}
+	glutPostRedisplay();
+
 }
 
 void textureOptions(GLint drawOptions)
@@ -1436,18 +1481,24 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("Texture2", 3);
 	glutAddMenuEntry("Texture3", 4);
 
+	GLint colorMenu;
+	colorMenu = glutCreateMenu(colorOptions);
+	glutAddMenuEntry("Red", 1);
+	glutAddMenuEntry("Green", 2);
+	glutAddMenuEntry("Blue", 3);
+
 	glutCreateMenu(animationSelection);
 	glutAddMenuEntry("Rotate", 1);
 	glutAddMenuEntry("Translation", 2);
 	glutAddSubMenu("Box Style", displayModeMenu);
 	glutAddSubMenu("Texture Style", textureModeMenu);
-
+	glutAddSubMenu("Color", colorMenu);
 	glutAddMenuEntry("Mark's Prism", 3);
 	glutAddMenuEntry("Kevin's House", 4);
 	glutAddMenuEntry("Neil's Octahedron", 5);
 	glutAddMenuEntry("Neil's Bonus Pistol", 6);
 
-	glutAddMenuEntry("Exit", 7);
+	glutAddMenuEntry("Exit", 8);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	calculateOctahedronFaceNormal(octahedronFaceNormal);
