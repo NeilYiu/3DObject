@@ -133,7 +133,7 @@ void initializeUnitTransformations()
 	completedTranslates.clear();
 	completedScales.clear();
 	completedRotations.clear();
-	for (int i = 0; i<totalTriangleCountOfOneRow; i++)
+	for (int i = 0; i < totalTriangleCountOfOneRow; i++)
 	{
 		txs.push_back(0);
 		tys.push_back(0);
@@ -643,7 +643,7 @@ void animationNeil()
 			}
 		}
 	}
-	
+
 	if (displayOption == 1)
 	{
 		Sleep(50);
@@ -681,80 +681,79 @@ void drawOriginalPentagon(GLdouble verts[5][2]) {
 }
 
 
-void displayFrozenFrameFunction()
+void animationMark()
+
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLoadIdentity();
-	glPushMatrix();
-	GLdouble movementDistance = 0;
-	curentPentagonCentre[0] = 0;
-	curentPentagonCentre[1] = 0;
+
+	if (displayOption == 2) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glLoadIdentity();
+		glPushMatrix();
+		GLdouble movementDistance = 0;
+		curentPentagonCentre[0] = 0;
+		curentPentagonCentre[1] = 0;
 
 
-	for (int i = 0; i < 20; i++)
-	{
-		movementDistance += 4;
+		for (int i = 0; i < 20; i++)
+		{
+			movementDistance += 4;
 
-		//called backwards, cause that's the way matrixes work
-		glTranslated(curentPentagonCentre[0] + movementDistance, curentPentagonCentre[1] + movementDistance, 0);
-		glTranslated(curentPentagonCentre[0], curentPentagonCentre[1], 0);
-		glScaled(scalingFactor, scalingFactor, 0);
-		glTranslated(-curentPentagonCentre[0], -curentPentagonCentre[1], 0);
-		curentPentagonCentre[0] += movementDistance;
-		curentPentagonCentre[1] += movementDistance;
-		glColor3f(0.0, 0.0, 1.0);
+			//called backwards, cause that's the way matrixes work
+			glTranslated(curentPentagonCentre[0] + movementDistance, curentPentagonCentre[1] + movementDistance, 0);
+			glTranslated(curentPentagonCentre[0], curentPentagonCentre[1], 0);
+			glScaled(scalingFactor, scalingFactor, 0);
+			glTranslated(-curentPentagonCentre[0], -curentPentagonCentre[1], 0);
+			curentPentagonCentre[0] += movementDistance;
+			curentPentagonCentre[1] += movementDistance;
+			glColor3f(0.0, 0.0, 1.0);
 
 
 
-		glLineWidth(3);
-		drawOriginalPentagon(points);
+			glLineWidth(3);
+			drawOriginalPentagon(points);
 
+		}
+
+		glPopMatrix();
+		
 	}
 
-	glPopMatrix();
-	glutSwapBuffers();
 
-	glFlush();
+
+	if (displayOption == 1) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glLoadIdentity();
+		glPushMatrix();
+		GLdouble movementDistance = 0;
+
+		curentPentagonCentre[0] = 0;
+		curentPentagonCentre[1] = 0;
+		for (int i = 0; i < counter; i++)
+		{
+			movementDistance += 4;
+
+			//called backwards, cause that's the way matrixes work
+			glTranslated(curentPentagonCentre[0] + movementDistance, curentPentagonCentre[1] + movementDistance, 0);
+			glTranslated(curentPentagonCentre[0], curentPentagonCentre[1], 0);
+			glScaled(scalingFactor, scalingFactor, 0);
+			glTranslated(-curentPentagonCentre[0], -curentPentagonCentre[1], 0);
+			curentPentagonCentre[0] += movementDistance;
+			curentPentagonCentre[1] += movementDistance;
+			glColor3f(0.0, 0.0, 1.0);
+
+
+
+			glLineWidth(3);
+			drawOriginalPentagon(points);
+		}
+		glPopMatrix();
+	}
+
+	Sleep(200);
+
 }
 
 
-void displayAnimationFunction() {
-
-
-	//glClear(GL_COLOR_BUFFER_BIT); 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLoadIdentity();
-	glPushMatrix();
-	GLdouble movementDistance = 0;
-
-	curentPentagonCentre[0] = 0;
-	curentPentagonCentre[1] = 0;
-	for (int i = 0; i < counter; i++)
-	{
-		movementDistance += 4;
-
-		//called backwards, cause that's the way matrixes work
-		glTranslated(curentPentagonCentre[0] + movementDistance, curentPentagonCentre[1] + movementDistance, 0);
-		glTranslated(curentPentagonCentre[0], curentPentagonCentre[1], 0);
-		glScaled(scalingFactor, scalingFactor, 0);
-		glTranslated(-curentPentagonCentre[0], -curentPentagonCentre[1], 0);
-		curentPentagonCentre[0] += movementDistance;
-		curentPentagonCentre[1] += movementDistance;
-		glColor3f(0.0, 0.0, 1.0);
-
-
-
-		glLineWidth(3);
-		drawOriginalPentagon(points);
-	}
-	glPopMatrix();
-
-	//Sleep(200);
-	//glutSwapBuffers();
-
-	//glFlush();
-}
 //Kevin's knot******************************************************************************
 GLdouble tyTotalKevin = 0;
 GLdouble tyTotal1Kevin = 0;
@@ -916,7 +915,7 @@ void displayFunction()
 
 	if (objectOption == 1)
 	{
-
+		animationMark();
 	}
 	if (objectOption == 2)
 	{
@@ -927,7 +926,7 @@ void displayFunction()
 };
 
 void idle()
-{	
+{
 	if (objectOption == 0)
 	{
 		idleNeil();
@@ -935,17 +934,17 @@ void idle()
 
 	if (objectOption == 1)
 	{
-		
-			if (counter < 20)
-			{
-				counter++;
-			}
-			else
-				counter = 0;
-			glutPostRedisplay();
+
+		if (counter < 20)
+		{
+			counter++;
+		}
+		else
+			counter = 0;
+		glutPostRedisplay();
 
 	}
-	if (objectOption==2)
+	if (objectOption == 2)
 	{
 		idleKevin();
 	}
@@ -964,16 +963,13 @@ void Selection(GLint animationOption)
 		break;
 	case 3:
 		objectOption = 0;
-		glutDisplayFunc(displayFunction);
 		break;
 
 	case 4:
 		objectOption = 1;
-		glutDisplayFunc(displayAnimationFunction); 
 		break;
 	case 5:
 		objectOption = 2;
-		glutDisplayFunc(displayFunction);
 		break;
 
 	default:
@@ -1019,7 +1015,7 @@ int main(int argc, char** argv)
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	glutDisplayFunc(displayFunction);
-//	delay(0);
+	//	delay(0);
 
 	glutMainLoop();
 
