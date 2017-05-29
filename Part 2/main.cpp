@@ -121,7 +121,7 @@ GLint octahedronVertexIndex[6][4] = { { 0,1,4,5 },{ 1,2,5,6 },{ 2,3,7,6 },{ 0,3,
 
 
 GLubyte texArray1[imageHeight][imageWidth][4];
-
+GLubyte texArray2[imageHeight][imageWidth][4];
 
 //Globals for Kevin's house
 
@@ -485,6 +485,8 @@ void calculateRoofVertexNormal(GLdouble vexNormal[5][3])
 	}
 }
 
+//Roof Vertex ---------------------------------------------------------------------------------------------
+
 void displayCubeWithVertexNormal(GLdouble vertData[8][3], GLint faceIndexData[6][4], GLdouble vertNormalData[8][3]) {
 	GLint i, j;
 	glEnable(GL_NORMALIZE);
@@ -520,6 +522,75 @@ void displayRoofWithVertexNormal(GLdouble vertData[5][3], GLint faceIndexData[4]
 	}
 }
 
+//Textures ------------------------------------------------------------------------------------------------------
+
+void drawTextureHouse()
+{
+	glEnable(GL_TEXTURE_2D);
+	for (GLint i = 0; i < 8; i++)
+	{
+		glBegin(GL_QUADS);
+		for (GLint j = 0; j < 4; j++)
+		{
+			if (j == 0)
+			{
+				glTexCoord2d(0.0, 0.0);
+				glVertex3dv(cubeData[faceIndexKevin[i][j]]);
+			}
+			if (j == 1)
+			{
+				glTexCoord2d(0.0, 1.0);
+				glVertex3dv(cubeData[faceIndexKevin[i][j]]);
+			}
+			if (j == 2)
+			{
+				glTexCoord2d(1.0, 1.0);
+				glVertex3dv(cubeData[faceIndexKevin[i][j]]);
+			}
+			if (j == 3)
+			{
+				glTexCoord2d(1.0, 0.0);
+				glVertex3dv(cubeData[faceIndexKevin[i][j]]);
+			}
+		}
+		glEnd();
+	}
+	glFlush();
+	glDisable(GL_TEXTURE_2D);
+}
+
+void drawTextureRoof()
+{
+	glEnable(GL_TEXTURE_2D);
+	for (GLint i = 0; i < 4; i++)
+	{
+		glBegin(GL_TRIANGLES);
+		for (GLint j = 0; j < 3; j++)
+		{
+			if (j == 0)
+			{
+				glTexCoord2d(0.0, 0.0);
+				glVertex3dv(roofData[roofIndexKevin[i][j]]);
+			}
+			if (j == 1)
+			{
+				glTexCoord2d(0.0, 1.0);
+				glVertex3dv(roofData[roofIndexKevin[i][j]]);
+			}
+			if (j == 2)
+			{
+				glTexCoord2d(1.0, 1.0);
+				glVertex3dv(roofData[roofIndexKevin[i][j]]);
+			}
+		}
+		glEnd();
+	}
+	glFlush();
+	glDisable(GL_TEXTURE_2D);
+}
+
+//Creation of House Base-------------------------------------------------------------------------------------------
+
 void quad(GLint face[4]) // arguments are indices of vertives of a quad in vertex array
 {
 	glEnable(GL_NORMALIZE);
@@ -554,7 +625,7 @@ void displayCube() {
 void drawRoof(GLint face[3])
 {
 	glEnable(GL_NORMALIZE);
-	for (GLint i = 0; i < 5; i++)
+	for (GLint i = 0; i < 4; i++)
 	{
 		if (shouldUseFlat == true)
 		{
@@ -567,7 +638,7 @@ void drawRoof(GLint face[3])
 			{
 				glNormal3dv(vertexNormalRoofKevin[roofIndexKevin[i][j]]);
 			}
-			glVertex3dv(roofData[face[j]]);
+			glVertex3dv(roofData[roofIndexKevin[i][j]]);
 		}
 	}
 	glEnd();
@@ -668,7 +739,6 @@ void loadModel(char* filename)
 		}
 	}
 }
-
 
 void loadBonusObject()
 {
@@ -772,7 +842,6 @@ void drawTexture1Octahedron()
 	glFlush();
 }
 
-
 void loadCustomTexture(char fileName[])
 {
 	textureID = SOIL_load_OGL_texture
@@ -788,6 +857,8 @@ void loadCustomTexture(char fileName[])
 
 void drawTexturedOctahedron()
 {
+	loadCustomTexture("Lifeline.png");
+
 	glEnable(GL_TEXTURE_2D);
 	for (GLint i = 0; i < 8; i++)
 	{
@@ -819,7 +890,6 @@ void drawTexturedOctahedron()
 	glDisable(GL_TEXTURE_2D);
 }
 
-
 void drawTexture2Octahedron()
 {
 	loadCustomTexture("MCR.png");
@@ -830,6 +900,30 @@ void drawTexture3Octahedron()
 {
 	loadCustomTexture("Lifeline.png");
 	drawTexturedOctahedron();
+}
+
+void drawTexturedHouse2()
+{
+	loadCustomTexture("bug.png");
+	drawTextureHouse();
+}
+
+void drawTexturedRoof2()
+{
+	loadCustomTexture("bug.png");
+	drawTextureRoof();
+}
+
+void drawTexturedHouse3()
+{
+	loadCustomTexture("wood.png");
+	drawTextureHouse();
+}
+
+void drawTexturedRoof3()
+{
+	loadCustomTexture("wood.png");
+	drawTextureRoof();
 }
 
 void displayOctahedron() {
@@ -979,7 +1073,6 @@ void setSpotLightProperty()
 	glFlush();
 }
 
-
 void setPointLightProperty()
 {
 	glLightfv(GL_LIGHT2, GL_POSITION, pointLight_position);
@@ -998,8 +1091,6 @@ void setPointLightProperty()
 	//glPointSize(1.0);
 	glFlush();
 }
-
-
 
 void setMaterialProperty()
 {
@@ -1063,6 +1154,8 @@ void displayFunction()
 		glTranslated(initialPosition[0], initialPosition[1], initialPosition[2]);
 	}
 
+
+
 	if (shouldDisplayTexture1Octahedron&&objectOption == 2)
 	{
 		drawTexture1Octahedron();
@@ -1075,6 +1168,27 @@ void displayFunction()
 	{
 		drawTexture3Octahedron();
 	}
+
+	if (shouldDisplayTexture1Octahedron&&objectOption == 1)
+	{
+		glTranslated(-initPx, -initPy, -initPz);
+		drawHouse();
+	}
+	else if (shouldDisplayTexture2Octahedron&&objectOption == 1)
+	{
+		glTranslated(-initPx, -initPy, -initPz);
+		drawTexturedHouse2();
+		drawTexturedRoof2();
+	}
+	else if (shouldDisplayTexture3Octahedron&&objectOption == 1)
+	{
+		glTranslated(-initPx, -initPy, -initPz);
+		drawTexturedHouse3();
+		drawTexturedRoof3();
+
+	}
+
+
 	else
 	{
 		if (objectOption == 0)
@@ -1372,22 +1486,26 @@ void textureOptions(GLint drawOptions)
 		shouldDisplayTexture2Octahedron = false;
 		shouldDisplayTexture1Octahedron = false;
 		shouldDisplayTexture3Octahedron = false;
+
 		break;
 	case 2:
 		shouldDisplayTexture2Octahedron = false;
 		shouldDisplayTexture1Octahedron = true;
 		shouldDisplayTexture3Octahedron = false;
 
+
 		break;
 	case 3:
 		shouldDisplayTexture2Octahedron = true;
 		shouldDisplayTexture1Octahedron = false;
 		shouldDisplayTexture3Octahedron = false;
+
 		break;
 	case 4:
 		shouldDisplayTexture2Octahedron = false;
 		shouldDisplayTexture1Octahedron = false;
 		shouldDisplayTexture3Octahedron = true;
+
 		break;
 	}
 	glutPostRedisplay();
