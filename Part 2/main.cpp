@@ -739,7 +739,7 @@ void calculateOctahedronVertexNormal(GLdouble vexNormal[6][3])
 
 		for (j = 0; j < 3; j++)
 		{
-			vexNormal[k][j] = (octahedronFaceNormal[octahedronVertexIndex[k][0]][j] + octahedronFaceNormal[octahedronVertexIndex[k][1]][j] + octahedronVertexIndex[octahedronFaceIndex[k][2]][j]) / 3.0;
+			vexNormal[k][j] = (octahedronFaceNormal[octahedronVertexIndex[k][0]][j] + octahedronFaceNormal[octahedronVertexIndex[k][1]][j] + octahedronFaceNormal[octahedronVertexIndex[k][2]][j]) / 3.0;
 		}
 	}
 }
