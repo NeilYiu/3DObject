@@ -5,6 +5,13 @@
 #include <GL/glut.h>
 #include <vector>
 #include <math.h>
+#include <string>
+#include <fstream>
+#include <stdio.h>
+#include <string.h>
+#include <GL/gl.h>
+#include <cmath>
+#include <iterator>
 using namespace std;
 
 
@@ -82,7 +89,7 @@ GLdouble initialPositionMark[3] = { 251.001, 310.254, -182.363 };
 GLdouble POne[3] = { 328.825, -66.2508, 282.843 }; //fix name
 GLdouble PTwo[3] = { -128.825, 266.251, -282.843 }; //fix name
 
-// End Globals For Mark's Prisim 
+													// End Globals For Mark's Prisim 
 
 
 GLdouble octahedronFaceNormal[8][3];
@@ -120,10 +127,10 @@ GLubyte texArray1[imageHeight][imageWidth][4];
 
 //Globals for Kevin's house
 
-GLint faceIndexKevin[6][4] = { { 0, 1, 2, 3 },{ 6, 2, 1, 5 },{ 4, 7, 6, 5 },{ 7, 4, 0, 3 },{ 5, 1, 0, 4 },{ 7, 3, 2, 6 }};
+GLint faceIndexKevin[6][4] = { { 0, 1, 2, 3 },{ 6, 2, 1, 5 },{ 4, 7, 6, 5 },{ 7, 4, 0, 3 },{ 5, 1, 0, 4 },{ 7, 3, 2, 6 } };
 GLint vertexIndexKevin[8][3] = { { 0, 3, 4 },{ 0, 1, 4 },{ 0, 1, 5 },{ 0, 3, 5 },{ 2, 3, 4 },{ 1, 2, 4 },{ 1, 2, 5 },{ 2, 3, 5 } };
 
-GLint roofIndexKevin[4][3] = { {0, 4, 1} ,{ 1, 4, 2 } ,{ 2, 4, 3 } ,{ 3, 4, 0 }};
+GLint roofIndexKevin[4][3] = { { 0, 4, 1 } ,{ 1, 4, 2 } ,{ 2, 4, 3 } ,{ 3, 4, 0 } };
 GLint roofFaceIndexKevin[4][3] = { { 0, 4, 1 } ,{ 1, 4, 2 } ,{ 2, 4, 3 } ,{ 3, 4, 0 } };
 
 GLdouble cubeData[8][3];
@@ -559,8 +566,8 @@ void drawRoof(GLint face[3])
 		for (GLint j = 0; j < 3; j++)
 		{
 			if (shouldUseFlat == false)
-				{
-					glNormal3dv(vertexNormalRoofKevin[roofIndexKevin[i][j]]);
+			{
+				glNormal3dv(vertexNormalRoofKevin[roofIndexKevin[i][j]]);
 			}
 			glVertex3dv(roofData[face[j]]);
 		}
@@ -576,13 +583,120 @@ void displayRoof() {
 
 void drawHouse()
 {
-		displayCube();
-		displayRoof();
+	displayCube();
+	displayRoof();
 }
 
 
 //End Kevin's house************************************************************************************
 
+//Neil's bonus******************************************************************************************
+vector<vector<GLfloat>> pistolVertices;
+vector<vector<GLint>> pistolFaceIndices;
+
+//THis function draw the six faces of a cube by calling the TriangleFace function
+void displayPistol() {
+
+	for (GLint i = 0; i < pistolFaceIndices.size(); i++)
+	{
+		GLint idx[3] = { pistolFaceIndices[i][0],pistolFaceIndices[i][1],pistolFaceIndices[i][2] };
+		glBegin(GL_TRIANGLES);
+		for (GLint i = 0; i < 3; i++)
+		{
+			glLineWidth(0.01);
+			glColor3f(0, 1, 1);
+			GLfloat vers[3] = { pistolVertices[idx[i]][0],pistolVertices[idx[i]][1],pistolVertices[idx[i]][2] };
+			glVertex3fv(vers);
+		}
+		glEnd();
+	}
+}
+
+void loadModel(char* filename)
+{
+	string line;
+	ifstream objFile(filename);
+	if (objFile.is_open())													// If obj file is open, continue
+	{
+		objFile.seekg(0, ios::end);										// Go to end of the file, 
+		long fileSize = objFile.tellg();									// get file size
+		objFile.seekg(0, ios::beg);										// we'll use this to register memory for our 3d model
+
+		static const GLfloat arr[] = { 0,0,0 };
+		vector<GLfloat> emptyVer(arr, arr + sizeof(arr) / sizeof(arr[0]));
+		pistolVertices.push_back(emptyVer);
+
+		int idx = 0;
+		while (!objFile.eof())											// Start reading file data
+		{
+			getline(objFile, line);											// Get line from file
+
+			if (line.c_str()[0] == 'v' && line.c_str()[1] != 'n' && line.c_str()[1] != 't')										// The first character is a v: on this line is a vertex stored.
+			{
+				line.erase(0, 2);
+				vector<GLfloat> vertex;
+				string delimiter = " ";
+				size_t pos = 0;
+				string coordStr;
+				while ((pos = line.find(delimiter)) != string::npos) {
+					string::size_type sz;
+					vertex.push_back(stof(line.substr(0, pos), &sz));
+					line.erase(0, pos + delimiter.length());
+				}
+				string::size_type sz;
+				vertex.push_back(stof(line, &sz));
+				pistolVertices.push_back(vertex);
+			}
+
+			if (line.c_str()[0] == 'f')										// The first character is a v: on this line is a vertex stored.
+			{
+				line.erase(0, 2);
+				vector<GLint> faceIndex;
+				string delimiter = " ";
+				size_t pos = 0;
+				string idxStr;
+				while ((pos = line.find(delimiter)) != string::npos) {
+					idxStr = line.substr(0, pos);
+					size_t poss = 0;
+					string verNumStr;
+					string::size_type szz;
+					faceIndex.push_back(stoi(line.substr(0, line.find("//")), &szz));
+					line.erase(0, pos + delimiter.length());
+				}
+				string::size_type sz;
+				faceIndex.push_back(stoi(line, &sz));
+				pistolFaceIndices.push_back(faceIndex);
+			}
+		}
+	}
+}
+
+
+void loadBonusObject()
+{
+	wchar_t pBuf[300];
+
+	int bytes = GetModuleFileName(nullptr, pBuf, 300);
+
+	for (int i = ARRAYSIZE(pBuf); i>0; i--)
+	{
+		if (pBuf[i] == '\\')
+		{
+			pBuf[i + 1] = '\0';
+			break;
+		}
+	}
+	char* path = new char[ARRAYSIZE(pBuf) + 100];
+	char buffer[300];
+	wcstombs(buffer, pBuf, sizeof(buffer));
+	strcpy(path, buffer);
+	strcat(path, "pistol.obj");
+	printf("%s", path);
+
+	loadModel(path);
+}
+
+//End Neil's bonus******************************************************************************************
 
 //Neil's Octahedron ***********************************************************************************
 
@@ -927,12 +1041,15 @@ void displayFunction()
 	setPointLightProperty();
 	glPushMatrix();
 
+	glLineWidth(1);
+
+
 	if (option == 1)
 	{
 		glTranslated(finalTranslation[0], finalTranslation[1], finalTranslation[2]);
 		glRotated(rotationAngle, rotationAxis[0], rotationAxis[1], rotationAxis[2]);
 		glTranslated(initialPosition[0] - finalTranslation[0], initialPosition[1] - finalTranslation[1],
-				initialPosition[2] - finalTranslation[2]);
+			initialPosition[2] - finalTranslation[2]);
 	}
 
 	if (option == 2)
@@ -948,15 +1065,15 @@ void displayFunction()
 		glTranslated(initialPosition[0], initialPosition[1], initialPosition[2]);
 	}
 
-	if (shouldDisplayTexture1Octahedron&&objectOption==2)
+	if (shouldDisplayTexture1Octahedron&&objectOption == 2)
 	{
 		drawTexture1Octahedron();
 	}
-	else if(shouldDisplayTexture2Octahedron&&objectOption == 2)
+	else if (shouldDisplayTexture2Octahedron&&objectOption == 2)
 	{
 		drawTexture2Octahedron();
 	}
-	else if(shouldDisplayTexture3Octahedron&&objectOption == 2)
+	else if (shouldDisplayTexture3Octahedron&&objectOption == 2)
 	{
 		drawTexture3Octahedron();
 	}
@@ -964,7 +1081,7 @@ void displayFunction()
 	{
 		if (objectOption == 0)
 		{
-			
+
 			DrawBase();
 			DrawTriangleSides();
 		}
@@ -977,6 +1094,11 @@ void displayFunction()
 		{
 			displayOctahedron();
 		}
+		if (objectOption == 3)
+		{
+			glScalef(55, 55, 55);
+			displayPistol();
+		}
 	}
 
 	glPopMatrix();
@@ -986,7 +1108,6 @@ void displayFunction()
 	glFlush();
 }
 //idle 
-
 void idle()
 {
 	if (option == 1)
@@ -1015,8 +1136,6 @@ void idle()
 
 	glutPostRedisplay();
 }
-
-
 
 //reshape Function
 
@@ -1059,20 +1178,20 @@ void keyboard(unsigned char key, int x, int y) // for the first display window
 		break;
 	case 'U':
 	case 'u':
-		if (rotationStep<=10)
+		if (rotationStep <= 10)
 		{
 			rotationStep += 1;
 		}
 		break;
 	case 'd':
 	case 'D':
-		if (rotationStep>=2)
+		if (rotationStep >= 2)
 		{
 			rotationStep -= 1;
 		}
 		break;
 	case 'F':
-	case 'f': 
+	case 'f':
 		glShadeModel(GL_FLAT);
 		shouldUseFlat = true;
 		break;
@@ -1122,12 +1241,11 @@ void keyboard(unsigned char key, int x, int y) // for the first display window
 		exit(0);
 	default: break;
 	}
-	cout << "New Spotlight Pos: " << spotLight_position[0] <<","<< spotLight_position[1] << "," << spotLight_position[2]<<endl;
-	cout << "New Pointlight Pos: " << pointLight_position[0] << "," << pointLight_position[1] << "," << pointLight_position[2]<< endl;
+	cout << "New Spotlight Pos: " << spotLight_position[0] << "," << spotLight_position[1] << "," << spotLight_position[2] << endl;
+	cout << "New Pointlight Pos: " << pointLight_position[0] << "," << pointLight_position[1] << "," << pointLight_position[2] << endl;
 
 	glutPostRedisplay();
 }
-
 
 
 void animationSelection(GLint animationOption)
@@ -1188,14 +1306,26 @@ void animationSelection(GLint animationOption)
 		scaleFactor = 1.0;
 
 		break;
+	case 6:
+		for (int i = 0; i < 3; i++)
+		{
+			endPoint1[i] = endPoint1Neil[i];
+			endPoint2[i] = endPoint2Neil[i];
+			initialPosition[i] = initialPositionNeil[i];
+			rotationAxis[i] = endPoint1[i] - endPoint2[i];
+		}
+		CalculateTranslationSteps();
+		CalculateFinalTranslationVector();
 
+		objectOption = 3;
+		scaleFactor = 1.0;
+
+		break;
 	default:
 		break;
 	}
 	glutPostRedisplay();
 }
-
-
 
 void keyFunc(GLint key, GLint xMouse, GLint yMouse)
 {
@@ -1217,8 +1347,17 @@ void drawOptions(GLint drawOptions)
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
 		break;
 	case 2:
+		/*if (objectOption == 3)
+		{
+		glLineWidth(0.01);
+		}
+		else
+		{
+		glLineWidth(1);
+		}*/
 		mode = GL_LINE;
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
+
 		break;
 	case 3:
 		mode = GL_FILL;
@@ -1266,14 +1405,14 @@ int main(int argc, char** argv)
 
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(1000, 1000);
-	
+
 	windowID = glutCreateWindow("Part 2 - 3D Object");
 	makeImage();
 	init();
 	CalculatePrisimPoints(initialPosition);
 	calculateCubePoints(side);
 	calculateRoofPoints(side);
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		endPoint1[i] = POne[i];
@@ -1308,6 +1447,7 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("Mark's Prism", 3);
 	glutAddMenuEntry("Kevin's House", 4);
 	glutAddMenuEntry("Neil's Octahedron", 5);
+	glutAddMenuEntry("Neil's Bonus Pistol", 6);
 
 	glutAddMenuEntry("Exit", 7);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -1326,6 +1466,8 @@ int main(int argc, char** argv)
 	glutSpecialFunc(keyFunc);
 	glutKeyboardFunc(keyboard);
 	glutReshapeFunc(reshapeFcn);
+
+	loadBonusObject();
 
 	glutMainLoop();
 
