@@ -153,7 +153,26 @@ GLdouble endPoint2Kevin[3] = { -14.1978, 451.465, -153.073 };
 GLdouble initialPositionKevin[3] = { initPx, initPy, initPz };
 
 
+//Texture Pattern Loader
+
+void loadCustomTexture(char fileName[])
+{
+	textureID = SOIL_load_OGL_texture
+		(
+			fileName,
+			SOIL_LOAD_AUTO,
+			textureID,
+			//SOIL_CREATE_NEW_ID,
+			SOIL_FLAG_DDS_LOAD_DIRECT
+			//SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB //SOIL_FLAG_TEXTURE_RECTANGLE  
+			);
+}
+
+
 //Mark's Prism*************************************************************************************
+
+
+
 
 
 void CalculatePrisimPoints(GLdouble * centerPoints)
@@ -266,6 +285,102 @@ void CalculatePrisimVertexNormals(GLdouble vertexNormal[7][3]) {
 
 }
 
+
+void DrawPicTexturedSides () {
+	
+	glColor3f(0.0, 0.0, 1.0);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_NORMALIZE);
+	for (int k = 0; k < 6; k++)
+	{
+		if (shouldUseFlat == true)
+		{
+			glNormal3dv(prisimFaceNormal[k]);
+		}
+		glBegin(GL_TRIANGLES);
+		for (int i = 0; i < 3; i++)
+		{
+			if (i == 0)
+			{
+				glTexCoord2d(0.0, 0.0);
+			}
+			if (i == 1)
+			{
+				glTexCoord2d(0.5, 1.0);
+			}
+
+			if (i == 2)
+			{
+				glTexCoord2d(1.0, 0.0); 
+			}
+			if (shouldUseFlat == false)
+			{
+				glNormal3dv(prisimVertexNormal[triFaceIndex[i][k]]);;
+			}
+			glVertex3dv(prisimData[triFaceIndex[k][i]]);
+		}
+
+
+		glEnd();
+	}
+	glDisable(GL_TEXTURE_2D);
+}
+
+void DrawPicBaseSides ()
+{
+	glColor3f(0.0, 0.0, 1.0);
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_TEXTURE_2D); 
+	glNormal3dv(prisimFaceNormal[7]);
+	glBegin(GL_POLYGON);
+	if (shouldUseFlat == true)
+	{
+		glNormal3dv(prisimFaceNormal[6]);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		if (i == 0)
+		{
+			glTexCoord2d(0.25, 0); 
+		}
+		if (i == 1)
+		{
+			glTexCoord2d(0.75, 0);
+		}
+		if (i == 2)
+		{
+			glTexCoord2d(1, 0.5);
+		}
+		if (i == 3)
+		{
+			glTexCoord2d(1, 0.75);
+		}
+		if (i == 4)
+		{
+			glTexCoord2d(0.25, 1);
+		}
+		if (i == 5)
+		{
+			glTexCoord2d(0, 0.5);
+		}
+
+		if (shouldUseFlat == false)
+		{
+			glNormal3dv(prisimVertexNormal[i]);
+		}
+
+		glVertex3dv(prisimData[baseFaceIndex[i]]);
+	}
+	glEnd();
+
+	glDisable(GL_TEXTURE_2D); 
+
+}
+
+
+
+
+
 void DrawTriangleSides()
 {
 	glColor3f(0.0, 0.0, 1.0);
@@ -315,6 +430,21 @@ void DrawBase()
 	}
 	glEnd();
 
+}
+
+void drawTexture2Prisim()
+{
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+	loadCustomTexture("MCR.png");
+	DrawPicTexturedSides();
+	DrawPicBaseSides();
+}
+
+void drawTexture3Prisim()
+{
+	loadCustomTexture("Lifeline.png");
+	//drawTexturedOctahedron();
 }
 
 
@@ -775,18 +905,7 @@ void drawTexture1Octahedron()
 }
 
 
-void loadCustomTexture(char fileName[])
-{
-	textureID = SOIL_load_OGL_texture
-	(
-		fileName,
-		SOIL_LOAD_AUTO,
-		textureID,
-		//SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_DDS_LOAD_DIRECT
-		//SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB //SOIL_FLAG_TEXTURE_RECTANGLE  
-	);
-}
+
 
 void drawTexturedOctahedron()
 {
@@ -1077,6 +1196,18 @@ void displayFunction()
 	{
 		drawTexture3Octahedron();
 	}
+	if (shouldDisplayTexture1Octahedron&&objectOption == 0)
+	{
+		drawTexture1Octahedron();
+	}
+	else if (shouldDisplayTexture2Octahedron&&objectOption == 0)
+	{
+		drawTexture2Prisim();
+	}
+	else if (shouldDisplayTexture3Octahedron&&objectOption == 0)
+	{
+		drawTexture3Octahedron();
+	}
 	else
 	{
 		if (objectOption == 0)
@@ -1085,6 +1216,7 @@ void displayFunction()
 			DrawBase();
 			DrawTriangleSides();
 		}
+
 		if (objectOption == 1)
 		{
 			glTranslated(-initPx, -initPy, -initPz);
