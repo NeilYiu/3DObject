@@ -15,8 +15,9 @@
 using namespace std;
 
 
-//General Globals 
 
+//General Globals 
+GLint colorOption = 0;
 bool shouldUseFlat = true;
 int objectOption = 0;
 
@@ -66,8 +67,6 @@ GLfloat ambientCoef[] = { 0.8f, 0.0f, 0.0f };
 GLfloat diffuseCoef[] = { 0.8f, 0.0f, 0.0f };
 GLfloat specularCoef[] = { 1.0f, 1.0f, 1.0f };
 GLfloat mat_shininess = 128.0f;
-
-
 
 
 // Globals For Mark's Prisim
@@ -123,7 +122,6 @@ GLint octahedronVertexIndex[6][4] = { { 0,1,4,5 },{ 1,2,5,6 },{ 2,3,7,6 },{ 0,3,
 
 
 GLubyte texArray1[imageHeight][imageWidth][4];
-
 
 //Globals for Kevin's house
 
@@ -383,7 +381,6 @@ void DrawPicBaseSides ()
 
 void DrawTriangleSides()
 {
-	glColor3f(0.0, 0.0, 1.0);
 	glEnable(GL_NORMALIZE);
 	for (int k = 0; k < 6; k++)
 	{
@@ -409,7 +406,6 @@ void DrawTriangleSides()
 
 void DrawBase()
 {
-	glColor3f(0.0, 0.0, 1.0);
 	glEnable(GL_NORMALIZE);
 	glNormal3dv(prisimFaceNormal[7]);
 	glBegin(GL_POLYGON);
@@ -617,6 +613,8 @@ void calculateRoofVertexNormal(GLdouble vexNormal[5][3])
 	}
 }
 
+//Roof Vertex ---------------------------------------------------------------------------------------------
+
 void displayCubeWithVertexNormal(GLdouble vertData[8][3], GLint faceIndexData[6][4], GLdouble vertNormalData[8][3]) {
 	GLint i, j;
 	glEnable(GL_NORMALIZE);
@@ -652,6 +650,75 @@ void displayRoofWithVertexNormal(GLdouble vertData[5][3], GLint faceIndexData[4]
 	}
 }
 
+//Textures ------------------------------------------------------------------------------------------------------
+
+void drawTextureHouse()
+{
+	glEnable(GL_TEXTURE_2D);
+	for (GLint i = 0; i < 8; i++)
+	{
+		glBegin(GL_QUADS);
+		for (GLint j = 0; j < 4; j++)
+		{
+			if (j == 0)
+			{
+				glTexCoord2d(0.0, 0.0);
+				glVertex3dv(cubeData[faceIndexKevin[i][j]]);
+			}
+			if (j == 1)
+			{
+				glTexCoord2d(0.0, 1.0);
+				glVertex3dv(cubeData[faceIndexKevin[i][j]]);
+			}
+			if (j == 2)
+			{
+				glTexCoord2d(1.0, 1.0);
+				glVertex3dv(cubeData[faceIndexKevin[i][j]]);
+			}
+			if (j == 3)
+			{
+				glTexCoord2d(1.0, 0.0);
+				glVertex3dv(cubeData[faceIndexKevin[i][j]]);
+			}
+		}
+		glEnd();
+	}
+	glFlush();
+	glDisable(GL_TEXTURE_2D);
+}
+
+void drawTextureRoof()
+{
+	glEnable(GL_TEXTURE_2D);
+	for (GLint i = 0; i < 4; i++)
+	{
+		glBegin(GL_TRIANGLES);
+		for (GLint j = 0; j < 3; j++)
+		{
+			if (j == 0)
+			{
+				glTexCoord2d(0.0, 0.0);
+				glVertex3dv(roofData[roofIndexKevin[i][j]]);
+			}
+			if (j == 1)
+			{
+				glTexCoord2d(0.0, 1.0);
+				glVertex3dv(roofData[roofIndexKevin[i][j]]);
+}
+			if (j == 2)
+			{
+				glTexCoord2d(1.0, 1.0);
+				glVertex3dv(roofData[roofIndexKevin[i][j]]);
+			}
+		}
+		glEnd();
+	}
+	glFlush();
+	glDisable(GL_TEXTURE_2D);
+}
+
+//Creation of House Base-------------------------------------------------------------------------------------------
+
 void quad(GLint face[4]) // arguments are indices of vertives of a quad in vertex array
 {
 	glEnable(GL_NORMALIZE);
@@ -686,7 +753,7 @@ void displayCube() {
 void drawRoof(GLint face[3])
 {
 	glEnable(GL_NORMALIZE);
-	for (GLint i = 0; i < 5; i++)
+	for (GLint i = 0; i < 4; i++)
 	{
 		if (shouldUseFlat == true)
 		{
@@ -699,7 +766,7 @@ void drawRoof(GLint face[3])
 			{
 				glNormal3dv(vertexNormalRoofKevin[roofIndexKevin[i][j]]);
 			}
-			glVertex3dv(roofData[face[j]]);
+			glVertex3dv(roofData[roofIndexKevin[i][j]]);
 		}
 	}
 	glEnd();
@@ -734,7 +801,6 @@ void displayPistol() {
 		for (GLint i = 0; i < 3; i++)
 		{
 			glLineWidth(0.01);
-			glColor3f(0, 1, 1);
 			GLfloat vers[3] = { pistolVertices[idx[i]][0],pistolVertices[idx[i]][1],pistolVertices[idx[i]][2] };
 			glVertex3fv(vers);
 		}
@@ -800,7 +866,6 @@ void loadModel(char* filename)
 		}
 	}
 }
-
 
 void loadBonusObject()
 {
@@ -909,6 +974,8 @@ void drawTexture1Octahedron()
 
 void drawTexturedOctahedron()
 {
+	loadCustomTexture("Lifeline.png");
+
 	glEnable(GL_TEXTURE_2D);
 	for (GLint i = 0; i < 8; i++)
 	{
@@ -940,7 +1007,6 @@ void drawTexturedOctahedron()
 	glDisable(GL_TEXTURE_2D);
 }
 
-
 void drawTexture2Octahedron()
 {
 	loadCustomTexture("MCR.png");
@@ -951,6 +1017,30 @@ void drawTexture3Octahedron()
 {
 	loadCustomTexture("Lifeline.png");
 	drawTexturedOctahedron();
+}
+
+void drawTexturedHouse2()
+{
+	loadCustomTexture("bug.png");
+	drawTextureHouse();
+}
+
+void drawTexturedRoof2()
+{
+	loadCustomTexture("bug.png");
+	drawTextureRoof();
+}
+
+void drawTexturedHouse3()
+{
+	loadCustomTexture("wood.png");
+	drawTextureHouse();
+}
+
+void drawTexturedRoof3()
+{
+	loadCustomTexture("wood.png");
+	drawTextureRoof();
 }
 
 void displayOctahedron() {
@@ -1100,7 +1190,6 @@ void setSpotLightProperty()
 	glFlush();
 }
 
-
 void setPointLightProperty()
 {
 	glLightfv(GL_LIGHT2, GL_POSITION, pointLight_position);
@@ -1119,8 +1208,6 @@ void setPointLightProperty()
 	//glPointSize(1.0);
 	glFlush();
 }
-
-
 
 void setMaterialProperty()
 {
@@ -1184,6 +1271,8 @@ void displayFunction()
 		glTranslated(initialPosition[0], initialPosition[1], initialPosition[2]);
 	}
 
+
+
 	if (shouldDisplayTexture1Octahedron&&objectOption == 2)
 	{
 		drawTexture1Octahedron();
@@ -1196,38 +1285,61 @@ void displayFunction()
 	{
 		drawTexture3Octahedron();
 	}
-	if (shouldDisplayTexture1Octahedron&&objectOption == 0)
-	{
-		drawTexture1Octahedron();
-	}
-	else if (shouldDisplayTexture2Octahedron&&objectOption == 0)
-	{
-		drawTexture2Prisim();
-	}
-	else if (shouldDisplayTexture3Octahedron&&objectOption == 0)
-	{
-		drawTexture3Octahedron();
-	}
 	else
 	{
 		if (objectOption == 0)
 		{
-
+			if (colorOption == 0) {
+				glColor3f(1, 0, 0);
+			}
+			if (colorOption == 1) {
+				glColor3f(0, 1, 0);
+			}
+			if (colorOption == 2) {
+				glColor3f(0, 0, 1);
+			}
 			DrawBase();
 			DrawTriangleSides();
 		}
 
 		if (objectOption == 1)
 		{
+			if (colorOption == 0) {
+				glColor3f(1, 0, 0);
+			}
+			if (colorOption == 1) {
+				glColor3f(0, 1, 0);
+			}
+			if (colorOption == 2) {
+				glColor3f(0, 0, 1);
+			}
 			glTranslated(-initPx, -initPy, -initPz);
 			drawHouse();
 		}
 		if (objectOption == 2)
 		{
+			if (colorOption == 0) {
+				glColor3f(1, 0, 0);
+			}
+			if (colorOption == 1) {
+				glColor3f(0, 1, 0);
+			}
+			if (colorOption == 2) {
+				glColor3f(0, 0, 1);
+			}
 			displayOctahedron();
 		}
 		if (objectOption == 3)
 		{
+			if (colorOption == 0) {
+				glColor3f(1, 0, 0);
+			}
+			if (colorOption == 1) {
+				glColor3f(0, 1, 0);
+			}
+			if (colorOption == 2) {
+				glColor3f(0, 0, 1);
+			}
 			glScalef(55, 55, 55);
 			displayPistol();
 		}
@@ -1479,14 +1591,6 @@ void drawOptions(GLint drawOptions)
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
 		break;
 	case 2:
-		/*if (objectOption == 3)
-		{
-		glLineWidth(0.01);
-		}
-		else
-		{
-		glLineWidth(1);
-		}*/
 		mode = GL_LINE;
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
 
@@ -1498,6 +1602,26 @@ void drawOptions(GLint drawOptions)
 	glutPostRedisplay();
 }
 
+void colorOptions(GLint colorOptions)
+{
+	switch (colorOptions)
+	{
+	case 1:
+		colorOption = 0;
+		break;
+	case 2:
+		colorOption = 1;
+		break;
+	case 3:
+		colorOption = 2;
+		break;
+	default:
+		break;
+	}
+	glutPostRedisplay();
+
+}
+
 void textureOptions(GLint drawOptions)
 {
 	GLenum mode = GL_LINE;
@@ -1506,22 +1630,26 @@ void textureOptions(GLint drawOptions)
 		shouldDisplayTexture2Octahedron = false;
 		shouldDisplayTexture1Octahedron = false;
 		shouldDisplayTexture3Octahedron = false;
+
 		break;
 	case 2:
 		shouldDisplayTexture2Octahedron = false;
 		shouldDisplayTexture1Octahedron = true;
 		shouldDisplayTexture3Octahedron = false;
 
+
 		break;
 	case 3:
 		shouldDisplayTexture2Octahedron = true;
 		shouldDisplayTexture1Octahedron = false;
 		shouldDisplayTexture3Octahedron = false;
+
 		break;
 	case 4:
 		shouldDisplayTexture2Octahedron = false;
 		shouldDisplayTexture1Octahedron = false;
 		shouldDisplayTexture3Octahedron = true;
+
 		break;
 	}
 	glutPostRedisplay();
@@ -1570,18 +1698,24 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("Texture2", 3);
 	glutAddMenuEntry("Texture3", 4);
 
+	GLint colorMenu;
+	colorMenu = glutCreateMenu(colorOptions);
+	glutAddMenuEntry("Red", 1);
+	glutAddMenuEntry("Green", 2);
+	glutAddMenuEntry("Blue", 3);
+
 	glutCreateMenu(animationSelection);
 	glutAddMenuEntry("Rotate", 1);
 	glutAddMenuEntry("Translation", 2);
 	glutAddSubMenu("Box Style", displayModeMenu);
 	glutAddSubMenu("Texture Style", textureModeMenu);
-
+	glutAddSubMenu("Color", colorMenu);
 	glutAddMenuEntry("Mark's Prism", 3);
 	glutAddMenuEntry("Kevin's House", 4);
 	glutAddMenuEntry("Neil's Octahedron", 5);
 	glutAddMenuEntry("Neil's Bonus Pistol", 6);
 
-	glutAddMenuEntry("Exit", 7);
+	glutAddMenuEntry("Exit", 8);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	calculateOctahedronFaceNormal(octahedronFaceNormal);
