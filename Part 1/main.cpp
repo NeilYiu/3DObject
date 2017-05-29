@@ -1,9 +1,24 @@
+#include <Windows.h>
 #include <iostream>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <GL/glut.h>
 #include <vector>
 using namespace std;
+
+// Mark's Global Variables
+GLint numVert = 5;
+GLdouble radius = 500;
+GLdouble curentPentagonCentre[2];
+GLdouble points[5][2];
+GLdouble resetz = -200;
+GLdouble counter;
+
+//angle for getting the pentagon to sit flat 
+GLdouble angleAdjustment = 49.95;
+GLdouble scalingFactor = 0.8;
+
+// End Mark's Globals 
 
 int objectOption = 0;
 GLint displayOption = 2;
@@ -35,6 +50,10 @@ vector<GLdouble> totalRotations;
 
 bool rowStartToDrawFlag;
 
+
+
+//Set Up 
+
 void init(void)
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -50,6 +69,8 @@ void init(void)
 	glLoadIdentity();
 }
 
+//Neil's Cross ************************************************************************************************************************
+
 void drawTriangle()
 {
 	glColor3f(0.0, 1.0, 1.0);
@@ -58,7 +79,6 @@ void drawTriangle()
 	glVertex2d(initialTriangleVertices[1][0], initialTriangleVertices[1][1]);
 	glVertex2d(initialTriangleVertices[2][0], initialTriangleVertices[2][1]);
 	glEnd();
-	//glFlush();
 }
 
 GLdouble calculateTranslation(int index)
@@ -93,7 +113,6 @@ void calculateTransformations()
 	if (currentTriangleRoundCount == 3)
 	{
 		finalRotation = 3 * M_PI_2;
-		//finalRotation = -M_PI_2;
 	}
 	totalTranslations.clear();
 	totalScales.clear();
@@ -120,7 +139,7 @@ void initializeUnitTransformations()
 	completedTranslates.clear();
 	completedScales.clear();
 	completedRotations.clear();
-	for (int i = 0; i<totalTriangleCountOfOneRow; i++)
+	for (int i = 0; i < totalTriangleCountOfOneRow; i++)
 	{
 		txs.push_back(0);
 		tys.push_back(0);
@@ -630,19 +649,125 @@ void animationNeil()
 			}
 		}
 	}
-	
+
 	if (displayOption == 1)
 	{
 		Sleep(50);
 	}
 }
+
+//End Neil's Crosses *****************************************************************************
+
+//Mark's worm hole **********************************************************************************
+
+void getPentagonPoints(GLdouble centre[], GLint NumVert)
+{
+	GLdouble angle = 0.0;
+	GLint k = 0;
+	for (k = 0; k < NumVert; k++) {
+		angle = 2.0 * M_PI * k / NumVert;
+
+		//shift the angle so the lines are drawn along so that the pentagon sits with its base on the x axis
+		points[k][0] = centre[0] + radius * cos((angle - angleAdjustment));
+		points[k][1] = centre[1] + radius * sin((angle - angleAdjustment));
+	}
+}
+
+//Pentagon Drawing function, similar to the Polygon drawing function give by Helen Lu in week 3
+void drawOriginalPentagon(GLdouble verts[5][2]) {
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 5; i++)
+	{
+		GLdouble x = verts[i][0];
+		GLdouble y = verts[i][1];
+		glVertex2d(x, y);
+	}
+	glEnd();
+	glFlush();
+
+
+}
+
+
+void animationMark()
+
+{
+
+	if (displayOption == 2) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glLoadIdentity();
+		glPushMatrix();
+		GLdouble movementDistance = 0;
+		curentPentagonCentre[0] = 0;
+		curentPentagonCentre[1] = 0;
+
+
+		for (int i = 0; i < 20; i++)
+		{
+			movementDistance += 4;
+
+			//called backwards, cause that's the way matrixes work
+			glTranslated(curentPentagonCentre[0] + movementDistance, curentPentagonCentre[1] + movementDistance, 0);
+			glTranslated(curentPentagonCentre[0], curentPentagonCentre[1], 0);
+			glScaled(scalingFactor, scalingFactor, 0);
+			glTranslated(-curentPentagonCentre[0], -curentPentagonCentre[1], 0);
+			curentPentagonCentre[0] += movementDistance;
+			curentPentagonCentre[1] += movementDistance;
+			glColor3f(0.0, 0.0, 1.0);
+
+
+
+			glLineWidth(3);
+			drawOriginalPentagon(points);
+
+		}
+
+		glPopMatrix();
+
+	}
+
+
+
+	if (displayOption == 1) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glLoadIdentity();
+		glPushMatrix();
+		GLdouble movementDistance = 0;
+
+		curentPentagonCentre[0] = 0;
+		curentPentagonCentre[1] = 0;
+		for (int i = 0; i < counter; i++)
+		{
+			movementDistance += 4;
+
+			//called backwards, cause that's the way matrixes work
+			glTranslated(curentPentagonCentre[0] + movementDistance, curentPentagonCentre[1] + movementDistance, 0);
+			glTranslated(curentPentagonCentre[0], curentPentagonCentre[1], 0);
+			glScaled(scalingFactor, scalingFactor, 0);
+			glTranslated(-curentPentagonCentre[0], -curentPentagonCentre[1], 0);
+			curentPentagonCentre[0] += movementDistance;
+			curentPentagonCentre[1] += movementDistance;
+			glColor3f(0.0, 0.0, 1.0);
+
+
+
+			glLineWidth(3);
+			drawOriginalPentagon(points);
+		}
+		glPopMatrix();
+	}
+
+	Sleep(200);
+
+}
+
+
 //Kevin's knot******************************************************************************
 GLdouble tyTotalKevin = 0;
 GLdouble tyTotal1Kevin = 0;
 GLdouble tyStepKevin = 20;
-GLdouble faceData1[4][2] = { { 150, ymin1+150 },{  300, ymin1 } ,{ 150, ymin1-150},{ 0, ymin1 } };
-
-GLdouble faceData2[4][2] = { { -150 ,ymax1 +150 },{ -300, ymax1} ,{ -150 , ymax1-150 },{ 0 , ymax1 } };
+GLdouble faceData1[4][2] = { { 150, -300 },{ 300, -450 } ,{ 150, -600 },{ 0, -450 } };
+GLdouble faceData2[4][2] = { { -150 ,300 },{ -300, 450 } ,{ -150 , 600 },{ 0 , 450 } };
 //Display Left Quad
 void displayQuad1()
 {
@@ -693,7 +818,7 @@ void translateQuad1(void)
 	glPopMatrix();
 }
 
-//Counter for replaying the display, also to refresh screen when done
+//Counter for replaying the display, also to refresh screen when done(kinda)
 void remakeSquare()
 {
 	if (replay < 100) {
@@ -713,16 +838,17 @@ void idleKevin()
 		for (GLint i = 0; i <= replay; i++) {
 			translateQuad();
 			tyTotalKevin += tyStepKevin;
-			if (tyTotalKevin > ymax1) {
-				tyTotalKevin = -ymax1;
+			if (tyTotalKevin > ymax1 * 3) {
+				tyTotalKevin = -ymax1 * 2;
 			}
 		}
 
 		for (GLint i = 0; i <= replay; i++) {
 			tyTotal1Kevin -= tyStepKevin;
 			translateQuad1();
-			if (tyTotal1Kevin < ymin1) {
-				tyTotal1Kevin = ymax1;
+
+			if (tyTotal1Kevin < ymin1 * 3) {
+				tyTotal1Kevin = ymax1 * 2;
 			}
 		}
 	}
@@ -750,7 +876,7 @@ void animationKevin()
 			tyTotal1Kevin -= tyStepKevin;
 			translateQuad1();
 
-			if (tyTotal1Kevin < ymin1 *3) {
+			if (tyTotal1Kevin < ymin1 * 3) {
 				tyTotal1Kevin = ymax1 * 2;
 			}
 		}
@@ -780,14 +906,19 @@ void animationKevin()
 
 	remakeSquare();
 }
-//Kevin's knot******************************************************************************
+// End Kevin's knot******************************************************************************
 
-
+//Display func 
 void displayFunction()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	if (objectOption == 0) {
 		animationNeil();
+	}
+
+	if (objectOption == 1)
+	{
+		animationMark();
 	}
 	if (objectOption == 2)
 	{
@@ -797,18 +928,34 @@ void displayFunction()
 	glutSwapBuffers();
 };
 
+//idle
 void idle()
-{	
+{
 	if (objectOption == 0)
 	{
 		idleNeil();
 	}
-	if (objectOption==2)
+
+	if (objectOption == 1)
+	{
+
+		if (counter < 20)
+		{
+			counter++;
+		}
+		else
+			counter = 0;
+		glutPostRedisplay();
+
+	}
+	if (objectOption == 2)
 	{
 		idleKevin();
 	}
 	glutPostRedisplay();
 }
+
+//control Functions
 void Selection(GLint animationOption)
 {
 	switch (animationOption) {
@@ -823,6 +970,7 @@ void Selection(GLint animationOption)
 	case 3:
 		objectOption = 0;
 		break;
+
 	case 4:
 		objectOption = 1;
 		break;
@@ -851,12 +999,9 @@ int main(int argc, char** argv)
 
 	init();
 
-	//subMenu = glutCreateMenu(displayMode);
-	//glutAddMenuEntry("Animation", 1);
-	//glutAddMenuEntry("Result", 2);
-	//glutAddMenuEntry("Neil's Cross", 3);
-	//glutAddMenuEntry("Mark's Wormhole", 4);
-	//glutAddMenuEntry("Kevin's Knot", 5);
+	curentPentagonCentre[0] = resetz;
+	curentPentagonCentre[1] = resetz;
+	getPentagonPoints(curentPentagonCentre, numVert);
 
 	glutCreateMenu(Selection);
 	glutAddMenuEntry("Animation", 1);
@@ -865,11 +1010,11 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("Mark's Wormhole", 4);
 	glutAddMenuEntry("Kevin's Knot", 5);
 
-	//glutAddSubMenu("Display Mode", subMenu);
+
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	glutDisplayFunc(displayFunction);
-//	delay(0);
+
 
 	glutMainLoop();
 
