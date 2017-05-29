@@ -6,18 +6,19 @@
 #include <vector>
 using namespace std;
 
+// Mark's Global Variables
 GLint numVert = 5;
-GLint xmin = -600, xmax = 600, ymin = -600, ymax = 600;
 GLdouble radius = 500;
 GLdouble curentPentagonCentre[2];
 GLdouble points[5][2];
 GLdouble resetz = -200;
 GLdouble counter;
+
+//angle for getting the pentagon to sit flat 
 GLdouble angleAdjustment = 49.95;
 GLdouble scalingFactor = 0.8;
 
-int option;
-int singleFrame;
+// End Mark's Globals 
 
 int objectOption = 0;
 GLint displayOption = 2;
@@ -49,6 +50,10 @@ vector<GLdouble> totalRotations;
 
 bool rowStartToDrawFlag;
 
+
+
+//Set Up 
+
 void init(void)
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -64,6 +69,8 @@ void init(void)
 	glLoadIdentity();
 }
 
+//Neil's Cross ************************************************************************************************************************
+
 void drawTriangle()
 {
 	glColor3f(0.0, 1.0, 1.0);
@@ -72,7 +79,6 @@ void drawTriangle()
 	glVertex2d(initialTriangleVertices[1][0], initialTriangleVertices[1][1]);
 	glVertex2d(initialTriangleVertices[2][0], initialTriangleVertices[2][1]);
 	glEnd();
-	//glFlush();
 }
 
 GLdouble calculateTranslation(int index)
@@ -107,7 +113,6 @@ void calculateTransformations()
 	if (currentTriangleRoundCount == 3)
 	{
 		finalRotation = 3 * M_PI_2;
-		//finalRotation = -M_PI_2;
 	}
 	totalTranslations.clear();
 	totalScales.clear();
@@ -651,7 +656,9 @@ void animationNeil()
 	}
 }
 
-//Marks **********************************************************************************
+//End Neil's Crosses *****************************************************************************
+
+//Mark's worm hole **********************************************************************************
 
 void getPentagonPoints(GLdouble centre[], GLint NumVert)
 {
@@ -660,7 +667,7 @@ void getPentagonPoints(GLdouble centre[], GLint NumVert)
 	for (k = 0; k < NumVert; k++) {
 		angle = 2.0 * M_PI * k / NumVert;
 
-		//shift the angle the lines are drawn along so that the pentagon sits with its base on the x axis
+		//shift the angle so the lines are drawn along so that the pentagon sits with its base on the x axis
 		points[k][0] = centre[0] + radius * cos((angle - angleAdjustment));
 		points[k][1] = centre[1] + radius * sin((angle - angleAdjustment));
 	}
@@ -716,7 +723,7 @@ void animationMark()
 		}
 
 		glPopMatrix();
-		
+
 	}
 
 
@@ -899,14 +906,9 @@ void animationKevin()
 
 	remakeSquare();
 }
-//Kevin's knot******************************************************************************
-//GLint timeDelay = 5000;
-//
-//void delay(GLint value) {
-//	glutPostRedisplay();
-//	glutTimerFunc(timeDelay, delay, 0);
-//}
+// End Kevin's knot******************************************************************************
 
+//Display func 
 void displayFunction()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -926,6 +928,7 @@ void displayFunction()
 	glutSwapBuffers();
 };
 
+//idle
 void idle()
 {
 	if (objectOption == 0)
@@ -951,6 +954,8 @@ void idle()
 	}
 	glutPostRedisplay();
 }
+
+//control Functions
 void Selection(GLint animationOption)
 {
 	switch (animationOption) {
@@ -998,13 +1003,6 @@ int main(int argc, char** argv)
 	curentPentagonCentre[1] = resetz;
 	getPentagonPoints(curentPentagonCentre, numVert);
 
-	//subMenu = glutCreateMenu(displayMode);
-	//glutAddMenuEntry("Animation", 1);
-	//glutAddMenuEntry("Result", 2);
-	//glutAddMenuEntry("Neil's Cross", 3);
-	//glutAddMenuEntry("Mark's Wormhole", 4);
-	//glutAddMenuEntry("Kevin's Knot", 5);
-
 	glutCreateMenu(Selection);
 	glutAddMenuEntry("Animation", 1);
 	glutAddMenuEntry("Result", 2);
@@ -1012,11 +1010,11 @@ int main(int argc, char** argv)
 	glutAddMenuEntry("Mark's Wormhole", 4);
 	glutAddMenuEntry("Kevin's Knot", 5);
 
-	//glutAddSubMenu("Display Mode", subMenu);
+
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	glutDisplayFunc(displayFunction);
-	//	delay(0);
+
 
 	glutMainLoop();
 
