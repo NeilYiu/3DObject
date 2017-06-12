@@ -1269,6 +1269,9 @@ void calculateOctahedronFaceNormal(GLdouble normal[8][3])
 
 //setup 
 
+//the smaller the zoomVolume, the nearer it feels
+//the bigger the zoomVolume, the farer it feels
+GLdouble zoomVolume = 75;
 void init()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -1276,11 +1279,22 @@ void init()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glFrustum(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
-
+	glFrustum(-zoomVolume, zoomVolume, -zoomVolume, zoomVolume, 100, 2000);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	gluLookAt(50, 50, 800, 50, 50, 0, 0, 1, 0);
+
 	glRotatef(45, 1, 1, 0);
+
+	////Ortho viewing
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+
+	//glFrustum(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
+
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity();
+	//glRotatef(45, 1, 1, 0);
 }
 
 void drawAxis(GLdouble xmin, GLdouble xmax, GLdouble ymin, GLdouble ymax, GLdouble zfar)
@@ -1569,18 +1583,18 @@ void idle()
 
 //reshape Function
 
-void reshapeFcn(GLint newWidth, GLint newHeight)
-{
-	glViewport(0, 0, newWidth, newHeight);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glRotatef(45, 1, 1, 0);
-}
+//void reshapeFcn(GLint newWidth, GLint newHeight)
+//{
+//	glViewport(0, 0, newWidth, newHeight);
+//
+//	glMatrixMode(GL_PROJECTION);
+//	glLoadIdentity();
+//	glOrtho(xmin1, xmax1, ymin1, ymax1, znear1, zfar1);
+//
+//	glMatrixMode(GL_MODELVIEW);
+//	glLoadIdentity();
+//	glRotatef(45, 1, 1, 0);
+//}
 
 //Controls 
 
@@ -1917,7 +1931,7 @@ int main(int argc, char** argv)
 	glutDisplayFunc(displayFunction);
 	glutSpecialFunc(keyFunc);
 	glutKeyboardFunc(keyboard);
-	glutReshapeFunc(reshapeFcn);
+	//glutReshapeFunc(reshapeFcn);
 
 	loadBonusObject();
 

@@ -1,39 +1,39 @@
 ﻿  main.cpp
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(58): warning C4838: conversion from 'GLdouble' to 'GLfloat' requires a narrowing conversion
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(58): warning C4244: 'initializing': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(143): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(144): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(145): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(151): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(732): warning C4101: 'j': unreferenced local variable
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(732): warning C4101: 'i': unreferenced local variable
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(749): warning C4101: 'j': unreferenced local variable
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(749): warning C4101: 'i': unreferenced local variable
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(910): warning C4018: '<': signed/unsigned mismatch
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(916): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(931): warning C4244: 'initializing': conversion from 'std::streamoff' to 'long', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(999): warning C4996: 'wcstombs': This function or variable may be unsafe. Consider using wcstombs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(58): warning C4838: conversion from 'GLdouble' to 'GLfloat' requires a narrowing conversion
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(58): warning C4244: 'initializing': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(143): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(144): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(145): warning C4244: 'initializing': conversion from 'double' to 'GLint', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(151): warning C4838: conversion from 'GLint' to 'GLdouble' requires a narrowing conversion
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(732): warning C4101: 'j': unreferenced local variable
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(732): warning C4101: 'i': unreferenced local variable
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(749): warning C4101: 'j': unreferenced local variable
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(749): warning C4101: 'i': unreferenced local variable
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(910): warning C4018: '<': signed/unsigned mismatch
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(916): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(931): warning C4244: 'initializing': conversion from 'std::streamoff' to 'long', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(999): warning C4996: 'wcstombs': This function or variable may be unsafe. Consider using wcstombs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdlib.h(1008): note: see declaration of 'wcstombs'
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1000): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1000): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1001): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1001): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1013): warning C4101: 'c': unreferenced local variable
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1291): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1292): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1295): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1296): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1299): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1300): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1351): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1352): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1353): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1388): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1389): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1592): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1595): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1598): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1601): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1604): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-c:\users\classicneil\desktop\cg\assignments\final\3dobject\part 2\main.cpp(1607): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-  Part 2.vcxproj -> C:\Users\ClassicNeil\Desktop\CG\Assignments\Final\3DObject\Debug\Part 2.exe
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1013): warning C4101: 'c': unreferenced local variable
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1305): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1306): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1309): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1310): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1313): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1314): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1365): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1366): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1367): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1402): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1403): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1606): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1609): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1612): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1615): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1618): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+c:\users\classicneil\desktop\new folder\3dobject\part 2\main.cpp(1621): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+  Part 2.vcxproj -> C:\Users\ClassicNeil\Desktop\New folder\3DObject\Debug\Part 2.exe
