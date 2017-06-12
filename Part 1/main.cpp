@@ -888,6 +888,7 @@ void idle()
 	if (objectOption == 0)
 	{
 		idleNeil();
+		glutPostRedisplay();
 	}
 
 	if (objectOption == 1)
@@ -908,7 +909,7 @@ void idle()
 		if (replay < 45) {
 			replay++;
 		}
-	else {
+		else {
 			replay = 0;
 		}
 		glutPostRedisplay();

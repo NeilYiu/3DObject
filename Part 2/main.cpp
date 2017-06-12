@@ -94,9 +94,9 @@ GLdouble PTwo[3] = { -128.825, 266.251, -282.843 }; //fix name
 GLdouble octahedronFaceNormal[8][3];
 GLdouble octahedronVertexNormal[6][3];
 
-bool shouldDisplayTexture1Octahedron = false;
-bool shouldDisplayTexture2Octahedron = false;
-bool shouldDisplayTexture3Octahedron = false;
+bool shouldDisplayTexture1 = false;
+bool shouldDisplayTexture2 = false;
+bool shouldDisplayTexture3 = false;
 
 GLdouble endPoint1Neil[3] = { 398.974 ,-117.217 ,153.073 };
 GLdouble endPoint2Neil[3] = { -198.974 ,317.217 ,-153.073 };
@@ -156,14 +156,14 @@ GLdouble initialPositionKevin[3] = { initPx, initPy, initPz };
 void loadCustomTexture(char fileName[])
 {
 	textureID = SOIL_load_OGL_texture
-		(
-			fileName,
-			SOIL_LOAD_AUTO,
-			textureID,
-			//SOIL_CREATE_NEW_ID,
-			SOIL_FLAG_DDS_LOAD_DIRECT
-			//SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB //SOIL_FLAG_TEXTURE_RECTANGLE  
-			);
+	(
+		fileName,
+		SOIL_LOAD_AUTO,
+		textureID,
+		//SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_DDS_LOAD_DIRECT
+		//SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB //SOIL_FLAG_TEXTURE_RECTANGLE  
+	);
 }
 
 //Mark's Prism*************************************************************************************
@@ -280,11 +280,18 @@ void CalculatePrisimVertexNormals(GLdouble vertexNormal[7][3]) {
 }
 
 
-void DrawPicTexturedSides () {
-	
-	glColor3f(0.0, 0.0, 1.0);
+void texturePrisimTriSideFromArray() {
+
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_NORMALIZE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA,
+		GL_UNSIGNED_BYTE, texArray1);
 	for (int k = 0; k < 6; k++)
 	{
 		if (shouldUseFlat == true)
@@ -305,7 +312,7 @@ void DrawPicTexturedSides () {
 
 			if (i == 2)
 			{
-				glTexCoord2d(1.0, 0.0); 
+				glTexCoord2d(1.0, 0.0);
 			}
 			if (shouldUseFlat == false)
 			{
@@ -320,13 +327,21 @@ void DrawPicTexturedSides () {
 	glDisable(GL_TEXTURE_2D);
 }
 
-void DrawPicBaseSides ()
-{
-	glColor3f(0.0, 0.0, 1.0);
-	glEnable(GL_NORMALIZE);
-	glEnable(GL_TEXTURE_2D); 
-	glNormal3dv(prisimFaceNormal[7]);
+void texturePrisimBAseFromArray() {
+
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA,
+		GL_UNSIGNED_BYTE, texArray1);
+
 	glBegin(GL_POLYGON);
+
 	if (shouldUseFlat == true)
 	{
 		glNormal3dv(prisimFaceNormal[6]);
@@ -335,7 +350,7 @@ void DrawPicBaseSides ()
 	{
 		if (i == 0)
 		{
-			glTexCoord2d(0.25, 0); 
+			glTexCoord2d(0.25, 0);
 		}
 		if (i == 1)
 		{
@@ -367,7 +382,97 @@ void DrawPicBaseSides ()
 	}
 	glEnd();
 
-	glDisable(GL_TEXTURE_2D); 
+	glDisable(GL_TEXTURE_2D);
+
+}
+
+
+void DrawPicTexturedSides() {
+
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_NORMALIZE);
+	for (int k = 0; k < 6; k++)
+	{
+		if (shouldUseFlat == true)
+		{
+			glNormal3dv(prisimFaceNormal[k]);
+		}
+		glBegin(GL_TRIANGLES);
+		for (int i = 0; i < 3; i++)
+		{
+			if (i == 0)
+			{
+				glTexCoord2d(0.0, 0.0);
+			}
+			if (i == 1)
+			{
+				glTexCoord2d(0.5, 1.0);
+			}
+
+			if (i == 2)
+			{
+				glTexCoord2d(1.0, 0.0);
+			}
+			if (shouldUseFlat == false)
+			{
+				glNormal3dv(prisimVertexNormal[triFaceIndex[i][k]]);;
+			}
+			glVertex3dv(prisimData[triFaceIndex[k][i]]);
+		}
+
+
+		glEnd();
+	}
+	glDisable(GL_TEXTURE_2D);
+}
+
+void DrawPicBaseSides()
+{
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_TEXTURE_2D);
+	glNormal3dv(prisimFaceNormal[7]);
+	glBegin(GL_POLYGON);
+	if (shouldUseFlat == true)
+	{
+		glNormal3dv(prisimFaceNormal[6]);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		if (i == 0)
+		{
+			glTexCoord2d(0.25, 0);
+		}
+		if (i == 1)
+		{
+			glTexCoord2d(0.75, 0);
+		}
+		if (i == 2)
+		{
+			glTexCoord2d(1, 0.5);
+		}
+		if (i == 3)
+		{
+			glTexCoord2d(1, 0.75);
+		}
+		if (i == 4)
+		{
+			glTexCoord2d(0.25, 1);
+		}
+		if (i == 5)
+		{
+			glTexCoord2d(0, 0.5);
+		}
+
+		if (shouldUseFlat == false)
+		{
+			glNormal3dv(prisimVertexNormal[i]);
+		}
+
+		glVertex3dv(prisimData[baseFaceIndex[i]]);
+	}
+	glEnd();
+
+	glDisable(GL_TEXTURE_2D);
 
 }
 
@@ -426,6 +531,15 @@ void DrawBase()
 
 void drawTexture2Prisim()
 {
+	if (colorOption == 0) {
+		glColor3f(1, 0, 0);
+	}
+	if (colorOption == 1) {
+		glColor3f(0, 1, 0);
+	}
+	if (colorOption == 2) {
+		glColor3f(0, 0, 1);
+	}
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	loadCustomTexture("MCR.png");
@@ -435,8 +549,11 @@ void drawTexture2Prisim()
 
 void drawTexture3Prisim()
 {
-	loadCustomTexture("Lifeline.png");
-	//drawTexturedOctahedron();
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	loadCustomTexture("wood.png");
+	DrawPicTexturedSides();
+	DrawPicBaseSides();
 }
 
 
@@ -700,7 +817,7 @@ void drawTextureRoof()
 			{
 				glTexCoord2d(0.0, 1.0);
 				glVertex3dv(roofData[roofIndexKevin[i][j]]);
-}
+			}
 			if (j == 2)
 			{
 				glTexCoord2d(1.0, 1.0);
@@ -869,7 +986,7 @@ void loadBonusObject()
 
 	int bytes = GetModuleFileName(nullptr, pBuf, 300);
 
-	for (int i = ARRAYSIZE(pBuf); i>0; i--)
+	for (int i = ARRAYSIZE(pBuf); i > 0; i--)
 	{
 		if (pBuf[i] == '\\')
 		{
@@ -895,9 +1012,9 @@ void makeImage(void)
 {
 	GLint i, j, c;
 
-	for (i = border; i< imageHeight - border; i++)
+	for (i = border; i < imageHeight - border; i++)
 	{
-		for (j = border; j< imageWidth - border; j++)
+		for (j = border; j < imageWidth - border; j++)
 		{
 			texArray1[i][j][0] = (GLubyte)255;
 			texArray1[i][j][1] = (GLubyte)0;
@@ -970,8 +1087,6 @@ void drawTexture1Octahedron()
 
 void drawTexturedOctahedron()
 {
-	loadCustomTexture("Lifeline.png");
-
 	glEnable(GL_TEXTURE_2D);
 	for (GLint i = 0; i < 8; i++)
 	{
@@ -1005,26 +1120,64 @@ void drawTexturedOctahedron()
 
 void drawTexture2Octahedron()
 {
-	loadCustomTexture("MCR.png");
+	if (colorOption == 0) {
+		glColor3f(1, 0, 0);
+	}
+	if (colorOption == 1) {
+		glColor3f(0, 1, 0);
+	}
+	if (colorOption == 2) {
+		glColor3f(0, 0, 1);
+	}
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	loadCustomTexture("wood.png");
 	drawTexturedOctahedron();
 }
 
 void drawTexture3Octahedron()
 {
-	loadCustomTexture("Lifeline.png");
+	if (colorOption == 0) {
+		glColor3f(1, 0, 0);
+	}
+	if (colorOption == 1) {
+		glColor3f(0, 1, 0);
+	}
+	if (colorOption == 2) {
+		glColor3f(0, 0, 1);
+	}
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+	loadCustomTexture("bug.png");
 	drawTexturedOctahedron();
 }
 
 void drawTexturedHouse2()
 {
+	if (colorOption == 0) {
+		glColor3f(1, 0, 0);
+	}
+	if (colorOption == 1) {
+		glColor3f(0, 1, 0);
+	}
+	if (colorOption == 2) {
+		glColor3f(0, 0, 1);
+	}
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	loadCustomTexture("bug.png");
-	glColor3f(1,1,0);
 	drawTextureHouse();
 }
 
 void drawTexturedRoof2()
 {
+	if (colorOption == 0) {
+		glColor3f(1, 0, 0);
+	}
+	if (colorOption == 1) {
+		glColor3f(0, 1, 0);
+	}
+	if (colorOption == 2) {
+		glColor3f(0, 0, 1);
+	}
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	loadCustomTexture("bug.png");
 	drawTextureRoof();
@@ -1272,18 +1425,52 @@ void displayFunction()
 
 
 
-	if (shouldDisplayTexture1Octahedron&&objectOption == 2)
+	if (shouldDisplayTexture1 && objectOption == 2)
 	{
 		drawTexture1Octahedron();
 	}
-	else if (shouldDisplayTexture2Octahedron&&objectOption == 2)
+	else if (shouldDisplayTexture2 && objectOption == 2)
 	{
 		drawTexture2Octahedron();
 	}
-	else if (shouldDisplayTexture3Octahedron&&objectOption == 2)
+	else if (shouldDisplayTexture3 && objectOption == 2)
 	{
 		drawTexture3Octahedron();
 	}
+
+	if (shouldDisplayTexture1 && objectOption == 0)
+	{
+		texturePrisimBAseFromArray();
+		texturePrisimTriSideFromArray();
+
+	}
+	else if (shouldDisplayTexture2 && objectOption == 0)
+	{
+		drawTexture2Prisim();
+	}
+	else if (shouldDisplayTexture3 && objectOption == 0)
+	{
+		drawTexture3Prisim();
+
+	}
+
+	if (shouldDisplayTexture1 && objectOption == 1)
+	{
+
+	}
+	else if (shouldDisplayTexture2 && objectOption == 1)
+	{
+		glTranslated(-initPx, -initPy, -initPz);
+		drawTexturedHouse2();
+		drawTexturedRoof2();
+	}
+	else if (shouldDisplayTexture3 && objectOption == 1)
+	{
+		glTranslated(-initPx, -initPy, -initPz);
+		drawTexturedHouse3();
+		drawTexturedRoof3();
+	}
+
 	else
 	{
 		if (objectOption == 0)
@@ -1626,28 +1813,28 @@ void textureOptions(GLint drawOptions)
 	GLenum mode = GL_LINE;
 	switch (drawOptions) {
 	case 1:
-		shouldDisplayTexture2Octahedron = false;
-		shouldDisplayTexture1Octahedron = false;
-		shouldDisplayTexture3Octahedron = false;
+		shouldDisplayTexture2 = false;
+		shouldDisplayTexture1 = false;
+		shouldDisplayTexture3 = false;
 
 		break;
 	case 2:
-		shouldDisplayTexture2Octahedron = false;
-		shouldDisplayTexture1Octahedron = true;
-		shouldDisplayTexture3Octahedron = false;
+		shouldDisplayTexture2 = false;
+		shouldDisplayTexture1 = true;
+		shouldDisplayTexture3 = false;
 
 
 		break;
 	case 3:
-		shouldDisplayTexture2Octahedron = true;
-		shouldDisplayTexture1Octahedron = false;
-		shouldDisplayTexture3Octahedron = false;
+		shouldDisplayTexture2 = true;
+		shouldDisplayTexture1 = false;
+		shouldDisplayTexture3 = false;
 
 		break;
 	case 4:
-		shouldDisplayTexture2Octahedron = false;
-		shouldDisplayTexture1Octahedron = false;
-		shouldDisplayTexture3Octahedron = true;
+		shouldDisplayTexture2 = false;
+		shouldDisplayTexture1 = false;
+		shouldDisplayTexture3 = true;
 
 		break;
 	}
